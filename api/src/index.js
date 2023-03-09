@@ -1,13 +1,20 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
+import "dotenv/config";
+
+import connection from "./db/config.js";
 
 /* CONFIG */
-dotenv.config();
 const app = express();
+
+// ---- DB Connection ----
+connection.connect((err) => {
+  if (err) console.log("Can't connect to MySQL:", err);
+  else console.log("MySQL Connection Successful");
+});
 
 app.use(express.json());
 app.use(helmet());
