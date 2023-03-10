@@ -4,7 +4,7 @@ const saltRounds = process.env.BCRYPT_SALT_ROUNDS;
 
 const getHashedPassword = (password) => {
   return new Promise((resolve) => {
-    resolve(bcrypt.hashSync(password, saltRounds));
+    resolve(bcrypt.hash(password, parseInt(saltRounds)));
   });
 };
 
