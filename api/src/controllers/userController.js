@@ -1,6 +1,5 @@
 import asyncHandler from "express-async-handler";
 import { v4 as uuidv4 } from "uuid";
-
 import {
   comparePasswords,
   getHashedPassword,
@@ -15,7 +14,7 @@ import { generateRequestBody } from "../helpers/utils.js";
 // @DESC-    User Login
 // @ROUTE-   POST: /api/users/login
 // @ACCESS-  Public
-// @TODO-    Validate the error codes
+// @TODO-    Validation for Form Data
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -35,7 +34,7 @@ const loginUser = asyncHandler(async (req, res) => {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          token: generateJWTToken(user.id),
+          token: generateJWTToken(user.userId),
         })
       );
     } else {
@@ -51,7 +50,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @DESC-    User Registration
 // @ROUTE-   POST: /api/users/register
 // @ACCESS-  Public
-// @TODO-    Validate the error codes
+// @TODO-    Validation for Form Data
 const registerUser = asyncHandler(async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
 
@@ -85,8 +84,6 @@ const registerUser = asyncHandler(async (req, res) => {
       lastName,
     };
 
-    console.log("...userObj", userObj);
-
     const user = await createUserInDB({ ...userObj });
 
     if (user) {
@@ -95,7 +92,7 @@ const registerUser = asyncHandler(async (req, res) => {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          token: generateJWTToken(user.id),
+          token: generateJWTToken(user.userId),
         })
       );
     } else {
@@ -108,6 +105,21 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-const getUserProfile = asyncHandler(async (req, res) => {});
+// @DESC-    Get User Profile
+// @ROUTE-   GET: /api/users/me
+// @ACCESS-  Protected
+const getUserProfile = asyncHandler(async (req, res) => {
+  if (req.user) {
+    res.status(200).json(
+      generateRequestBody("success", 200, "Request Successful", {
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        email: req.user.email,
+      })
+    );
+  }
+
+  res.send(req.user);
+});
 
 export { loginUser, registerUser, getUserProfile };

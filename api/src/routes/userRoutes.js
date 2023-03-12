@@ -4,6 +4,7 @@ import {
   registerUser,
   getUserProfile,
 } from "../controllers/userController.js";
+import { authenicated } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -20,6 +21,6 @@ router.post("/register", registerUser);
 // @DESC-    Get User Profile
 // @ROUTE-   POST: /api/users/me
 // @ACCESS-  Protected
-router.post("/me", getUserProfile);
+router.get("/me", authenicated, getUserProfile);
 
 export { router as userRouter };
