@@ -1,0 +1,23 @@
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .field-header {
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .remember-me {
+    display: flex !important;
+    justify-content: start;
+  }
+  
+  .remember-me > label {
+    margin-left: 10px;
+  }
+  
+  .custom-container {
+    margin: 100px;
+  }
+  

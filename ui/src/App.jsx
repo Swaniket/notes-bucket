@@ -1,11 +1,10 @@
 import "./App.css";
-import { Button } from "react-bootstrap";
+import Login from "./pages/Login";
 
 function App() {
   return (
-    <div className="App">
-      Hello World
-      <Button>Click me</Button>
+    <div className="container">
+      <Login />
     </div>
   );
 }

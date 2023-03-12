@@ -4,3 +4,22 @@
     font-family: "Work Sans", sans-serif;
     height: 100vh;
 }
+
+.custom-text-secondary {
+    font-weight: bolder;
+    color: gray;
+  }
+  
+  .heading {
+    /* font-weight: bolder; */
+    margin: 35px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .heading-sub {
+    margin-bottom: 30px;
+    margin-top: -15px;
+    display: flex;
+    justify-content: center;
+  }
