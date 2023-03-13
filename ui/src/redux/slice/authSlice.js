@@ -76,9 +76,8 @@ export const authSlice = createSlice({
   },
 });
 
-export const getAuthState = (state) => state.auth;
-export const getUserState = (state) => state.auth.user;
-export const getRememberMeState = (state) => state.auth.rememberMe;
+export const getAuthState = (state) => state.user;
+export const getRememberMeState = (state) => state.user.rememberMe;
 
 export const { reset, resetStateMessages, setRememberMeState } =
   authSlice.actions;

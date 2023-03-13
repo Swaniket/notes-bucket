@@ -1,26 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { loginUser, setRememberMeState } from "../../redux/slice/authSlice";
-
 import { Button, Form, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { FaSignInAlt, FaInfoCircle } from "react-icons/fa";
+import {
+  loginUser,
+  setRememberMeState,
+  getAuthState,
+  resetStateMessages,
+} from "../../redux/slice/authSlice";
 import "./index.css";
 
 function Login() {
   const dispatch = useDispatch();
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const { user, isLoading, isError, isSuccess, message } =
+    useSelector(getAuthState);
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const { email, password } = formData;
   const [rememberMe, setRememberMe] = useState(false);
   const [failedLoginAttemptCount, setFailedLoginAttempCount] = useState(0);
   const [timeRemain, setTimeRemain] = useState(10);
 
-  const { email, password } = formData;
+  useEffect(() => {
+    if (isError) {
+      setFailedLoginAttempCount(() => failedLoginAttemptCount + 1);
+
+      if (failedLoginAttemptCount >= 4) {
+        var myInterval = runCountDown();
+
+        setTimeout(() => {
+          setFailedLoginAttempCount(0);
+          clearInterval(myInterval);
+        }, 10000);
+      }
+      toast.error(message, { toastId: "failed-login-toast" });
+    }
+
+    // Redirect when loggedin
+    if (isSuccess || user) {
+      setFailedLoginAttempCount(0);
+      navigate("/home");
+    }
+
+    dispatch(resetStateMessages());
+
+    return () => {
+      setTimeRemain(10);
+    };
+  }, [isError, isSuccess, user, dispatch, message, navigate]);
 
   const runCountDown = () => {
     var myIntervalID = setInterval(() => {
@@ -53,7 +87,8 @@ function Login() {
       email: "",
       password: "",
     });
-    // dispatch(resetStateMessages());
+    setRememberMe(false);
+    dispatch(resetStateMessages());
   };
 
   return (
@@ -137,13 +172,8 @@ function Login() {
             >
               Clear
             </Button>
-            <Button
-              className="btn btn-dark"
-              type="submit"
-              // disabled={isLoading}
-            >
-              {/* {isLoading ? "Loading…" : "Login"} */}
-              Login
+            <Button className="btn btn-dark" type="submit" disabled={isLoading}>
+              {isLoading ? "Loading…" : "Login"}
             </Button>
           </div>
         </Form>
