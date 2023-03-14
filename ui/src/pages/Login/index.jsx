@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Form, Container } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { FaSignInAlt, FaInfoCircle } from "react-icons/fa";
 import {
@@ -91,6 +91,10 @@ function Login() {
     dispatch(resetStateMessages());
   };
 
+  const navigateToSignup = () => {
+    navigate("/sign-up");
+  };
+
   return (
     <div className="custom-container">
       <section>
@@ -131,7 +135,6 @@ function Login() {
               required
             />
           </Form.Group>
-
           {/* Password */}
           <Form.Group className="mb-3">
             <Form.Label className="field-header">
@@ -147,7 +150,6 @@ function Login() {
               required
             />
           </Form.Group>
-
           {/* Remember Me */}
           <Form.Group className="mb-3">
             <Form.Check
@@ -162,19 +164,30 @@ function Login() {
               }}
             />
           </Form.Group>
-
           {/* Buttons */}
-          <div className="button-group">
-            <Button
-              className="btn btn-light"
-              style={{ marginRight: "10px" }}
-              onClick={clearForm}
-            >
-              Clear
-            </Button>
-            <Button className="btn btn-dark" type="submit" disabled={isLoading}>
-              {isLoading ? "Loading…" : "Login"}
-            </Button>
+          <div className="button-group-login-signup">
+            <section>
+              Don't have an account?
+              <Button className="btn btn-link" onClick={navigateToSignup}>
+                Sign Up
+              </Button>
+            </section>
+            <section className="login-button-group">
+              <Button
+                className="btn btn-light"
+                style={{ marginRight: "10px" }}
+                onClick={clearForm}
+              >
+                Clear
+              </Button>
+              <Button
+                className="btn btn-dark"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? "Loading…" : "Login"}
+              </Button>
+            </section>
           </div>
         </Form>
       )}

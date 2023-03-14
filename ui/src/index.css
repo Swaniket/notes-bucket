@@ -1,25 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Work+Sans:wght@400;500;600;700;800&display=swap');
 
 #root {
-    font-family: "Work Sans", sans-serif;
-    height: 100vh;
+  font-family: "Work Sans", sans-serif;
+  height: 100vh;
 }
 
 .custom-text-secondary {
-    font-weight: bolder;
-    color: gray;
-  }
+  font-weight: bolder;
+  color: gray;
+}
   
-  .heading {
-    /* font-weight: bolder; */
-    margin: 35px;
-    display: flex;
-    justify-content: center;
-  }
+.heading {
+  margin: 35px;
+  display: flex;
+  justify-content: center;
+}
   
-  .heading-sub {
-    margin-bottom: 30px;
-    margin-top: -15px;
-    display: flex;
-    justify-content: center;
-  }
+.heading-sub {
+  margin-bottom: 30px;
+  margin-top: -15px;
+  display: flex;
+  justify-content: center;
+}
+
+.custom-container {
+  margin: 100px;
+}
+
+.button-group-login-signup {
+  display: flex;
+  justify-content: space-between;
+}
