@@ -82,15 +82,6 @@ function Login() {
     dispatch(loginUser(userData));
   };
 
-  const clearForm = () => {
-    setFormData({
-      email: "",
-      password: "",
-    });
-    setRememberMe(false);
-    dispatch(resetStateMessages());
-  };
-
   const navigateToSignup = () => {
     navigate("/sign-up");
   };
@@ -167,19 +158,11 @@ function Login() {
           {/* Buttons */}
           <div className="button-group-login-signup">
             <section>
-              Don't have an account?
-              <Button className="btn btn-link" onClick={navigateToSignup}>
-                Sign Up
+              <Button className="btn btn-light" onClick={navigateToSignup}>
+                Create an account
               </Button>
             </section>
             <section className="login-button-group">
-              <Button
-                className="btn btn-light"
-                style={{ marginRight: "10px" }}
-                onClick={clearForm}
-              >
-                Clear
-              </Button>
               <Button
                 className="btn btn-dark"
                 type="submit"
