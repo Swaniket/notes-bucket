@@ -104,14 +104,10 @@ function SignupForm({ values, errors, touched, handleBlur, handleChange }) {
           {errors.email}
         </Form.Control.Feedback>
       </Form.Group>
-      {/* <br /> */}
-      <hr />
-      {/* <br /> */}
       {/* Password */}
       <Form.Group className="mb-3">
         <Form.Label className="field-header">
           <strong>Choose a Password</strong>
-
           <PasswordPolicy />
         </Form.Label>
         <Form.Control
