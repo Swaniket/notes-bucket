@@ -18,6 +18,12 @@ const login = async (userCredentials, rememberMe) => {
   return { user: response?.data?.data };
 };
 
+const register = async (userData) => {
+  const response = await apiNotesBucket.post("/users/register", userData);
+  console.log("response from authService", response);
+  return response.data;
+};
+
 // User Logout
 const logout = () => {
   sessionStorage.removeItem("user");
@@ -26,6 +32,7 @@ const logout = () => {
 
 const authService = {
   login,
+  register,
   logout,
 };
 

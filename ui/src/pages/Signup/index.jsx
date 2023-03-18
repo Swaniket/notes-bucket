@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
@@ -6,9 +6,19 @@ import { FaUserPlus } from "react-icons/fa";
 import { SignupForm } from "../../components";
 import { signUpSchema } from "./Schema";
 import "./index.css";
+import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  registerUser,
+  getAuthState,
+  resetStateMessages,
+} from "../../redux/slice/authSlice";
 
 function Signup() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isLoading, isError, isSuccess, message } = useSelector(getAuthState);
 
   const initialValues = {
     firstName: "",
@@ -18,8 +28,9 @@ function Signup() {
     confirmPassword: "",
   };
 
-  const onSubmit = (values) => {
-    console.log("values", values);
+  const onSubmit = (values, { resetForm }) => {
+    dispatch(registerUser(values));
+    resetForm({ values: "" });
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -32,6 +43,20 @@ function Signup() {
   const navigateToLogin = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message, { toastId: "error-account-creation" });
+    }
+
+    if (isSuccess) {
+      toast.success(message, { toastId: "success-account-creation" });
+    }
+
+    return () => {
+      dispatch(resetStateMessages());
+    };
+  }, [isError, isSuccess, message, dispatch]);
 
   const SignupHeader = () => {
     return (
@@ -57,13 +82,8 @@ function Signup() {
             </Button>
           </section>
           <section className="login-button-group">
-            <Button
-              className="btn btn-dark"
-              type="submit"
-              // disabled={isLoading}
-            >
-              {/* {isLoading ? "Loading…" : "Create Account"} */}
-              Create Account
+            <Button className="btn btn-dark" type="submit" disabled={isLoading}>
+              {isLoading ? "Loading…" : "Create Account"}
             </Button>
           </section>
         </div>
