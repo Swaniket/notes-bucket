@@ -1,9 +1,33 @@
 import asyncHandler from "express-async-handler";
 import { v4 as uuidv4 } from "uuid";
-import { createNoteInDB } from "../db/functions/noteFunctions.js";
+import {
+  createNoteInDB,
+  getNotesByUserFromDB,
+} from "../db/functions/noteFunctions.js";
 import { convertDateTime, generateRequestBody } from "../helpers/utils.js";
 
-const getNotes = asyncHandler(async (req, res) => {});
+// @DESC   - Get Notes for a user
+// @ROUTE  - GET: /api/notes/all
+// @ACCESS - Protected
+const getNotes = asyncHandler(async (req, res) => {
+  const userIdFromToken = req.user.userId;
+  try {
+    const notes = await getNotesByUserFromDB(userIdFromToken);
+
+    if (notes.length > 0) {
+      res
+        .status(200)
+        .json(generateRequestBody("success", 200, "Success", notes));
+    } else {
+      res
+        .status(200)
+        .json(generateRequestBody("success", 200, "No Notes found", notes));
+    }
+  } catch (err) {
+    res.status(500);
+    throw new Error(err);
+  }
+});
 const getNoteById = asyncHandler(async (req, res) => {});
 const getNoteByTag = asyncHandler(async (req, res) => {});
 
@@ -41,8 +65,6 @@ const createNote = asyncHandler(async (req, res) => {
       isArchived: isArchived ? isArchived : false,
       tagId: tagId,
     };
-
-    console.log("noteObject", noteObject);
 
     const result = await createNoteInDB({ ...noteObject });
 
