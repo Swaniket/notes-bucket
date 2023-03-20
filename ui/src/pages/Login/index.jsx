@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Form } from "react-bootstrap";
+import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { FaSignInAlt, FaInfoCircle } from "react-icons/fa";
 import {
@@ -10,11 +11,9 @@ import {
   getAuthState,
   resetStateMessages,
 } from "../../redux/slice/authSlice";
-import "./index.css";
-
 import { loginSchema } from "./Schema";
-import { useFormik } from "formik";
 import { LoginForm } from "../../components";
+import "./index.css";
 
 function Login() {
   const dispatch = useDispatch();

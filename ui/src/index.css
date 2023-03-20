@@ -1,13 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Work+Sans:wght@400;500;600;700;800&display=swap');
 
 #root {
-  font-family: "Work Sans", sans-serif;
   height: 100vh;
 }
 
-.custom-text-secondary {
-  font-weight: bolder;
-  color: gray;
+body {
+  font-family: "Work Sans", sans-serif;
 }
   
 .heading {
@@ -23,6 +21,12 @@
   justify-content: center;
 }
 
+.custom-text-secondary {
+  font-weight: bolder;
+  color: gray;
+  font-family: inherit;
+}
+
 .custom-container {
   margin: 100px;
 }
@@ -31,3 +35,12 @@
   display: flex;
   justify-content: space-between;
 }
+
+.btn {
+  font-weight: bolder !important;
+  text-transform: uppercase;
+  height: 3.1rem;
+}
+
+
+

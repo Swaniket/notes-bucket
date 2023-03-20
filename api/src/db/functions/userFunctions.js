@@ -1,13 +1,4 @@
-import connection from "../config.js";
-
-const executeQuery = async (queryString) => {
-  return new Promise((resolve, reject) => {
-    connection.query(queryString, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
-};
+import { executeQuery } from "../../helpers/dbHelper.js";
 
 // Find user by Email from DB
 export const findUserFromDB = async (email) => {

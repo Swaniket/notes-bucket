@@ -5,9 +5,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 import "dotenv/config";
 
+import { userRouter } from "./routes/userRoutes.js";
+import { noteRouter } from "./routes/noteRoutes.js";
 import errorHandler from "./middleware/errorMiddleware.js";
 import connection from "./db/config.js";
-import { userRouter } from "./routes/userRoutes.js";
 
 const PORT = process.env.PORT || 9000;
 const app = express();
@@ -29,6 +30,7 @@ app.use(cors());
 
 /* ROUTES */
 app.use("/api/users", userRouter);
+app.use("/api/notes", noteRouter);
 
 /* Error Handler */
 app.use(errorHandler);
