@@ -4,7 +4,7 @@
   height: 100vh;
 }
 
-body {
+body, p {
   font-family: "Work Sans", sans-serif;
 }
   

@@ -1,0 +1,19 @@
+.header-logo {
+    text-decoration: none;
+    color: black;
+}
+
+.header-logo:hover {
+    color: black;
+}
+
+.profile-selector {
+    display: grid;
+    place-items: center;
+}
+
+.profile-name {
+    text-decoration: none;
+    color: black;
+}
+
