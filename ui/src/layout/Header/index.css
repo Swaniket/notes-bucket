@@ -13,7 +13,11 @@
 }
 
 .profile-name {
-    text-decoration: none;
+    text-decoration: none !important;
     color: black;
+}
+
+.profile-button {
+    display: block;
 }
 

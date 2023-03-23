@@ -29,7 +29,6 @@ function LoginForm({
           isInvalid={touched.email && !!errors.email}
           isValid={touched.email && !errors.email}
         />
-        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         <Form.Control.Feedback type="invalid">
           {errors.email}
         </Form.Control.Feedback>
@@ -51,7 +50,6 @@ function LoginForm({
           isInvalid={touched.password && !!errors.password}
           isValid={touched.password && !errors.password}
         />
-        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         <Form.Control.Feedback type="invalid">
           {errors.password}
         </Form.Control.Feedback>

@@ -1,21 +1,35 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Container, Dropdown, Button } from "react-bootstrap";
-import {
-  FaSignOutAlt,
-  FaTools,
-  FaUserCircle,
-  FaArrowAltCircleDown,
-} from "react-icons/fa";
-import {
-  AiFillSetting,
-  AiOutlineSetting,
-  AiTwotoneSetting,
-} from "react-icons/ai";
+import { FaSignOutAlt, FaTags, FaMapPin, FaArchive } from "react-icons/fa";
+import { AiTwotoneSetting } from "react-icons/ai";
+import { useSelector, useDispatch } from "react-redux";
 import "./index.css";
+import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
+import { toast } from "react-toastify";
 
 function Header() {
-  const onLogout = () => {};
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user } = useSelector(getAuthState);
+
+  const onLogout = () => {
+    dispatch(logout());
+    dispatch(reset());
+    navigate("/");
+    toast.success("Logout successful", { toastId: "logout-success" });
+  };
+
+  const onArchiveClicked = () => {
+    console.log("Archive is clicked");
+  };
+  const onPinnedClicked = () => {
+    console.log("Pinned is clicked");
+  };
+  const onManageClicked = () => {
+    console.log("Manage is clicked");
+  };
 
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <a
@@ -27,7 +41,7 @@ function Header() {
       }}
     >
       <span className="profile-selector">
-        <AiTwotoneSetting size={29} style={{ color: "black" }} />
+        <AiTwotoneSetting size={25} style={{ color: "black" }} />
         <span className="profile-name">
           <strong>Settings</strong>
         </span>
@@ -59,16 +73,32 @@ function Header() {
           <Dropdown.Menu>
             <Dropdown.Header>
               <small>
-                Welcome, <strong>Swaniket Chowdhury</strong>
+                Welcome, <strong>{user?.firstName}</strong>
               </small>{" "}
-              <p>swaniket@email.com</p>
+              <br />
+              <span>
+                <strong>{user?.email}</strong>
+              </span>
             </Dropdown.Header>
-            <Dropdown.Header>
-              <Button>View Profile</Button>
+            <Dropdown.Header className="profile-button d-grid gap-2">
+              <Button size="sm" className="btn btn-dark">
+                View Profile
+              </Button>
             </Dropdown.Header>
             <hr />
-            <Dropdown.Item>Profile</Dropdown.Item>
+            <Dropdown.Item onClick={onArchiveClicked}>
+              {" "}
+              <FaArchive /> Archived Notes
+            </Dropdown.Item>
+            <Dropdown.Item onClick={onPinnedClicked}>
+              {" "}
+              <FaMapPin /> Pinned Notes
+            </Dropdown.Item>
             <hr />
+            <Dropdown.Item onClick={onManageClicked}>
+              {" "}
+              <FaTags /> Manage Tags
+            </Dropdown.Item>
             <Dropdown.Item onClick={onLogout}>
               {" "}
               <FaSignOutAlt /> Logout
@@ -88,7 +118,7 @@ function Header() {
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
-            <AuthorizedMenu />
+            {user && <AuthorizedMenu />}
           </Navbar.Collapse>
         </Container>
       </Navbar>

@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "../services/authService";
+import { checkIfValidUser } from "../../utils/checkIfValidUser";
 
 const user =
   JSON.parse(sessionStorage.getItem("user")) ||
   JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
-  user: user ? user : null,
+  user: checkIfValidUser(user) ? user : null,
   rememberMe: false,
   isError: false,
   isSuccess: false,
@@ -14,6 +15,7 @@ const initialState = {
   message: "",
 };
 
+// User Login
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (user, thunkAPI) => {
@@ -33,6 +35,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// User Registration
 export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData, thunkAPI) => {
@@ -50,6 +53,11 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+
+// User Logout
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await authService.logout();
+});
 
 export const authSlice = createSlice({
   name: "auth",
