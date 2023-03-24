@@ -1,7 +1,9 @@
 import React from "react";
+import NoteList from "../../components/Notes/NoteList";
+import "./index.css";
 
 function Home() {
-  return <div>Home</div>;
+  return <NoteList />;
 }
 
 export default Home;

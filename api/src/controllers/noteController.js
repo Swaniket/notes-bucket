@@ -14,20 +14,21 @@ const getNotes = asyncHandler(async (req, res) => {
   try {
     const notes = await getNotesByUserFromDB(userIdFromToken);
 
-    if (notes.length > 0) {
+    if (notes.length > 0 && notes[0].noteId !== null) {
       res
         .status(200)
         .json(generateRequestBody("success", 200, "Success", notes));
     } else {
       res
         .status(200)
-        .json(generateRequestBody("success", 200, "No Notes found", notes));
+        .json(generateRequestBody("success", 200, "No Notes found", {}));
     }
   } catch (err) {
     res.status(500);
     throw new Error(err);
   }
 });
+
 const getNoteById = asyncHandler(async (req, res) => {});
 const getNoteByTag = asyncHandler(async (req, res) => {});
 
