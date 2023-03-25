@@ -18,9 +18,9 @@ const login = async (userCredentials, rememberMe) => {
   return { user: response?.data?.data };
 };
 
+// API call for register user
 const register = async (userData) => {
   const response = await apiNotesBucket.post("/users/register", userData);
-  console.log("response from authService", response);
   return response.data;
 };
 
