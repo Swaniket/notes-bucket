@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Container, Dropdown, Button } from "react-bootstrap";
 import { FaSignOutAlt, FaTags, FaMapPin, FaArchive } from "react-icons/fa";
 import { AiTwotoneSetting } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import "./index.css";
-import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
 import { toast } from "react-toastify";
+import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
+import { ConfirmAction } from "../../components";
+import "./index.css";
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   const { user } = useSelector(getAuthState);
 
@@ -19,6 +22,15 @@ function Header() {
     dispatch(reset());
     navigate("/");
     toast.success("Logout successful", { toastId: "logout-success" });
+    setOpenConfirmModal(false);
+  };
+
+  const closeConfirmModal = () => {
+    setOpenConfirmModal(false);
+  };
+
+  const onLogoutClicked = () => {
+    setOpenConfirmModal(true);
   };
 
   const onArchiveClicked = () => {
@@ -99,7 +111,7 @@ function Header() {
               {" "}
               <FaTags /> Manage Tags
             </Dropdown.Item>
-            <Dropdown.Item onClick={onLogout}>
+            <Dropdown.Item onClick={onLogoutClicked}>
               {" "}
               <FaSignOutAlt /> Logout
             </Dropdown.Item>
@@ -122,6 +134,14 @@ function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <ConfirmAction
+        show={openConfirmModal}
+        handleClose={closeConfirmModal}
+        onConfirmClick={onLogout}
+        title="Caution!"
+        bodyMessage="Are you sure you want to logout?"
+        confirmMessage="Yes, Log me out"
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Badge } from "react-bootstrap";
-import "./index.css";
 import { FaEye, FaPenAlt, FaTrashAlt } from "react-icons/fa";
+import "./index.css";
 
 function Note({ title, body, createdAt, updatedAt, tagName }) {
   return (
@@ -27,7 +27,7 @@ function Note({ title, body, createdAt, updatedAt, tagName }) {
         </Badge>
 
         <Badge bg="light" className="badge-button delete">
-          <FaTrashAlt />
+          <FaTrashAlt color="red" />
         </Badge>
       </Card.Body>
     </Card>
