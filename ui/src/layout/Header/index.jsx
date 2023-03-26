@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Navbar, Container, Dropdown, Button } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Dropdown,
+  Button,
+  Offcanvas,
+} from "react-bootstrap";
 import { FaSignOutAlt, FaTags, FaMapPin, FaArchive } from "react-icons/fa";
 import { AiTwotoneSetting } from "react-icons/ai";
+import { MdMenu } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
@@ -14,6 +21,7 @@ function Header() {
   const dispatch = useDispatch();
 
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const { user } = useSelector(getAuthState);
 
@@ -30,6 +38,7 @@ function Header() {
   };
 
   const onLogoutClicked = () => {
+    setShowMenu(false);
     setOpenConfirmModal(true);
   };
 
@@ -43,24 +52,8 @@ function Header() {
     console.log("Manage is clicked");
   };
 
-  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-    <a
-      href=""
-      ref={ref}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick(e);
-      }}
-    >
-      <span className="profile-selector">
-        <AiTwotoneSetting size={25} style={{ color: "black" }} />
-        <span className="profile-name">
-          <strong>Settings</strong>
-        </span>
-      </span>
-      {children}
-    </a>
-  ));
+  const handleMenuClose = () => setShowMenu(false);
+  const handleMenuShow = () => setShowMenu(true);
 
   const HeaderLogo = () => {
     return (
@@ -76,47 +69,60 @@ function Header() {
   const AuthorizedMenu = () => {
     return (
       <>
-        <Dropdown align="end">
-          <Dropdown.Toggle
-            as={CustomToggle}
-            id="dropdown-custom-components"
-          ></Dropdown.Toggle>
+        <div onClick={handleMenuShow}>
+          <MdMenu size={35} style={{ color: "black", cursor: "pointer" }} />
+        </div>
 
-          <Dropdown.Menu>
-            <Dropdown.Header>
+        <Offcanvas
+          show={showMenu}
+          onHide={handleMenuClose}
+          placement="end"
+          style={{ width: "15%" }}
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>Settings</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <h6>
+              Welcome, <strong>{user?.firstName}</strong>
+            </h6>{" "}
+            <span>
               <small>
-                Welcome, <strong>{user?.firstName}</strong>
-              </small>{" "}
-              <br />
-              <span>
                 <strong>{user?.email}</strong>
-              </span>
-            </Dropdown.Header>
-            <Dropdown.Header className="profile-button d-grid gap-2">
-              <Button size="sm" className="btn btn-dark">
-                View Profile
-              </Button>
-            </Dropdown.Header>
+              </small>
+            </span>
             <hr />
-            <Dropdown.Item onClick={onArchiveClicked}>
-              {" "}
-              <FaArchive /> Archived Notes
+            <Button size="sm" className="btn btn-dark w-100">
+              View Profile
+            </Button>
+            <hr />
+            <Dropdown.Item
+              onClick={onArchiveClicked}
+              className="offcanvas-items"
+            >
+              <FaArchive /> Archived Notes{" "}
             </Dropdown.Item>
-            <Dropdown.Item onClick={onPinnedClicked}>
-              {" "}
-              <FaMapPin /> Pinned Notes
+            <Dropdown.Item
+              onClick={onPinnedClicked}
+              className="offcanvas-items"
+            >
+              <FaMapPin /> Pinned Notes{" "}
             </Dropdown.Item>
             <hr />
-            <Dropdown.Item onClick={onManageClicked}>
-              {" "}
+            <Dropdown.Item
+              onClick={onManageClicked}
+              className="offcanvas-items"
+            >
               <FaTags /> Manage Tags
             </Dropdown.Item>
-            <Dropdown.Item onClick={onLogoutClicked}>
-              {" "}
+            <Dropdown.Item
+              onClick={onLogoutClicked}
+              className="offcanvas-items"
+            >
               <FaSignOutAlt /> Logout
             </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+          </Offcanvas.Body>
+        </Offcanvas>
       </>
     );
   };
