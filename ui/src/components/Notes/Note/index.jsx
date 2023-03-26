@@ -7,8 +7,10 @@ function Note({ title, body, createdAt, updatedAt, tagName }) {
   return (
     <Card className="note-card">
       <Card.Body>
-        <Card.Title className="custom-title">
-          {title}
+        <Card.Title className="custom-title mb-0">
+          <h6>
+            <span className="limited-text">{title}</span>
+          </h6>
           <h6>
             <Badge pill bg="dark">
               <small>{tagName}</small>
@@ -16,7 +18,7 @@ function Note({ title, body, createdAt, updatedAt, tagName }) {
           </h6>
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
-          Created At: <small>{createdAt}</small>
+          <small> Created At: {createdAt}</small>
         </Card.Subtitle>
         <Card.Text className="limited-text">{body}</Card.Text>
         <Badge bg="light" text="dark" className="badge-button">
@@ -27,7 +29,7 @@ function Note({ title, body, createdAt, updatedAt, tagName }) {
         </Badge>
 
         <Badge bg="light" className="badge-button delete">
-          <FaTrashAlt color="red" />
+          <FaTrashAlt color="brown" />
         </Badge>
       </Card.Body>
     </Card>

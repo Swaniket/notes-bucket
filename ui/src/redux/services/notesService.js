@@ -9,10 +9,21 @@ const getNotes = async (token) => {
   };
 
   const response = await apiNotesBucket.get("/notes/all", config);
-
   return response.data;
 };
 
-const notesService = { getNotes };
+// API call for create new notes
+const createNewNote = async (token, noteObj) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await apiNotesBucket.post("/notes/all", noteObj, config);
+  return response.data;
+};
+
+const notesService = { getNotes, createNewNote };
 
 export default notesService;

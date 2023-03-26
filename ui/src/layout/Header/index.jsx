@@ -6,7 +6,7 @@ import { AiTwotoneSetting } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
-import { ConfirmAction } from "../../components";
+import { ConfirmAction, SearchBar } from "../../components";
 import "./index.css";
 
 function Header() {
@@ -129,6 +129,7 @@ function Header() {
             <HeaderLogo />
           </Navbar.Brand>
           <Navbar.Toggle />
+          <SearchBar />
           <Navbar.Collapse className="justify-content-end">
             {user && <AuthorizedMenu />}
           </Navbar.Collapse>

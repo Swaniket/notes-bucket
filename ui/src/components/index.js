@@ -5,3 +5,5 @@ export { default as Note } from "./Notes/Note";
 export { default as NoteList } from "./Notes/NoteList";
 
 export { default as ConfirmAction } from "./Modals/ConfirmAction";
+
+export { default as SearchBar } from "./Notes/SearchNotes/SearchBar";

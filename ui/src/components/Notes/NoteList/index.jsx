@@ -1,20 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
-import { getNotes, getNotesState } from "../../../redux/slice/notesSlice";
+import SearchNotes from "../SearchNotes";
 import Note from "../Note";
 import "./index.css";
 
-function NoteList() {
-  const dispatch = useDispatch();
-
-  const { notes, isError, isSuccess, isLoading, message } =
-    useSelector(getNotesState);
-
-  useEffect(() => {
-    dispatch(getNotes());
-  }, []);
-
+function NoteList({ notes }) {
   return (
     <Container className="note-container">
       {notes.map((note) => (
@@ -31,4 +21,4 @@ function NoteList() {
   );
 }
 
-export default NoteList;
+export default SearchNotes(NoteList);

@@ -1,8 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import notesService from "../services/notesService";
 
 const initialState = {
   notes: [],
+  filteredNotes: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -23,8 +24,27 @@ export const getNotes = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const userToken = thunkAPI.getState()?.user?.user?.token;
-      console.log("userToken", userToken);
       return await notesService.getNotes(userToken);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Create new note
+export const createNote = createAsyncThunk(
+  "notes/create",
+  async (newNote, thunkAPI) => {
+    try {
+      const userToken = thunkAPI.getState()?.user?.user?.token;
+      return await notesService.createNewNote(userToken, newNote);
     } catch (error) {
       const message =
         (error.response &&
@@ -61,6 +81,16 @@ export const notesSlice = createSlice({
       state.editNoteLoading = false;
       state.editNoteMessage = "";
     },
+    filterNotes: (state, action) => {
+      state.filteredNotes = current(state.notes).filter((note) => {
+        return note.heading
+          .toLowerCase()
+          .includes(action.payload.toLowerCase());
+      });
+    },
+    resetFilter: (state) => {
+      state.filteredNotes = state.notes;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -74,6 +104,7 @@ export const notesSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.notes = action.payload.data;
+        state.filteredNotes = action.payload.data;
       })
       .addCase(getNotes.rejected, (state, action) => {
         state.isLoading = false;
@@ -90,6 +121,8 @@ export const {
   resetGetNotesState,
   resetEditNotesState,
   resetCreateNotesState,
+  filterNotes,
+  resetFilter,
 } = notesSlice.actions;
 
 export default notesSlice.reducer;
