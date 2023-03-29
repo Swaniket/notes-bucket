@@ -115,12 +115,15 @@ function Header() {
             >
               <FaTags /> Manage Tags
             </Dropdown.Item>
-            <Dropdown.Item
-              onClick={onLogoutClicked}
-              className="offcanvas-items"
-            >
-              <FaSignOutAlt /> Logout
-            </Dropdown.Item>
+            <div className="footer">
+              <hr />
+              <Dropdown.Item
+                onClick={onLogoutClicked}
+                className="offcanvas-items"
+              >
+                <FaSignOutAlt /> Logout
+              </Dropdown.Item>
+            </div>
           </Offcanvas.Body>
         </Offcanvas>
       </>
@@ -135,7 +138,8 @@ function Header() {
             <HeaderLogo />
           </Navbar.Brand>
           <Navbar.Toggle />
-          <SearchBar />
+          {user && <SearchBar />}
+
           <Navbar.Collapse className="justify-content-end">
             {user && <AuthorizedMenu />}
           </Navbar.Collapse>

@@ -2,3 +2,17 @@
     width: 75% !important;
     margin: 10px;
 }
+
+.form-control {
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+    padding: 10px !important;
+}
+
+.form-control:focus {
+    border-color: #000000 !important;
+    box-shadow: 0 0 0 0.2rem rgba(25, 26, 25, 0.25) !important;
+} 
+
+
+

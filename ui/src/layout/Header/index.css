@@ -23,4 +23,14 @@
 
 .offcanvas-items {
     height: 2.2rem;
+    display: flex;
+    justify-items: center;
+    /* margin-left: 2rem; */
+}
+
+.footer {
+    position: absolute;
+    bottom: 7px;
+    left: 20px;
+    width:100%
 }

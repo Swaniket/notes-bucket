@@ -23,6 +23,7 @@ function SearchBar() {
     <InputGroup className="search-bar">
       <Form.Control
         placeholder="Search Notes"
+        size="sm"
         value={searchKey}
         onChange={(e) => setSearchKey(e.target.value)}
       />
