@@ -17,8 +17,8 @@ function Home() {
 
   return (
     <div className="home-body">
+      {/* <HomeHeader /> */}
       <span className="mb-3 control-bar-container">
-        {/* <SearchBar /> */}
         <Button className="btn btn-dark create" onClick={createNewNote}>
           <FaPlus /> Create new Note
         </Button>
