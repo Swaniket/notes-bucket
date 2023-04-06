@@ -1,0 +1,5 @@
+.button-left {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px;
+}

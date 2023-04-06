@@ -1,8 +1,9 @@
 import { useFormik } from "formik";
 import React from "react";
-import { Row, Col, Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { createNoteSchema } from "./Schema";
-import { CreateNoteForm } from "../../components";
+import { NoteDetails } from "../../components";
+import "./index.css";
 
 function CreateNote() {
   const initialValues = {
@@ -10,7 +11,9 @@ function CreateNote() {
     body: "",
   };
 
-  const onSubmit = (values) => {};
+  const onSubmit = (values) => {
+    console.log("Values", values);
+  };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -34,17 +37,35 @@ function CreateNote() {
     );
   };
 
+  const CreateNoteButtons = () => {
+    return (
+      <>
+        <div>
+          <section className="button-left">
+            <Button className="btn btn-dark" type="submit">
+              {/* disabled={isLoading} */}
+              {/* {isLoading ? "Loading…" : "Login"} */}
+              Create Note
+            </Button>
+          </section>
+        </div>
+      </>
+    );
+  };
+
   return (
     <>
       <CreateNoteHeader />
       <Form onSubmit={handleSubmit}>
-        <CreateNoteForm
+        <NoteDetails
+          isEditable={true}
           values={values}
           errors={errors}
           touched={touched}
           handleBlur={handleBlur}
           handleChange={handleChange}
         />
+        <CreateNoteButtons />
       </Form>
     </>
   );
