@@ -1,6 +1,6 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import { Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Form, Alert } from "react-bootstrap";
 
 function NoteDetails({
   title = "",
@@ -68,16 +68,9 @@ function NoteDetails({
             <Form.Label className="field-header">
               <strong>Preview</strong>
             </Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={5}
-              placeholder="Preview Note"
-              id="password"
-              name="password"
-              autoComplete="off"
-              value={values.body}
-              disabled
-            />
+            <Alert variant="light">
+              <ReactMarkdown>{values.body}</ReactMarkdown>
+            </Alert>
           </Form.Group>
         </Col>
       </Row>
