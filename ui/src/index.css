@@ -51,5 +51,10 @@ p {
   box-shadow: 0 0 0 0.2rem rgba(25, 26, 25, 0.25) !important;
 } 
 
+.field-header {
+  display: flex;
+  justify-content: space-between;
+}
+
 
 

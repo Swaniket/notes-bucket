@@ -3,3 +3,8 @@
     justify-content: flex-end;
     margin: 10px;
 }
+
+.create-note-form {
+    margin-left: 100px;
+    margin-right: 100px;
+}

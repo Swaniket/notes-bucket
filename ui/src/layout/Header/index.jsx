@@ -13,7 +13,7 @@ import { MdMenu } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
-import { ConfirmAction, SearchBar } from "../../components";
+import { DynamicModal, SearchBar } from "../../components";
 import "./index.css";
 
 function Header() {
@@ -145,13 +145,14 @@ function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <ConfirmAction
+      <DynamicModal
         show={openConfirmModal}
         handleClose={closeConfirmModal}
-        onConfirmClick={onLogout}
+        primaryButtonAction={onLogout}
+        primaryButtonText="Yes, Log me out"
         title="Caution!"
         bodyMessage="Are you sure you want to logout?"
-        confirmMessage="Yes, Log me out"
+        secondaryButtonText="Close"
       />
     </div>
   );

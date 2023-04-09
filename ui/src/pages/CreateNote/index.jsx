@@ -1,11 +1,13 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { createNoteSchema } from "./Schema";
-import { NoteDetails } from "../../components";
+import { NewNote, DynamicModal } from "../../components";
 import "./index.css";
 
 function CreateNote() {
+  const [openPreviewModal, setOpenPreviewModal] = useState(false);
+
   const initialValues = {
     title: "",
     body: "",
@@ -53,20 +55,36 @@ function CreateNote() {
     );
   };
 
+  const onFullScreenClicked = () => {
+    setOpenPreviewModal(true);
+  };
+
   return (
     <>
       <CreateNoteHeader />
-      <Form onSubmit={handleSubmit}>
-        <NoteDetails
-          isEditable={true}
+      <Form onSubmit={handleSubmit} className="create-note-form">
+        <NewNote
           values={values}
           errors={errors}
           touched={touched}
           handleBlur={handleBlur}
           handleChange={handleChange}
+          onFullScreenClicked={onFullScreenClicked}
+          // children={<CreateNoteButtons />}
         />
         <CreateNoteButtons />
       </Form>
+      <DynamicModal
+        show={openPreviewModal}
+        handleClose={() => setOpenPreviewModal(false)}
+        primaryButtonAction={() => setOpenPreviewModal(false)}
+        primaryButtonText="Close"
+        title="Preview"
+        bodyMessage={values.body}
+        isRenderedMarkdown={true}
+        renderSecondaryButton={false}
+        fullScreen={true}
+      />
     </>
   );
 }

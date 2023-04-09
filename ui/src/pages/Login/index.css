@@ -1,8 +1,3 @@
-.field-header {
-    display: flex;
-    justify-content: flex-start;
-}
-  
 .remember-me {
   display: flex !important;
   justify-content: start;
