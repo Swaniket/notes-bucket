@@ -6,11 +6,14 @@ import {
 } from "../db/functions/noteFunctions.js";
 import { convertDateTime, generateRequestBody } from "../helpers/utils.js";
 
-// @DESC   - Get Notes for a user
-// @ROUTE  - GET: /api/notes/all
-// @ACCESS - Protected
+/*
+  @DESC   - Get Notes for a user
+  @ROUTE  - GET: /api/notes/all
+  @ACCESS - Protected
+*/
 const getNotes = asyncHandler(async (req, res) => {
   const userIdFromToken = req.user.userId;
+
   try {
     const notes = await getNotesByUserFromDB(userIdFromToken);
 
@@ -33,16 +36,16 @@ const getNoteById = asyncHandler(async (req, res) => {});
 const getNoteByTag = asyncHandler(async (req, res) => {});
 
 /*
-@DESC   - Create a new note
-@ROUTE  - POST: /api/notes/create
-@ACCESS - Protected
-@FIELDS - 
-        createdAt: Optional | If not provided, server will create it | Default: Current date
-        heading: Required
-        body: Required
-        isPinned: Optional | If not provided, server will create it | Default: false
-        isArchived: Optional | If not provided, server will create it | Default: false
-        tagId: Required
+  @DESC   - Create a new note
+  @ROUTE  - POST: /api/notes/create
+  @ACCESS - Protected
+  @FIELDS - 
+          createdAt: Optional | If not provided, server will create it | Default: Current date
+          heading: Required
+          body: Required
+          isPinned: Optional | If not provided, server will create it | Default: false
+          isArchived: Optional | If not provided, server will create it | Default: false
+          tagId: Required
 */
 const createNote = asyncHandler(async (req, res) => {
   const { createdAt, heading, body, isPinned, isArchived, tagId } = req.body;
@@ -69,7 +72,7 @@ const createNote = asyncHandler(async (req, res) => {
 
     const result = await createNoteInDB({ ...noteObject });
 
-    if (result.affectedRows === 1) {
+    if (result?.affectedRows === 1) {
       res
         .status(201)
         .json(

@@ -70,7 +70,6 @@ function CreateNote() {
           handleBlur={handleBlur}
           handleChange={handleChange}
           onFullScreenClicked={onFullScreenClicked}
-          // children={<CreateNoteButtons />}
         />
         <CreateNoteButtons />
       </Form>
@@ -79,7 +78,7 @@ function CreateNote() {
         handleClose={() => setOpenPreviewModal(false)}
         primaryButtonAction={() => setOpenPreviewModal(false)}
         primaryButtonText="Close"
-        title="Preview"
+        title={values.title}
         bodyMessage={values.body}
         isRenderedMarkdown={true}
         renderSecondaryButton={false}

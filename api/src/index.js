@@ -7,6 +7,7 @@ import "dotenv/config";
 
 import { userRouter } from "./routes/userRoutes.js";
 import { noteRouter } from "./routes/noteRoutes.js";
+import { tagRouter } from "./routes/tagRoutes.js";
 import errorHandler from "./middleware/errorMiddleware.js";
 import connection from "./db/config.js";
 
@@ -31,6 +32,7 @@ app.use(cors());
 /* ROUTES */
 app.use("/api/users", userRouter);
 app.use("/api/notes", noteRouter);
+app.use("/api/tags", tagRouter);
 
 /* Error Handler */
 app.use(errorHandler);
