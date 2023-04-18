@@ -56,6 +56,8 @@ const createNote = asyncHandler(async (req, res) => {
     throw new Error("Invalid Form Submission");
   }
 
+  // @TODO: Check if any tag exists with this tag ID, if not say that this tag don't exists
+
   // Create the note in DB
   try {
     const noteObject = {

@@ -11,6 +11,8 @@ function NewNoteForm({
   handleBlur,
   handleChange,
   onFullScreenClicked,
+  onSelectChange,
+  tags,
   // children,
 }) {
   return (
@@ -45,16 +47,14 @@ function NewNoteForm({
             <Form.Label className="field-header">
               <strong>Tag</strong>
             </Form.Label>
-            <Form.Select>
-              <option>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <Form.Select onChange={onSelectChange}>
+              <option value="-1">Select Tag</option>
+              {tags.map((tag) => (
+                <option key={tag?.tagId} value={tag?.tagId}>
+                  {tag?.tagName}
+                </option>
+              ))}
             </Form.Select>
-            {/* {children} */}
-            {/* <Form.Control.Feedback type="invalid">
-              {errors.title}
-            </Form.Control.Feedback> */}
           </Form.Group>
         </Col>
       </Row>
