@@ -5,6 +5,7 @@ import {
   getNotesByUserFromDB,
 } from "../db/functions/noteFunctions.js";
 import { convertDateTime, generateRequestBody } from "../helpers/utils.js";
+import { getTagByIdFromDB } from "../db/functions/tagFunctions.js";
 
 /*
   @DESC   - Get Notes for a user
@@ -56,33 +57,39 @@ const createNote = asyncHandler(async (req, res) => {
     throw new Error("Invalid Form Submission");
   }
 
-  // @TODO: Check if any tag exists with this tag ID, if not say that this tag don't exists
-
   // Create the note in DB
   try {
-    const noteObject = {
-      noteId: uuidv4(),
-      createdBy: req.user.userId,
-      createdAt: createdAt ? createdAt : convertDateTime(new Date()),
-      updatedAt: convertDateTime(new Date()),
-      heading: heading,
-      body: body,
-      isPinned: isPinned ? isPinned : false,
-      isArchived: isArchived ? isArchived : false,
-      tagId: tagId,
-    };
+    const tagIdFromDB = await getTagByIdFromDB(tagId);
 
-    const result = await createNoteInDB({ ...noteObject });
+    // If Tag Exists
+    if (tagIdFromDB?.length > 0) {
+      const noteObject = {
+        noteId: uuidv4(),
+        createdBy: req.user.userId,
+        createdAt: createdAt ? createdAt : convertDateTime(new Date()),
+        updatedAt: convertDateTime(new Date()),
+        heading: heading,
+        body: body,
+        isPinned: isPinned ? isPinned : false,
+        isArchived: isArchived ? isArchived : false,
+        tagId: tagId,
+      };
 
-    if (result?.affectedRows === 1) {
-      res
-        .status(201)
-        .json(
-          generateRequestBody("success", 201, "Note added successfully", {})
-        );
+      const result = await createNoteInDB({ ...noteObject });
+
+      if (result?.affectedRows === 1) {
+        res
+          .status(201)
+          .json(
+            generateRequestBody("success", 201, "Note added successfully", {})
+          );
+      } else {
+        res.status(500);
+        throw new Error("Note can't be created");
+      }
     } else {
-      res.status(500);
-      throw new Error("Note can't be created");
+      res.status(400);
+      throw new Error("Invalid Tag Selected");
     }
   } catch (err) {
     res.status(500);
