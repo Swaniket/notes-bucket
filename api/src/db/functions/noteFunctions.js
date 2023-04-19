@@ -12,7 +12,8 @@ export const createNoteInDB = async ({
   isArchived,
   tagId,
 }) => {
-  const queryString = `INSERT INTO Notes (noteId, createdBy, createdAt, updatedAt, heading, body, isPinned, isArchived, tagId) VALUES ('${noteId}', '${createdBy}', '${createdAt}', '${updatedAt}', '${heading}', '${body}', '${isPinned}', '${isArchived}', '${tagId}')`;
+  const queryString = `INSERT INTO Notes (noteId, createdBy, createdAt, updatedAt, heading, body, isPinned, isArchived, tagId) VALUES ("${noteId}", "${createdBy}", "${createdAt}", "${updatedAt}", "${heading}", "${body}", "${isPinned}", "${isArchived}", "${tagId}")`;
+  console.log("queryString", queryString);
   const result = await executeQuery(queryString);
   return result;
 };
@@ -26,7 +27,7 @@ export const getNotesByUserFromDB = async (useId) => {
   LEFT JOIN tags t
     ON n.tagId = t.tagId) nt
   ON u.userId=nt.UserID_Notes
-  WHERE u.userId= '${useId}';
+  WHERE u.userId= "${useId}";
   `;
   const result = await executeQuery(queryString);
   return result;

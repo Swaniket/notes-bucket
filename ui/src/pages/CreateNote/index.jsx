@@ -4,10 +4,10 @@ import { useFormik } from "formik";
 import { Form, Button } from "react-bootstrap";
 import { createNoteSchema } from "./Schema";
 import { NewNote, DynamicModal } from "../../components";
-import { getTags, getTagsState } from "../../redux/slice/tagsSlice";
-import "./index.css";
+import { getTags } from "../../redux/slice/tagsSlice";
 import { createNote } from "../../redux/slice/notesSlice";
 import { toast } from "react-toastify";
+import "./index.css";
 
 function CreateNote() {
   const dispatch = useDispatch();
@@ -52,21 +52,6 @@ function CreateNote() {
     dispatch(getTags());
   }, []);
 
-  const CreateNoteHeader = () => {
-    return (
-      <section>
-        <h1 className="heading">
-          {/* <FaSignInAlt style={{ margin: "5px" }} /> */}
-          Create a new note
-        </h1>
-
-        <p className="heading-sub custom-text-secondary">
-          You need to enter a heading, body and choose a tag it belongs to.
-        </p>
-      </section>
-    );
-  };
-
   const CreateNoteButtons = () => {
     return (
       <>
@@ -89,7 +74,6 @@ function CreateNote() {
 
   return (
     <>
-      <CreateNoteHeader />
       <Form onSubmit={handleSubmit} className="create-note-form">
         <NewNote
           values={values}

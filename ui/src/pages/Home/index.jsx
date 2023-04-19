@@ -2,17 +2,21 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
-import { createNote } from "../../redux/slice/notesSlice";
-import { NoteList, SearchBar } from "../../components";
+import { NoteList, DynamicContentModal } from "../../components";
+import CreateNote from "../CreateNote";
 import "./index.css";
 
 function Home() {
   const navigate = useNavigate();
 
+  const [openCreateNoteModal, setOpenCreateNoteModal] = useState(false);
+
   const createNewNote = () => {
-    navigate("/create");
-    // Open Create Note page
-    // dispatch()
+    setOpenCreateNoteModal(true);
+  };
+
+  const closeCreateNote = () => {
+    setOpenCreateNoteModal(false);
   };
 
   return (
@@ -24,6 +28,12 @@ function Home() {
         </Button>
       </span>
       <NoteList />
+      <DynamicContentModal
+        show={openCreateNoteModal}
+        handleClose={closeCreateNote}
+        title="Create new note"
+        children={<CreateNote />}
+      />
     </div>
   );
 }

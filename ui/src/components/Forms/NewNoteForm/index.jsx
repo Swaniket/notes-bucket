@@ -13,7 +13,6 @@ function NewNoteForm({
   onFullScreenClicked,
   onSelectChange,
   tags,
-  // children,
 }) {
   return (
     <>
@@ -22,7 +21,7 @@ function NewNoteForm({
           {/* Title */}
           <Form.Group className="mb-3">
             <Form.Label className="field-header">
-              <strong>Title</strong>
+              <strong>Title *</strong>
             </Form.Label>
             <Form.Control
               type="text"
@@ -45,7 +44,7 @@ function NewNoteForm({
           {/* Tag */}
           <Form.Group className="mb-3">
             <Form.Label className="field-header">
-              <strong>Tag</strong>
+              <strong>Tag *</strong>
             </Form.Label>
             <Form.Select onChange={onSelectChange}>
               <option value="-1">Select Tag</option>
@@ -59,45 +58,42 @@ function NewNoteForm({
         </Col>
       </Row>
 
-      <Row>
-        <Col>
-          {/* Body */}
-          <Form.Group className="mb-3">
-            <Form.Label className="field-header">
-              <strong>Body</strong>
-            </Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={5}
-              placeholder="Body"
-              id="body"
-              name="body"
-              autoComplete="off"
-              value={values.body}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              isInvalid={touched.body && !!errors.body}
-              isValid={touched.body && !errors.body}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.body}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Col>
-        <Col>
-          <Form.Group className="mb-3">
-            <Form.Label className="field-header">
-              <strong>Preview</strong>
-              <span style={{ cursor: "pointer" }} onClick={onFullScreenClicked}>
-                <AiOutlineFullscreen />
-              </span>
-            </Form.Label>
-            <Alert variant="light" className="preview">
-              <ReactMarkdown>{values.body}</ReactMarkdown>
-            </Alert>
-          </Form.Group>
-        </Col>
-      </Row>
+      <>
+        {/* Body */}
+        <Form.Group className="mb-3">
+          <Form.Label className="field-header">
+            <strong>Body *</strong>
+          </Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={7}
+            placeholder="Body"
+            id="body"
+            name="body"
+            autoComplete="off"
+            value={values.body}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isInvalid={touched.body && !!errors.body}
+            isValid={touched.body && !errors.body}
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.body}
+          </Form.Control.Feedback>
+        </Form.Group>
+      </>
+
+      <Form.Group className="mb-3">
+        <Form.Label className="field-header">
+          <strong>Preview</strong>
+          <span style={{ cursor: "pointer" }} onClick={onFullScreenClicked}>
+            <AiOutlineFullscreen />
+          </span>
+        </Form.Label>
+        <Alert variant="light" className="preview">
+          <ReactMarkdown>{values.body}</ReactMarkdown>
+        </Alert>
+      </Form.Group>
     </>
   );
 }

@@ -7,3 +7,4 @@ export { default as NoteList } from "./Notes/NoteList";
 export { default as SearchBar } from "./Notes/SearchNotes/SearchBar";
 
 export { default as DynamicModal } from "./Modals/DynamicModal";
+export { default as DynamicContentModal } from "./Modals/DynamicContentModal";

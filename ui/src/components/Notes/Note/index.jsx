@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Badge } from "react-bootstrap";
 import { FaEye, FaPenAlt, FaTrashAlt } from "react-icons/fa";
+import ReactMarkdown from "react-markdown";
 import "./index.css";
 
 function Note({ title, body, createdAt, updatedAt, tagName }) {
@@ -20,7 +21,9 @@ function Note({ title, body, createdAt, updatedAt, tagName }) {
         <Card.Subtitle className="mb-2 text-muted">
           <small> Created At: {createdAt}</small>
         </Card.Subtitle>
-        <Card.Text className="limited-text">{body}</Card.Text>
+        <Card.Text className="limited-text">
+          <ReactMarkdown>{body}</ReactMarkdown>
+        </Card.Text>
         <Badge bg="light" text="dark" className="badge-button">
           <FaEye /> View
         </Badge>

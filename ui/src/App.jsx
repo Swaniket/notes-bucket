@@ -14,10 +14,8 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
 
-        {/* <Route path="/home" element={<Home />} /> */}
         <Route element={<PrivateRoute />}>
           <Route path="/home" element={<Home />} />
-          <Route path="/create" element={<CreateNote />} />
         </Route>
       </Routes>
       <Footer />
