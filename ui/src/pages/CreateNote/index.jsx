@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Form, Button } from "react-bootstrap";
 import { createNoteSchema } from "./Schema";
 import { NewNote, DynamicModal } from "../../components";
-import "./index.css";
-import { useDispatch, useSelector } from "react-redux";
 import { getTags, getTagsState } from "../../redux/slice/tagsSlice";
+import "./index.css";
+import { createNote } from "../../redux/slice/notesSlice";
+import { toast } from "react-toastify";
 
 function CreateNote() {
   const dispatch = useDispatch();
@@ -21,9 +23,18 @@ function CreateNote() {
   };
 
   const onSubmit = (values) => {
-    console.log("Values", values);
-    console.log("selectedTag", selectedTag);
-    // Don't let user continue if selectedTag is "-1"
+    if (selectedTag === "-1") {
+      toast.error("Please Select a Tag", { toastId: "no-tag-selected" });
+      return;
+    }
+
+    const noteObj = {
+      heading: values?.title,
+      body: values?.body,
+      tagId: selectedTag,
+    };
+
+    dispatch(createNote(noteObj));
   };
 
   const onSelectChange = (e) => {

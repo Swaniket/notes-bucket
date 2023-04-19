@@ -20,7 +20,7 @@ const createNewNote = async (token, noteObj) => {
     },
   };
 
-  const response = await apiNotesBucket.post("/notes/all", noteObj, config);
+  const response = await apiNotesBucket.post("/notes/create", noteObj, config);
   return response.data;
 };
 
