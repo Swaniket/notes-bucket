@@ -2,6 +2,14 @@
     margin: 10px;
     padding: 10px;
     min-width: 20rem;
+    border: none !important;
+    box-shadow: 0 15px 15px 0 rgba(126, 125, 125, 0.2) !important;
+    transition: 250ms ease-in-out, box-shadow 300ms ease-in-out !important;
+}
+
+.note-card:hover {
+    background-color: #f0f6f7cc !important;
+    box-shadow: 0 5px 5px 0 rgba(133,133,133,0.25) !important;
 }
 
 .badge-button {

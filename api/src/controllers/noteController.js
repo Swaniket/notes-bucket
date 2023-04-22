@@ -61,6 +61,8 @@ const createNote = asyncHandler(async (req, res) => {
   try {
     const tagIdFromDB = await getTagByIdFromDB(tagId);
 
+    // @TODO: Take a look at the date issue
+
     // If Tag Exists
     if (tagIdFromDB?.length > 0) {
       const noteObject = {

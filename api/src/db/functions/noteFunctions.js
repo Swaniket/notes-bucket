@@ -13,7 +13,7 @@ export const createNoteInDB = async ({
   tagId,
 }) => {
   const queryString = `INSERT INTO Notes (noteId, createdBy, createdAt, updatedAt, heading, body, isPinned, isArchived, tagId) VALUES ("${noteId}", "${createdBy}", "${createdAt}", "${updatedAt}", "${heading}", "${body}", "${isPinned}", "${isArchived}", "${tagId}")`;
-  console.log("queryString", queryString);
+  console.log(queryString);
   const result = await executeQuery(queryString);
   return result;
 };

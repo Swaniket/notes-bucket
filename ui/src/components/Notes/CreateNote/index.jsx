@@ -39,6 +39,11 @@ function CreateNote({ closeModal }) {
       return;
     }
 
+    if (values?.body.includes(`"`)) {
+      toast.error(`"" is not allowed`, { toastId: "no-bad-character" });
+      return;
+    }
+
     const noteObj = {
       heading: values?.title,
       body: values?.body,
@@ -75,6 +80,9 @@ function CreateNote({ closeModal }) {
     if (createNoteSuccess) {
       closeModal();
       dispatch(getNotes());
+      toast.success(createNoteMessage, {
+        toastId: "success-create-note-toast",
+      });
     }
   }, [createNoteError, createNoteSuccess, createNoteMessage]);
 

@@ -8,5 +8,6 @@ export const generateRequestBody = (status, statusCode, message, data) => {
 };
 
 export const convertDateTime = (date) => {
-  return `${date.toJSON().slice(0, 10)} ${date.toJSON().slice(11, 23)}`;
+  const jsonDate = date.toJSON();
+  return `${jsonDate.slice(0, 10)} ${jsonDate.slice(11, 23)}`;
 };

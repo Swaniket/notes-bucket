@@ -48,6 +48,7 @@ function DynamicModal({
           )}
         </Container>
       </Modal.Body>
+
       <Modal.Footer>
         {renderSecondaryButton && (
           <Button variant="outline-dark" onClick={handleClose}>
