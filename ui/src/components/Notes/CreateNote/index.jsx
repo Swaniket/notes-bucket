@@ -3,16 +3,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Form, Button } from "react-bootstrap";
 import { createNoteSchema } from "./Schema";
-import { NewNote, DynamicModal } from "../../components";
-import { getTags } from "../../redux/slice/tagsSlice";
-import { createNote } from "../../redux/slice/notesSlice";
+import { NewNote, DynamicModal } from "../..";
+import { getTags } from "../../../redux/slice/tagsSlice";
+import {
+  createNote,
+  getNotesState,
+  resetCreateNotesState,
+  getNotes,
+} from "../../../redux/slice/notesSlice";
 import { toast } from "react-toastify";
 import "./index.css";
 
-function CreateNote() {
+function CreateNote({ closeModal }) {
   const dispatch = useDispatch();
 
   const tags = useSelector(({ tags }) => tags?.tags);
+  const {
+    createNoteError,
+    createNoteSuccess,
+    createNoteLoading,
+    createNoteMessage,
+  } = useSelector(getNotesState);
 
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
   const [selectedTag, setSelectedTag] = useState("-1");
@@ -50,17 +61,34 @@ function CreateNote() {
 
   useEffect(() => {
     dispatch(getTags());
+
+    return () => {
+      dispatch(resetCreateNotesState());
+    };
   }, []);
+
+  useEffect(() => {
+    if (createNoteError) {
+      toast.error(createNoteMessage, { toastId: "failed-create-note-toast" });
+    }
+
+    if (createNoteSuccess) {
+      closeModal();
+      dispatch(getNotes());
+    }
+  }, [createNoteError, createNoteSuccess, createNoteMessage]);
 
   const CreateNoteButtons = () => {
     return (
       <>
         <div>
           <section className="button-left">
-            <Button className="btn btn-dark" type="submit">
-              {/* disabled={isLoading} */}
-              {/* {isLoading ? "Loading…" : "Login"} */}
-              Create Note
+            <Button
+              className="btn btn-dark"
+              type="submit"
+              disabled={createNoteLoading}
+            >
+              {createNoteLoading ? "Loading…" : "Create Note"}
             </Button>
           </section>
         </div>

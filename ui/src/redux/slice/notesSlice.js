@@ -111,6 +111,23 @@ export const notesSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.payload.message;
+      })
+      .addCase(createNote.pending, (state) => {
+        (state.createNoteLoading = true),
+          (state.createNoteError = false),
+          (state.createNoteSuccess = false);
+      })
+      .addCase(createNote.rejected, (state, action) => {
+        state.createNoteLoading = false;
+        state.createNoteError = true;
+        state.createNoteSuccess = false;
+        state.createNoteMessage = action.payload.message;
+      })
+      .addCase(createNote.fulfilled, (state, action) => {
+        state.createNoteLoading = false;
+        state.createNoteError = false;
+        state.createNoteSuccess = true;
+        state.createNoteMessage = action.payload.message;
       });
   },
 });

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
-import { NoteList, DynamicContentModal } from "../../components";
-import CreateNote from "../CreateNote";
+import { NoteList, DynamicContentModal, CreateNote } from "../../components";
+// import CreateNote from "../../components/Notes/CreateNote";
 import "./index.css";
 
 function Home() {
@@ -32,7 +32,7 @@ function Home() {
         show={openCreateNoteModal}
         handleClose={closeCreateNote}
         title="Create new note"
-        children={<CreateNote />}
+        children={<CreateNote closeModal={closeCreateNote} />}
       />
     </div>
   );

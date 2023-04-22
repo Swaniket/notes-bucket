@@ -5,6 +5,7 @@ export { default as NewNote } from "./Forms/NewNoteForm";
 export { default as Note } from "./Notes/Note";
 export { default as NoteList } from "./Notes/NoteList";
 export { default as SearchBar } from "./Notes/SearchNotes/SearchBar";
+export { default as CreateNote } from "./Notes/CreateNote";
 
 export { default as DynamicModal } from "./Modals/DynamicModal";
 export { default as DynamicContentModal } from "./Modals/DynamicContentModal";
