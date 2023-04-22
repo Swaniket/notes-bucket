@@ -4,10 +4,19 @@
 }
 
 .create {
-    align-items: flex-end;
-    margin-top: 10px;
+    border-radius:50px !important;
+    font-size: large;
+    width:80px;
+	height:80px !important;
 }
 
-.control-bar-container {
-    display: flex;
+.floating-button {
+    position: fixed;
+    bottom:40px;
+	right:40px;
+}
+
+.note-section {
+    padding-top: 30px !important;
+    padding-bottom: 10px !important;
 }

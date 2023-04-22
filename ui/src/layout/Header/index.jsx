@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Navbar,
   Container,
@@ -8,8 +8,11 @@ import {
   Offcanvas,
 } from "react-bootstrap";
 import { FaSignOutAlt, FaTags, FaMapPin, FaArchive } from "react-icons/fa";
+import { GrAdd } from "react-icons/gr";
 import { AiTwotoneSetting } from "react-icons/ai";
 import { MdMenu } from "react-icons/md";
+import { TbSettings2 } from "react-icons/tb";
+import { FiSettings } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
@@ -17,13 +20,19 @@ import { DynamicModal, SearchBar } from "../../components";
 import "./index.css";
 
 function Header() {
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  console.log("location", location.pathname);
 
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   const { user } = useSelector(getAuthState);
+
+  const handleMenuClose = () => setShowMenu(false);
+  const handleMenuShow = () => setShowMenu(true);
 
   const onLogout = () => {
     dispatch(logout());
@@ -45,15 +54,19 @@ function Header() {
   const onArchiveClicked = () => {
     console.log("Archive is clicked");
   };
+
   const onPinnedClicked = () => {
     console.log("Pinned is clicked");
   };
+
   const onManageClicked = () => {
-    console.log("Manage is clicked");
+    handleMenuClose();
+    navigate("/tags");
   };
 
-  const handleMenuClose = () => setShowMenu(false);
-  const handleMenuShow = () => setShowMenu(true);
+  const onAddClicked = () => {
+    console.log("Add is clicked");
+  };
 
   const HeaderLogo = () => {
     return (
@@ -70,7 +83,10 @@ function Header() {
     return (
       <>
         <div onClick={handleMenuShow}>
-          <MdMenu size={35} style={{ color: "black", cursor: "pointer" }} />
+          <TbSettings2
+            size={30}
+            style={{ color: "black", cursor: "pointer" }}
+          />
         </div>
 
         <Offcanvas
@@ -96,6 +112,7 @@ function Header() {
               View Profile
             </Button>
             <hr />
+            <Dropdown.Header className="offcanvas-items">Notes</Dropdown.Header>
             <Dropdown.Item
               onClick={onArchiveClicked}
               className="offcanvas-items"
@@ -109,6 +126,10 @@ function Header() {
               <FaMapPin /> Pinned Notes{" "}
             </Dropdown.Item>
             <hr />
+            <Dropdown.Header className="offcanvas-items">Tags</Dropdown.Header>
+            <Dropdown.Item onClick={onAddClicked} className="offcanvas-items">
+              <GrAdd /> Add Tag
+            </Dropdown.Item>
             <Dropdown.Item
               onClick={onManageClicked}
               className="offcanvas-items"
@@ -138,7 +159,7 @@ function Header() {
             <HeaderLogo />
           </Navbar.Brand>
           <Navbar.Toggle />
-          {user && <SearchBar />}
+          {location.pathname === "/home" && <SearchBar />}
 
           <Navbar.Collapse className="justify-content-end">
             {user && <AuthorizedMenu />}

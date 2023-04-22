@@ -5,6 +5,6 @@ export const formattedDate = (date) => {
     includeSeconds: true,
     addSuffix: true,
   });
-  console.log("dateDistance", dateDistance);
+
   return dateDistance;
 };

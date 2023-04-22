@@ -17,12 +17,12 @@ function Home() {
 
   return (
     <div className="home-body">
-      <span className="mb-3 control-bar-container">
+      <NoteList />
+      <span className="floating-button">
         <Button className="btn btn-dark create" onClick={createNewNote}>
-          <FaPlus /> Create new Note
+          <FaPlus size={35} />
         </Button>
       </span>
-      <NoteList />
       <DynamicContentModal
         show={openCreateNoteModal}
         handleClose={closeCreateNote}
