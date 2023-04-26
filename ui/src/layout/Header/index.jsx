@@ -16,7 +16,12 @@ import { FiSettings } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
-import { DynamicModal, SearchBar } from "../../components";
+import {
+  DynamicModal,
+  DynamicContentModal,
+  SearchBar,
+  CreateTag,
+} from "../../components";
 import "./index.css";
 
 function Header() {
@@ -27,6 +32,7 @@ function Header() {
   console.log("location", location.pathname);
 
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [openAddTagModal, setOpenAddTagModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   const { user } = useSelector(getAuthState);
@@ -66,6 +72,8 @@ function Header() {
 
   const onAddClicked = () => {
     console.log("Add is clicked");
+    setShowMenu(false);
+    setOpenAddTagModal(true);
   };
 
   const HeaderLogo = () => {
@@ -174,6 +182,12 @@ function Header() {
         title="Caution!"
         bodyMessage="Are you sure you want to logout?"
         secondaryButtonText="Close"
+      />
+      <DynamicContentModal
+        show={openAddTagModal}
+        handleClose={() => setOpenAddTagModal(false)}
+        title="Add a new Tag"
+        children={<CreateTag />}
       />
     </div>
   );

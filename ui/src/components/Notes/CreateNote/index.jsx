@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Form, Button } from "react-bootstrap";
-import { createNoteSchema } from "./Schema";
-import { NewNote, DynamicModal } from "../..";
+import { toast } from "react-toastify";
+import { NewNoteForm, DynamicModal } from "../..";
 import { getTags } from "../../../redux/slice/tagsSlice";
 import {
   createNote,
@@ -11,7 +11,7 @@ import {
   resetCreateNotesState,
   getNotes,
 } from "../../../redux/slice/notesSlice";
-import { toast } from "react-toastify";
+import { createNoteSchema } from "./Schema";
 import "./index.css";
 
 function CreateNote({ closeModal }) {
@@ -111,7 +111,7 @@ function CreateNote({ closeModal }) {
   return (
     <>
       <Form onSubmit={handleSubmit} className="create-note-form">
-        <NewNote
+        <NewNoteForm
           values={values}
           errors={errors}
           touched={touched}

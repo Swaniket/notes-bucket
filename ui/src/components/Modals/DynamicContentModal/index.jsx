@@ -3,6 +3,13 @@ import { Button, Modal, Container } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import "./style.css";
 
+/*
+  show - State for Show or hiding
+  handleClose - Function runs on modal close
+  title - Title of the modal
+  children - Children to render out
+*/
+
 function DynamicComponentModal({ show, handleClose, title, children }) {
   return (
     <Modal
