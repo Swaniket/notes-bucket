@@ -12,6 +12,18 @@ const getTags = async (token) => {
   return response.data;
 };
 
-const tagsService = { getTags };
+// API call to create a new Tag
+const createNewTag = async (token, reqBody) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await apiNotesBucket.post("tags/new", reqBody, config);
+  return response.data;
+};
+
+const tagsService = { getTags, createNewTag };
 
 export default tagsService;

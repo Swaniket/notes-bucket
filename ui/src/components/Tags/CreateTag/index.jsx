@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { createTagSchema } from "./Schema";
 import { Form, Button } from "react-bootstrap";
 import { NewTagForm } from "../../index";
+import { useDispatch, useSelector } from "react-redux";
+import { createTag, getTagsState } from "../../../redux/slice/tagsSlice";
+import { toast } from "react-toastify";
 
-function CreateTag() {
+function CreateTag({ closeModal }) {
+  const dispatch = useDispatch();
+
+  const {
+    createTagError,
+    createTagSuccess,
+    createTagLoading,
+    createTagMessage,
+  } = useSelector(getTagsState);
+
   const initialValues = {
     tagName: "",
   };
 
   const onSubmit = (values) => {
     console.log(values);
+    dispatch(createTag(values.tagName));
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -20,6 +33,19 @@ function CreateTag() {
       onSubmit: onSubmit,
     });
 
+  useEffect(() => {
+    if (createTagError) {
+      toast.error(createTagMessage, { toastId: "failed-create-tag-toast" });
+    }
+
+    if (createTagSuccess) {
+      closeModal();
+      toast.success(createTagMessage, {
+        toastId: "success-create-tag-toast",
+      });
+    }
+  }, [createTagError, createTagMessage]);
+
   const AddTagButton = () => {
     return (
       <>
@@ -28,10 +54,9 @@ function CreateTag() {
             <Button
               className="btn btn-dark"
               type="submit"
-              // disabled={createNoteLoading}
+              disabled={createTagLoading}
             >
-              {/* {createNoteLoading ? "Loading…" : "Create Note"} */}
-              Create Tag
+              {createTagLoading ? "Loading…" : "Create Tag"}
             </Button>
           </section>
         </div>

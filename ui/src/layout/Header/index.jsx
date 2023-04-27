@@ -9,10 +9,7 @@ import {
 } from "react-bootstrap";
 import { FaSignOutAlt, FaTags, FaMapPin, FaArchive } from "react-icons/fa";
 import { GrAdd } from "react-icons/gr";
-import { AiTwotoneSetting } from "react-icons/ai";
-import { MdMenu } from "react-icons/md";
 import { TbSettings2 } from "react-icons/tb";
-import { FiSettings } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
@@ -71,7 +68,6 @@ function Header() {
   };
 
   const onAddClicked = () => {
-    console.log("Add is clicked");
     setShowMenu(false);
     setOpenAddTagModal(true);
   };
@@ -187,7 +183,7 @@ function Header() {
         show={openAddTagModal}
         handleClose={() => setOpenAddTagModal(false)}
         title="Add a new Tag"
-        children={<CreateTag />}
+        children={<CreateTag closeModal={() => setOpenAddTagModal(false)} />}
       />
     </div>
   );
