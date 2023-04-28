@@ -24,6 +24,24 @@ const createNewNote = async (token, noteObj) => {
   return response.data;
 };
 
-const notesService = { getNotes, createNewNote };
+// API call for deleteing an existing note
+const deleteExistingNote = async (token, noteId) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const reqBody = {
+    noteId: noteId,
+  };
+
+  console.log("reqBody", reqBody);
+
+  const response = await apiNotesBucket.post("/notes/delete", reqBody, config);
+  return response.data;
+};
+
+const notesService = { getNotes, createNewNote, deleteExistingNote };
 
 export default notesService;

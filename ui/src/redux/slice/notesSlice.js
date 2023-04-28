@@ -16,6 +16,9 @@ const initialState = {
   editNoteSuccess: false,
   editNoteLoading: false,
   editNoteMessage: "",
+  deleteNoteError: false,
+  deleteNoteSuccess: false,
+  deleteNoteLoading: false,
 };
 
 // Get all notes
@@ -45,6 +48,26 @@ export const createNote = createAsyncThunk(
     try {
       const userToken = thunkAPI.getState()?.user?.user?.token;
       return await notesService.createNewNote(userToken, newNote);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Delete a note
+export const deleteNote = createAsyncThunk(
+  "notes/delete",
+  async (noteId, thunkAPI) => {
+    try {
+      const userToken = thunkAPI.getState()?.user?.user?.token;
+      return await notesService.deleteExistingNote(userToken, noteId);
     } catch (error) {
       const message =
         (error.response &&
@@ -113,9 +136,9 @@ export const notesSlice = createSlice({
         state.message = action.payload.message;
       })
       .addCase(createNote.pending, (state) => {
-        (state.createNoteLoading = true),
-          (state.createNoteError = false),
-          (state.createNoteSuccess = false);
+        state.createNoteLoading = true;
+        state.createNoteError = false;
+        state.createNoteSuccess = false;
       })
       .addCase(createNote.rejected, (state, action) => {
         state.createNoteLoading = false;
@@ -128,6 +151,21 @@ export const notesSlice = createSlice({
         state.createNoteError = false;
         state.createNoteSuccess = true;
         state.createNoteMessage = action.payload.message;
+      })
+      .addCase(deleteNote.pending, (state) => {
+        state.deleteNoteLoading = true;
+        state.deleteNoteError = false;
+        state.deleteNoteSuccess = false;
+      })
+      .addCase(deleteNote.rejected, (state) => {
+        state.deleteNoteLoading = false;
+        state.deleteNoteError = true;
+        state.deleteNoteSuccess = false;
+      })
+      .addCase(deleteNote.fulfilled, (state) => {
+        state.deleteNoteLoading = false;
+        state.deleteNoteError = false;
+        state.deleteNoteSuccess = true;
       });
   },
 });

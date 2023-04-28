@@ -146,7 +146,6 @@ const deleteNote = asyncHandler(async (req, res) => {
             )
           );
       } else {
-        console.log("noteIdToDelete", noteIdToDelete);
         const result = await deleteNoteFromDB(noteIdToDelete);
 
         if (result?.affectedRows === 1) {

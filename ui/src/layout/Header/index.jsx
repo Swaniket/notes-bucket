@@ -26,8 +26,6 @@ function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log("location", location.pathname);
-
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [openAddTagModal, setOpenAddTagModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);

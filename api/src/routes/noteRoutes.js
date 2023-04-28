@@ -39,6 +39,6 @@ router.post("/edit", authenicated, editNote);
 // @DESC-    Delete a note
 // @ROUTE-   DELETE: /api/notes/delete
 // @ACCESS-  Protected
-router.delete("/delete", authenicated, deleteNote);
+router.post("/delete", authenicated, deleteNote);
 
 export { router as noteRouter };

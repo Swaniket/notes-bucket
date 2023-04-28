@@ -17,6 +17,7 @@ function NoteList({ notes }) {
             {pinnedNotes.map((note) => (
               <Note
                 key={note?.noteId}
+                noteId={note?.noteId}
                 title={note?.heading}
                 body={note?.body}
                 createdAt={note?.createdAt}
@@ -35,6 +36,7 @@ function NoteList({ notes }) {
             {notes.map((note) => (
               <Note
                 key={note?.noteId}
+                noteId={note?.noteId}
                 title={note?.heading}
                 body={note?.body}
                 createdAt={note?.createdAt}

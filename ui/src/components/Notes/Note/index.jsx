@@ -1,12 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Badge } from "react-bootstrap";
 import { FaEye, FaPenAlt, FaTrashAlt } from "react-icons/fa";
 import { formattedDate } from "../../../utils/formatDate";
-import "./index.css";
 import DynamicModal from "../../Modals/DynamicModal";
+import "./index.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteNote,
+  getNotes,
+  getNotesState,
+} from "../../../redux/slice/notesSlice";
+import { toast } from "react-toastify";
 
-function Note({ title, body, createdAt, updatedAt, tagName }) {
+function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
+  const dispatch = useDispatch();
+
+  const { deleteNoteError, deleteNoteSuccess } = useSelector(getNotesState);
+
   const [openViewModal, setOpenViewModal] = useState(false);
+  const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
+    useState(false);
+
+  const onDeleteNote = () => {
+    console.log("Delete is clicked");
+    console.log(noteId);
+    dispatch(deleteNote(noteId));
+  };
+
+  const onEditNote = () => {};
+
+  useEffect(() => {
+    if (deleteNoteError) {
+      toast.error("Note could not be deleted", {
+        toastId: "failed-delete-note-toast",
+      });
+    }
+
+    if (deleteNoteSuccess) {
+      setOpenDeleteConfirmationModal(false);
+      dispatch(getNotes());
+      toast.success("Note deleted successfully", {
+        toastId: "success-delete-note-toast",
+      });
+    }
+  }, [deleteNoteError, deleteNoteSuccess]);
+
   return (
     <>
       <Card className="note-card">
@@ -37,7 +75,11 @@ function Note({ title, body, createdAt, updatedAt, tagName }) {
             <FaPenAlt /> Edit
           </Badge>
 
-          <Badge bg="light" className="badge-button delete">
+          <Badge
+            bg="light"
+            className="badge-button delete"
+            onClick={() => setOpenDeleteConfirmationModal(true)}
+          >
             <FaTrashAlt color="brown" />
           </Badge>
         </Card.Body>
@@ -52,6 +94,15 @@ function Note({ title, body, createdAt, updatedAt, tagName }) {
         isRenderedMarkdown={true}
         renderSecondaryButton={false}
         fullScreen={true}
+      />
+      <DynamicModal
+        show={openDeleteConfirmationModal}
+        handleClose={() => setOpenDeleteConfirmationModal(false)}
+        primaryButtonAction={onDeleteNote}
+        primaryButtonText="Delete"
+        title="Caution!"
+        bodyMessage="Are you sure you want to delete this note? this action is irreversible."
+        secondaryButtonText="Cancel"
       />
     </>
   );
