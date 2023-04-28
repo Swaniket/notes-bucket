@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   createNoteInDB,
   getNotesByUserFromDB,
+  deleteNoteFromDB,
 } from "../db/functions/noteFunctions.js";
 import { convertDateTime, generateRequestBody } from "../helpers/utils.js";
 import { getTagByIdFromDB } from "../db/functions/tagFunctions.js";
@@ -98,8 +99,87 @@ const createNote = asyncHandler(async (req, res) => {
     throw new Error(err);
   }
 });
+
 const editNote = asyncHandler(async (req, res) => {});
-const deleteNote = asyncHandler(async (req, res) => {});
+
+/*
+  @DESC   - Delete a note by noteId
+  @ROUTE  - DELETE: /api/notes/delete
+  @ACCESS - Protected
+*/
+const deleteNote = asyncHandler(async (req, res) => {
+  const { noteId } = req.body;
+  const userIdFromToken = req.user.userId;
+
+  // Validation
+  if (!noteId) {
+    res.status(400);
+    throw new Error("Invalid Form Submission");
+  }
+
+  // Check if the note exists for this perticular User or not
+  try {
+    const notesForLoggedInUser = await getNotesByUserFromDB(userIdFromToken);
+
+    if (
+      notesForLoggedInUser.length > 0 &&
+      notesForLoggedInUser[0].noteId !== null
+    ) {
+      let noteIdToDelete = "";
+
+      notesForLoggedInUser.forEach((note) => {
+        if (note?.noteId === noteId) {
+          noteIdToDelete = note?.noteId;
+        }
+      });
+
+      if (noteIdToDelete === "") {
+        // Say that no note matched with the given ID
+        res
+          .status(404)
+          .json(
+            generateRequestBody(
+              "not found",
+              404,
+              "No Note found with the note Id",
+              {}
+            )
+          );
+      } else {
+        console.log("noteIdToDelete", noteIdToDelete);
+        const result = await deleteNoteFromDB(noteIdToDelete);
+
+        if (result?.affectedRows === 1) {
+          res
+            .status(202)
+            .json(
+              generateRequestBody(
+                "success",
+                202,
+                "Note Delete Successfully",
+                {}
+              )
+            );
+        }
+      }
+    } else {
+      // Send that user don't have any notes
+      res
+        .status(404)
+        .json(
+          generateRequestBody(
+            "not found",
+            404,
+            "No Note found with the note Id",
+            {}
+          )
+        );
+    }
+  } catch (err) {
+    res.status(500);
+    throw new Error(err);
+  }
+});
 
 export {
   getNotes,

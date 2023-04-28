@@ -32,3 +32,10 @@ export const getNotesByUserFromDB = async (useId) => {
   const result = await executeQuery(queryString);
   return result;
 };
+
+// Delete Note from DB by noteId
+export const deleteNoteFromDB = async (noteId) => {
+  const queryString = `DELETE FROM Notes WHERE noteId='${noteId}'`;
+  const result = await executeQuery(queryString);
+  return result;
+};
