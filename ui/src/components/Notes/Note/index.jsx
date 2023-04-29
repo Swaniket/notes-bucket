@@ -3,6 +3,7 @@ import { Card, Badge } from "react-bootstrap";
 import { FaEye, FaPenAlt, FaTrashAlt } from "react-icons/fa";
 import { formattedDate } from "../../../utils/formatDate";
 import DynamicModal from "../../Modals/DynamicModal";
+import { DynamicContentModal } from "../..";
 import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,6 +12,7 @@ import {
   getNotesState,
 } from "../../../redux/slice/notesSlice";
 import { toast } from "react-toastify";
+import EditNote from "../EditNote";
 
 function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
   const dispatch = useDispatch();
@@ -18,16 +20,13 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
   const { deleteNoteError, deleteNoteSuccess } = useSelector(getNotesState);
 
   const [openViewModal, setOpenViewModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
     useState(false);
 
   const onDeleteNote = () => {
-    console.log("Delete is clicked");
-    console.log(noteId);
     dispatch(deleteNote(noteId));
   };
-
-  const onEditNote = () => {};
 
   useEffect(() => {
     if (deleteNoteError) {
@@ -71,7 +70,11 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
           >
             <FaEye /> View
           </Badge>
-          <Badge bg="dark" className="badge-button">
+          <Badge
+            bg="dark"
+            className="badge-button"
+            onClick={() => setOpenEditModal(true)}
+          >
             <FaPenAlt /> Edit
           </Badge>
 
@@ -103,6 +106,13 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
         title="Caution!"
         bodyMessage="Are you sure you want to delete this note? this action is irreversible."
         secondaryButtonText="Cancel"
+      />
+
+      <DynamicContentModal
+        show={openEditModal}
+        handleClose={() => setOpenEditModal(false)}
+        title="Edit Note"
+        children={<EditNote title={title} body={body} tagName={tagName} />}
       />
     </>
   );

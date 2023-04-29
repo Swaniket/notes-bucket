@@ -1,0 +1,9 @@
+.preview-immersive {
+    height: 550px;
+    overflow-y: scroll;
+}
+
+.save-close-button {
+    display: flex;
+    justify-content: flex-end;
+}

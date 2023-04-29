@@ -11,11 +11,10 @@ import {
   resetCreateNotesState,
   getNotes,
 } from "../../../redux/slice/notesSlice";
-import { createNoteSchema } from "./Schema";
-import "./index.css";
+import { createNoteSchema } from "../CreateNote/Schema";
 import ImmersiveMode from "../ImmersiveMode";
 
-function CreateNote({ closeModal }) {
+function EditNote({ title, body, tagName }) {
   const dispatch = useDispatch();
 
   const tags = useSelector(({ tags }) => tags?.tags);
@@ -27,11 +26,11 @@ function CreateNote({ closeModal }) {
   } = useSelector(getNotesState);
 
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
-  const [selectedTag, setSelectedTag] = useState("-1");
+  const [selectedTag, setSelectedTag] = useState(tagName);
 
   const initialValues = {
-    title: "",
-    body: "",
+    title: title,
+    body: body,
   };
 
   const onSubmit = (values) => {
@@ -97,7 +96,7 @@ function CreateNote({ closeModal }) {
               type="submit"
               disabled={createNoteLoading}
             >
-              {createNoteLoading ? "Loading…" : "Create Note"}
+              {createNoteLoading ? "Loading…" : "Edit Note"}
             </Button>
           </section>
         </div>
@@ -120,6 +119,7 @@ function CreateNote({ closeModal }) {
           handleChange={handleChange}
           onFullScreenClicked={onFullScreenClicked}
           onSelectChange={onSelectChange}
+          tagName={tagName}
           tags={tags}
         />
         <CreateNoteButtons />
@@ -144,4 +144,4 @@ function CreateNote({ closeModal }) {
   );
 }
 
-export default CreateNote;
+export default EditNote;

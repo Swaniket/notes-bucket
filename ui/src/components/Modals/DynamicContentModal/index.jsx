@@ -10,7 +10,13 @@ import "./style.css";
   children - Children to render out
 */
 
-function DynamicComponentModal({ show, handleClose, title, children }) {
+function DynamicComponentModal({
+  show,
+  handleClose,
+  title,
+  isFullScreen = false,
+  children,
+}) {
   return (
     <Modal
       show={show}
@@ -19,8 +25,7 @@ function DynamicComponentModal({ show, handleClose, title, children }) {
       keyboard={false}
       centered
       size="lg"
-      // dialogClassName="modal-90w"
-      // fullscreen={true}
+      fullscreen={isFullScreen}
     >
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>

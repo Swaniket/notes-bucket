@@ -12,6 +12,7 @@ function NewNoteForm({
   handleChange,
   onFullScreenClicked,
   onSelectChange,
+  tagName = null,
   tags,
 }) {
   return (
@@ -48,11 +49,23 @@ function NewNoteForm({
             </Form.Label>
             <Form.Select onChange={onSelectChange}>
               <option value="-1">Select Tag</option>
-              {tags.map((tag) => (
-                <option key={tag?.tagId} value={tag?.tagId}>
-                  {tag?.tagName}
-                </option>
-              ))}
+              {tags.map((tag) => {
+                let isSelected = false;
+
+                if (tagName && tagName === tag?.tagName) {
+                  isSelected = true;
+                }
+
+                return (
+                  <option
+                    key={tag?.tagId}
+                    value={tag?.tagId}
+                    selected={isSelected}
+                  >
+                    {tag?.tagName}
+                  </option>
+                );
+              })}
             </Form.Select>
           </Form.Group>
         </Col>
@@ -83,6 +96,7 @@ function NewNoteForm({
         </Form.Group>
       </>
 
+      {/* Preview */}
       <Form.Group className="mb-3">
         <Form.Label className="field-header">
           <strong>Preview</strong>
