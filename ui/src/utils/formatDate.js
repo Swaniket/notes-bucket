@@ -1,10 +1,13 @@
-import { formatDistanceToNow, parseISO } from "date-fns";
-
 export const formattedDate = (date) => {
-  const dateDistance = formatDistanceToNow(parseISO(date), {
-    includeSeconds: true,
-    addSuffix: true,
+  const timeZoneOffset = new Date().getTimezoneOffset().toString();
+  const formattedDate = new Date(date).toLocaleString("en-US", {
+    timeZoneOffset: timeZoneOffset,
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
-  return dateDistance;
+  return formattedDate;
 };

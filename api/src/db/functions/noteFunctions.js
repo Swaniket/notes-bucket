@@ -33,6 +33,28 @@ export const getNotesByUserFromDB = async (useId) => {
   return result;
 };
 
+// Get notes from DB for a perticular user by noteId
+export const getNoteByIdFromDB = async (noteId, userId) => {
+  const queryString = `SELECT * FROM Notes WHERE createdBy='${userId}' AND noteId = '${noteId}'`;
+  const result = await executeQuery(queryString);
+  return result[0];
+};
+
+// Edit a note in DB
+export const editNoteInDB = async ({
+  noteId,
+  updatedAt,
+  heading,
+  body,
+  isPinned,
+  isArchived,
+  tagId,
+}) => {
+  const queryString = `UPDATE Notes SET updatedAt="${updatedAt}", heading="${heading}", body="${body}", isPinned="${isPinned}", isArchived="${isArchived}", tagId="${tagId}" WHERE noteId='${noteId}'`;
+  const result = await executeQuery(queryString);
+  return result;
+};
+
 // Delete Note from DB by noteId
 export const deleteNoteFromDB = async (noteId) => {
   const queryString = `DELETE FROM Notes WHERE noteId='${noteId}'`;

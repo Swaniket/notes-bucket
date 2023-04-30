@@ -16,7 +16,7 @@ const router = express.Router();
 // @ACCESS-  Protected
 router.get("/all", authenicated, getNotes);
 
-// @DESC-    Get a note by ID
+// @DESC-    Get a note by ID (May not be needed)
 // @ROUTE-   GET: /api/notes/note/:id
 // @ACCESS-  Protected
 router.get("/note/:id", authenicated, getNoteById);

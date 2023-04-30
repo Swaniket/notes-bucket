@@ -14,7 +14,8 @@ import {
 import { createNoteSchema } from "../CreateNote/Schema";
 import ImmersiveMode from "../ImmersiveMode";
 
-function EditNote({ title, body, tagName }) {
+// @TODO: Review this file
+function EditNote({ title, body, tagName, noteId }) {
   const dispatch = useDispatch();
 
   const tags = useSelector(({ tags }) => tags?.tags);
@@ -44,13 +45,14 @@ function EditNote({ title, body, tagName }) {
       return;
     }
 
-    const noteObj = {
+    const editedNoteObj = {
+      noteId: noteId,
       heading: values?.title,
       body: values?.body,
       tagId: selectedTag,
     };
 
-    dispatch(createNote(noteObj));
+    // dispatch(createNote(noteObj));
   };
 
   const onSelectChange = (e) => {
@@ -87,6 +89,7 @@ function EditNote({ title, body, tagName }) {
   }, [createNoteError, createNoteSuccess, createNoteMessage]);
 
   const CreateNoteButtons = () => {
+    // @TODO: Change these to editNote State
     return (
       <>
         <div>

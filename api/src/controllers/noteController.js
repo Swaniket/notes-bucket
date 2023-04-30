@@ -4,6 +4,8 @@ import {
   createNoteInDB,
   getNotesByUserFromDB,
   deleteNoteFromDB,
+  getNoteByIdFromDB,
+  editNoteInDB,
 } from "../db/functions/noteFunctions.js";
 import { convertDateTime, generateRequestBody } from "../helpers/utils.js";
 import { getTagByIdFromDB } from "../db/functions/tagFunctions.js";
@@ -66,11 +68,12 @@ const createNote = asyncHandler(async (req, res) => {
 
     // If Tag Exists
     if (tagIdFromDB?.length > 0) {
+      const d = new Date();
       const noteObject = {
         noteId: uuidv4(),
         createdBy: req.user.userId,
-        createdAt: createdAt ? createdAt : convertDateTime(new Date()),
-        updatedAt: convertDateTime(new Date()),
+        createdAt: createdAt ? createdAt : convertDateTime(d + "UTC"),
+        updatedAt: convertDateTime(d + "UTC"),
         heading: heading,
         body: body,
         isPinned: isPinned ? isPinned : false,
@@ -100,7 +103,66 @@ const createNote = asyncHandler(async (req, res) => {
   }
 });
 
-const editNote = asyncHandler(async (req, res) => {});
+const editNote = asyncHandler(async (req, res) => {
+  const { noteId, heading, body, isPinned, isArchived, tagId } = req.body;
+
+  // Validation
+  if (!noteId || (!heading && !body && !isPinned && !isArchived && !tagId)) {
+    res.status(400);
+    throw new Error("Invalid Form Submission");
+  }
+
+  try {
+    const existingNote = await getNoteByIdFromDB(noteId, req.user.userId);
+
+    if (!existingNote) {
+      res
+        .status(404)
+        .json(
+          generateRequestBody(
+            "not found",
+            404,
+            "There are no note with this ID",
+            {}
+          )
+        );
+    } else {
+      const d = new Date();
+
+      const updatedNoteBody = {
+        noteId: noteId,
+        updatedAt: convertDateTime(d + "UTC"),
+        heading: heading ? heading : existingNote?.heading,
+        body: body ? body : existingNote?.body,
+        isPinned: isPinned ? isPinned : existingNote?.isPinned,
+        isArchived: isArchived ? isArchived : existingNote?.isArchived,
+        tagId: tagId ? tagId : existingNote?.tagId,
+      };
+
+      const result = await editNoteInDB({ ...updatedNoteBody });
+
+      if (result?.affectedRows === 1) {
+        console.log("Date", convertDateTime(new Date()));
+        res
+          .status(202)
+          .json(
+            generateRequestBody(
+              "success",
+              202,
+              "Record Updated Successfully",
+              {}
+            )
+          );
+      } else {
+        res.status(500);
+        throw new Error("Something went wrong, Please try again later");
+      }
+    }
+  } catch (err) {
+    res.status(500);
+    throw new Error(err);
+  }
+});
 
 /*
   @DESC   - Delete a note by noteId

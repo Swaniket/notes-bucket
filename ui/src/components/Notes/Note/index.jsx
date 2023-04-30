@@ -61,6 +61,9 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
           <Card.Subtitle className="mb-2 text-muted">
             <small> Created: {formattedDate(createdAt)}</small>
           </Card.Subtitle>
+          <Card.Subtitle className="mb-2 text-muted">
+            <small> Updated: {formattedDate(updatedAt)}</small>
+          </Card.Subtitle>
           <p></p>
           <Badge
             bg="light"
@@ -112,7 +115,14 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
         show={openEditModal}
         handleClose={() => setOpenEditModal(false)}
         title="Edit Note"
-        children={<EditNote title={title} body={body} tagName={tagName} />}
+        children={
+          <EditNote
+            title={title}
+            body={body}
+            tagName={tagName}
+            noteId={noteId}
+          />
+        }
       />
     </>
   );

@@ -16,8 +16,6 @@ export const authenicated = asyncHandler(async (req, res, next) => {
 
       const decodedToken = verifyJWTToken(token);
 
-      console.log("decodedToken", decodedToken);
-
       if (!decodedToken.id) {
         res.status(401);
         throw new Error("Not Authorized");
