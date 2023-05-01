@@ -6,25 +6,22 @@ import { toast } from "react-toastify";
 import { NewNoteForm, DynamicContentModal } from "../..";
 import { getTags } from "../../../redux/slice/tagsSlice";
 import {
-  createNote,
+  editNote,
   getNotesState,
-  resetCreateNotesState,
+  resetEditNotesState,
   getNotes,
 } from "../../../redux/slice/notesSlice";
 import { createNoteSchema } from "../CreateNote/Schema";
 import ImmersiveMode from "../ImmersiveMode";
+import "./index.css";
 
 // @TODO: Review this file
-function EditNote({ title, body, tagName, noteId }) {
+function EditNote({ title, body, tagName, noteId, closeModal }) {
   const dispatch = useDispatch();
 
   const tags = useSelector(({ tags }) => tags?.tags);
-  const {
-    createNoteError,
-    createNoteSuccess,
-    createNoteLoading,
-    createNoteMessage,
-  } = useSelector(getNotesState);
+  const { editNoteLoading, editNoteError, editNoteSuccess, editNoteMessage } =
+    useSelector(getNotesState);
 
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
   const [selectedTag, setSelectedTag] = useState(tagName);
@@ -45,6 +42,7 @@ function EditNote({ title, body, tagName, noteId }) {
       return;
     }
 
+    // @TODO: Add Pinned and Archived
     const editedNoteObj = {
       noteId: noteId,
       heading: values?.title,
@@ -52,7 +50,7 @@ function EditNote({ title, body, tagName, noteId }) {
       tagId: selectedTag,
     };
 
-    // dispatch(createNote(noteObj));
+    dispatch(editNote(editedNoteObj));
   };
 
   const onSelectChange = (e) => {
@@ -70,26 +68,25 @@ function EditNote({ title, body, tagName, noteId }) {
     dispatch(getTags());
 
     return () => {
-      dispatch(resetCreateNotesState());
+      dispatch(resetEditNotesState());
     };
   }, []);
 
   useEffect(() => {
-    if (createNoteError) {
-      toast.error(createNoteMessage, { toastId: "failed-create-note-toast" });
+    if (editNoteError) {
+      toast.error(editNoteMessage, { toastId: "failed-edit-note-toast" });
     }
 
-    if (createNoteSuccess) {
+    if (editNoteSuccess) {
       closeModal();
       dispatch(getNotes());
-      toast.success(createNoteMessage, {
-        toastId: "success-create-note-toast",
+      toast.success(editNoteMessage, {
+        toastId: "success-edit-note-toast",
       });
     }
-  }, [createNoteError, createNoteSuccess, createNoteMessage]);
+  }, [editNoteError, editNoteSuccess, editNoteMessage]);
 
-  const CreateNoteButtons = () => {
-    // @TODO: Change these to editNote State
+  const EditNoteButtons = () => {
     return (
       <>
         <div>
@@ -97,9 +94,9 @@ function EditNote({ title, body, tagName, noteId }) {
             <Button
               className="btn btn-dark"
               type="submit"
-              disabled={createNoteLoading}
+              disabled={editNoteLoading}
             >
-              {createNoteLoading ? "Loading…" : "Edit Note"}
+              {editNoteLoading ? "Loading…" : "Edit Note"}
             </Button>
           </section>
         </div>
@@ -113,7 +110,7 @@ function EditNote({ title, body, tagName, noteId }) {
 
   return (
     <>
-      <Form onSubmit={handleSubmit} className="create-note-form">
+      <Form onSubmit={handleSubmit} className="edit-note-form">
         <NewNoteForm
           values={values}
           errors={errors}
@@ -125,7 +122,7 @@ function EditNote({ title, body, tagName, noteId }) {
           tagName={tagName}
           tags={tags}
         />
-        <CreateNoteButtons />
+        <EditNoteButtons />
       </Form>
       <DynamicContentModal
         show={openPreviewModal}

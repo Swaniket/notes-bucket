@@ -24,6 +24,22 @@ const createNewNote = async (token, noteObj) => {
   return response.data;
 };
 
+//API call for Editing a note
+const editNote = async (token, updatedNoteObj) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await apiNotesBucket.post(
+    "/notes/edit",
+    updatedNoteObj,
+    config
+  );
+  return response.data;
+};
+
 // API call for deleteing an existing note
 const deleteExistingNote = async (token, noteId) => {
   const config = {
@@ -42,6 +58,6 @@ const deleteExistingNote = async (token, noteId) => {
   return response.data;
 };
 
-const notesService = { getNotes, createNewNote, deleteExistingNote };
+const notesService = { getNotes, createNewNote, deleteExistingNote, editNote };
 
 export default notesService;

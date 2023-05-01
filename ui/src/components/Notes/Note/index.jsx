@@ -121,6 +121,7 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
             body={body}
             tagName={tagName}
             noteId={noteId}
+            closeModal={() => setOpenEditModal(false)}
           />
         }
       />

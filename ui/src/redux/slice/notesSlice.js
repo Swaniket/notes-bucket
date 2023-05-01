@@ -61,6 +61,26 @@ export const createNote = createAsyncThunk(
   }
 );
 
+// Edit Note
+export const editNote = createAsyncThunk(
+  "notes/edit",
+  async (editedNote, thunkAPI) => {
+    try {
+      const userToken = thunkAPI.getState()?.user?.user?.token;
+      return await notesService.editNote(userToken, editedNote);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 // Delete a note
 export const deleteNote = createAsyncThunk(
   "notes/delete",
@@ -117,6 +137,7 @@ export const notesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Get Notes
       .addCase(getNotes.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
@@ -135,6 +156,8 @@ export const notesSlice = createSlice({
         state.isSuccess = false;
         state.message = action.payload.message;
       })
+
+      // Create Note
       .addCase(createNote.pending, (state) => {
         state.createNoteLoading = true;
         state.createNoteError = false;
@@ -152,6 +175,27 @@ export const notesSlice = createSlice({
         state.createNoteSuccess = true;
         state.createNoteMessage = action.payload.message;
       })
+
+      // Edit Note
+      .addCase(editNote.pending, (state) => {
+        state.editNoteLoading = true;
+        state.editNoteError = false;
+        state.editNoteSuccess = false;
+      })
+      .addCase(editNote.fulfilled, (state, action) => {
+        state.editNoteLoading = false;
+        state.editNoteError = false;
+        state.editNoteSuccess = true;
+        state.editNoteMessage = action.payload.message;
+      })
+      .addCase(editNote.rejected, (state) => {
+        state.editNoteLoading = false;
+        state.editNoteError = true;
+        state.editNoteSuccess = false;
+        state.editNoteMessage = action.payload.message;
+      })
+
+      // Delete Note
       .addCase(deleteNote.pending, (state) => {
         state.deleteNoteLoading = true;
         state.deleteNoteError = false;
