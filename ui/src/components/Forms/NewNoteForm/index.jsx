@@ -12,7 +12,7 @@ function NewNoteForm({
   handleChange,
   onFullScreenClicked,
   onSelectChange,
-  tagName = null,
+  tagId = null,
   tags,
 }) {
   return (
@@ -52,7 +52,7 @@ function NewNoteForm({
               {tags.map((tag) => {
                 let isSelected = false;
 
-                if (tagName && tagName === tag?.tagName) {
+                if (tagId && tagId === tag?.tagId) {
                   isSelected = true;
                 }
 

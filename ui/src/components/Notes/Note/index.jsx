@@ -14,7 +14,7 @@ import {
 import { toast } from "react-toastify";
 import EditNote from "../EditNote";
 
-function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
+function Note({ noteId, title, body, createdAt, updatedAt, tagName, tagId }) {
   const dispatch = useDispatch();
 
   const { deleteNoteError, deleteNoteSuccess } = useSelector(getNotesState);
@@ -120,6 +120,7 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName }) {
             title={title}
             body={body}
             tagName={tagName}
+            tagId={tagId}
             noteId={noteId}
             closeModal={() => setOpenEditModal(false)}
           />

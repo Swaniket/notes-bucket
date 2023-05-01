@@ -16,7 +16,7 @@ import ImmersiveMode from "../ImmersiveMode";
 import "./index.css";
 
 // @TODO: Review this file
-function EditNote({ title, body, tagName, noteId, closeModal }) {
+function EditNote({ title, body, tagName, noteId, tagId, closeModal }) {
   const dispatch = useDispatch();
 
   const tags = useSelector(({ tags }) => tags?.tags);
@@ -24,7 +24,7 @@ function EditNote({ title, body, tagName, noteId, closeModal }) {
     useSelector(getNotesState);
 
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
-  const [selectedTag, setSelectedTag] = useState(tagName);
+  const [selectedTag, setSelectedTag] = useState(tagId);
 
   const initialValues = {
     title: title,
@@ -119,7 +119,7 @@ function EditNote({ title, body, tagName, noteId, closeModal }) {
           handleChange={handleChange}
           onFullScreenClicked={onFullScreenClicked}
           onSelectChange={onSelectChange}
-          tagName={tagName}
+          tagId={tagId}
           tags={tags}
         />
         <EditNoteButtons />

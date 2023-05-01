@@ -23,6 +23,7 @@ function NoteList({ notes }) {
                 createdAt={note?.createdAt}
                 updatedAt={note?.updatedAt}
                 tagName={note?.tagName}
+                tagId={note?.tagId}
               />
             ))}
           </Container>
@@ -42,6 +43,7 @@ function NoteList({ notes }) {
                 createdAt={note?.createdAt}
                 updatedAt={note?.updatedAt}
                 tagName={note?.tagName}
+                tagId={note?.tagId}
               />
             ))}
           </Container>
