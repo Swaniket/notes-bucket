@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Badge } from "react-bootstrap";
 import { FaEye, FaPenAlt, FaTrashAlt } from "react-icons/fa";
+import { TbPinned, TbPinnedFilled } from "react-icons/tb";
 import { formattedDate } from "../../../utils/formatDate";
 import DynamicModal from "../../Modals/DynamicModal";
 import { DynamicContentModal } from "../..";
@@ -8,16 +9,34 @@ import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteNote,
+  editNote,
   getNotes,
   getNotesState,
+  resetEditNotesState,
 } from "../../../redux/slice/notesSlice";
 import { toast } from "react-toastify";
 import EditNote from "../EditNote";
+import { BiArchiveIn } from "react-icons/bi";
 
-function Note({ noteId, title, body, createdAt, updatedAt, tagName, tagId }) {
+function Note({
+  noteId,
+  title,
+  body,
+  createdAt,
+  updatedAt,
+  tagName,
+  tagId,
+  isPinned,
+}) {
   const dispatch = useDispatch();
 
-  const { deleteNoteError, deleteNoteSuccess } = useSelector(getNotesState);
+  const {
+    deleteNoteError,
+    deleteNoteSuccess,
+    editNoteSuccess,
+    editNoteError,
+    editNoteMessage,
+  } = useSelector(getNotesState);
 
   const [openViewModal, setOpenViewModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -26,6 +45,32 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName, tagId }) {
 
   const onDeleteNote = () => {
     dispatch(deleteNote(noteId));
+  };
+
+  const onPinnedClick = () => {
+    let editedNote = {};
+    if (isPinned === true) {
+      editedNote = {
+        noteId: noteId,
+        isPinned: "false",
+      };
+    } else {
+      editedNote = {
+        noteId: noteId,
+        isPinned: "true",
+      };
+    }
+
+    dispatch(editNote(editedNote));
+  };
+
+  const onArchiveClick = () => {
+    const editedNote = {
+      noteId: noteId,
+      isArchived: "true",
+    };
+
+    dispatch(editNote(editedNote));
   };
 
   useEffect(() => {
@@ -44,10 +89,35 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName, tagId }) {
     }
   }, [deleteNoteError, deleteNoteSuccess]);
 
+  useEffect(() => {
+    // @TODO: Comeback to this later, IUUSE: Both toast executes
+    if (editNoteSuccess && editNoteMessage) {
+      dispatch(getNotes());
+
+      console.log("pinned in useeffect", isPinned);
+      if (!isPinned) {
+        toast.success(editNoteMessage, {
+          toastId: "success-pinned-note-toast",
+        });
+        return;
+      } else {
+        toast.success(editNoteMessage, {
+          toastId: "success-unpinned-note-toast",
+        });
+        return;
+      }
+    }
+
+    return () => {
+      dispatch(resetEditNotesState());
+    };
+  }, [editNoteSuccess, isPinned]);
+
   return (
     <>
       <Card className="note-card">
         <Card.Body>
+          {/* Heading and Tag */}
           <Card.Title className="custom-title mb-0">
             <h6>
               <span className="limited-text">{title}</span>
@@ -58,13 +128,23 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName, tagId }) {
               </Badge>
             </h6>
           </Card.Title>
+
+          {/* Created at and Updated at */}
           <Card.Subtitle className="mb-2 text-muted">
-            <small> Created: {formattedDate(createdAt)}</small>
+            <span className="custom-date">
+              {" "}
+              Created At: {formattedDate(createdAt)}
+            </span>
           </Card.Subtitle>
           <Card.Subtitle className="mb-2 text-muted">
-            <small> Updated: {formattedDate(updatedAt)}</small>
+            <span className="custom-date">
+              {" "}
+              Updated At: {formattedDate(updatedAt)}
+            </span>
           </Card.Subtitle>
           <p></p>
+
+          {/* Buttons */}
           <Badge
             bg="light"
             text="dark"
@@ -81,9 +161,24 @@ function Note({ noteId, title, body, createdAt, updatedAt, tagName, tagId }) {
             <FaPenAlt /> Edit
           </Badge>
 
+          {/* Pin Note */}
           <Badge
             bg="light"
             className="badge-button delete"
+            onClick={onPinnedClick}
+          >
+            {isPinned ? <TbPinnedFilled /> : <TbPinned />}
+          </Badge>
+
+          {/* Archive Note */}
+          <Badge bg="light" className="badge-button" onClick={onArchiveClick}>
+            <BiArchiveIn />
+          </Badge>
+
+          {/* Delete Note */}
+          <Badge
+            bg="light"
+            className="badge-button"
             onClick={() => setOpenDeleteConfirmationModal(true)}
           >
             <FaTrashAlt color="brown" />

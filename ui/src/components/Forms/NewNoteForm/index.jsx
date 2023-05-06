@@ -71,6 +71,26 @@ function NewNoteForm({
         </Col>
       </Row>
 
+      <Row>
+        <Col>
+          {" "}
+          <Form.Check
+            type="switch"
+            id="custom-switch"
+            label="Pin Note"
+            checked={true}
+            // onChange={}
+          />
+        </Col>
+        <Col>
+          {" "}
+          <Form.Check type="switch" id="custom-switch" label="Archive Note" />
+        </Col>
+      </Row>
+
+      <p></p>
+
+      <hr />
       <>
         {/* Body */}
         <Form.Group className="mb-3">
@@ -108,6 +128,9 @@ function NewNoteForm({
           <ReactMarkdown>{values.body}</ReactMarkdown>
         </Alert>
       </Form.Group>
+
+      <p></p>
+      {/* <hr /> */}
     </>
   );
 }

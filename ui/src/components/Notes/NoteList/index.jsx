@@ -24,6 +24,7 @@ function NoteList({ notes }) {
                 updatedAt={note?.updatedAt}
                 tagName={note?.tagName}
                 tagId={note?.tagId}
+                isPinned={true}
               />
             ))}
           </Container>
@@ -34,7 +35,7 @@ function NoteList({ notes }) {
         <>
           <h6 className="note-section">OTHERS</h6>
           <Container className="note-container">
-            {notes.map((note) => (
+            {otherNotes.map((note) => (
               <Note
                 key={note?.noteId}
                 noteId={note?.noteId}
@@ -44,6 +45,7 @@ function NoteList({ notes }) {
                 updatedAt={note?.updatedAt}
                 tagName={note?.tagName}
                 tagId={note?.tagId}
+                isPinned={false}
               />
             ))}
           </Container>

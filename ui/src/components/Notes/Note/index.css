@@ -18,7 +18,7 @@
 }
 
 .delete {
-    margin-left: 7.5rem;
+    margin-left: .8rem;
 }
 
 .limited-text {
@@ -32,4 +32,8 @@
 .custom-title {
     display: flex;
     justify-content: space-between;
+}
+
+.custom-date {
+    font-size: small;
 }
