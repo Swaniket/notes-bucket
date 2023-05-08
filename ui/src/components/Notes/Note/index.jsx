@@ -27,6 +27,7 @@ function Note({
   tagName,
   tagId,
   isPinned,
+  isArchived,
 }) {
   const dispatch = useDispatch();
 
@@ -96,12 +97,12 @@ function Note({
 
       console.log("pinned in useeffect", isPinned);
       if (!isPinned) {
-        toast.success(editNoteMessage, {
+        toast.success("Pinned", {
           toastId: "success-pinned-note-toast",
         });
         return;
       } else {
-        toast.success(editNoteMessage, {
+        toast.success("Unpinned", {
           toastId: "success-unpinned-note-toast",
         });
         return;
@@ -218,6 +219,8 @@ function Note({
             tagId={tagId}
             noteId={noteId}
             closeModal={() => setOpenEditModal(false)}
+            isPinned={isPinned}
+            isArchived={isArchived}
           />
         }
       />

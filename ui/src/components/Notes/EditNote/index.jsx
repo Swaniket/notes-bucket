@@ -16,7 +16,15 @@ import ImmersiveMode from "../ImmersiveMode";
 import "./index.css";
 
 // @TODO: Review this file
-function EditNote({ title, body, tagName, noteId, tagId, closeModal }) {
+function EditNote({
+  title,
+  body,
+  noteId,
+  tagId,
+  closeModal,
+  isPinned,
+  isArchived,
+}) {
   const dispatch = useDispatch();
 
   const tags = useSelector(({ tags }) => tags?.tags);
@@ -25,6 +33,8 @@ function EditNote({ title, body, tagName, noteId, tagId, closeModal }) {
 
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
   const [selectedTag, setSelectedTag] = useState(tagId);
+  const [isPinnedState, setIsPinnedState] = useState(isPinned);
+  const [isArchivedState, setIsArchivedState] = useState(isArchived);
 
   const initialValues = {
     title: title,
@@ -42,6 +52,9 @@ function EditNote({ title, body, tagName, noteId, tagId, closeModal }) {
       return;
     }
 
+    console.log("isPinnedState", isPinnedState);
+    console.log("isArchivedState", isArchivedState);
+
     // @TODO: Add Pinned and Archived
     const editedNoteObj = {
       noteId: noteId,
@@ -50,11 +63,19 @@ function EditNote({ title, body, tagName, noteId, tagId, closeModal }) {
       tagId: selectedTag,
     };
 
-    dispatch(editNote(editedNoteObj));
+    // dispatch(editNote(editedNoteObj));
   };
 
   const onSelectChange = (e) => {
     setSelectedTag(e.target.value);
+  };
+
+  const transformPinnedValue = (e) => {
+    setIsPinnedState(e.target.checked);
+  };
+
+  const transformArchivedValue = (e) => {
+    setIsArchivedState(e.target.checked);
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -121,6 +142,10 @@ function EditNote({ title, body, tagName, noteId, tagId, closeModal }) {
           onSelectChange={onSelectChange}
           tagId={tagId}
           tags={tags}
+          isPinned={isPinnedState}
+          setIsPinned={transformPinnedValue}
+          isArchived={isArchivedState}
+          setIsArchived={transformArchivedValue}
         />
         <EditNoteButtons />
       </Form>

@@ -25,6 +25,7 @@ function NoteList({ notes }) {
                 tagName={note?.tagName}
                 tagId={note?.tagId}
                 isPinned={true}
+                isArchived={note?.isArchived === "true" ? true : false}
               />
             ))}
           </Container>
@@ -46,6 +47,7 @@ function NoteList({ notes }) {
                 tagName={note?.tagName}
                 tagId={note?.tagId}
                 isPinned={false}
+                isArchived={note?.isArchived === "true" ? true : false}
               />
             ))}
           </Container>

@@ -14,6 +14,10 @@ function NewNoteForm({
   onSelectChange,
   tagId = null,
   tags,
+  isPinned = null,
+  setIsPinned,
+  isArchived = null,
+  setIsArchived,
 }) {
   return (
     <>
@@ -71,6 +75,7 @@ function NewNoteForm({
         </Col>
       </Row>
 
+      {/* Pinned & Archive */}
       <Row>
         <Col>
           {" "}
@@ -78,19 +83,25 @@ function NewNoteForm({
             type="switch"
             id="custom-switch"
             label="Pin Note"
-            checked={true}
-            // onChange={}
+            checked={isPinned && isPinned}
+            onChange={setIsPinned}
           />
         </Col>
         <Col>
           {" "}
-          <Form.Check type="switch" id="custom-switch" label="Archive Note" />
+          <Form.Check
+            type="switch"
+            id="custom-switch"
+            label="Archive Note"
+            checked={isArchived && isArchived}
+            onChange={setIsArchived}
+          />
         </Col>
       </Row>
 
       <p></p>
-
       <hr />
+
       <>
         {/* Body */}
         <Form.Group className="mb-3">
@@ -130,7 +141,6 @@ function NewNoteForm({
       </Form.Group>
 
       <p></p>
-      {/* <hr /> */}
     </>
   );
 }
