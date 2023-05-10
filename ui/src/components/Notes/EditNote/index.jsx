@@ -52,18 +52,16 @@ function EditNote({
       return;
     }
 
-    console.log("isPinnedState", isPinnedState);
-    console.log("isArchivedState", isArchivedState);
-
-    // @TODO: Add Pinned and Archived
     const editedNoteObj = {
       noteId: noteId,
       heading: values?.title,
       body: values?.body,
       tagId: selectedTag,
+      isPinned: isPinnedState ? "true" : "false",
+      isArchived: isArchivedState ? "true" : "false",
     };
 
-    // dispatch(editNote(editedNoteObj));
+    dispatch(editNote(editedNoteObj));
   };
 
   const onSelectChange = (e) => {
