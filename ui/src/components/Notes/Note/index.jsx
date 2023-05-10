@@ -91,28 +91,17 @@ function Note({
   }, [deleteNoteError, deleteNoteSuccess]);
 
   useEffect(() => {
-    // @TODO: Comeback to this later, IUUSE: Both toast executes
     if (editNoteSuccess && editNoteMessage) {
+      toast.success("Pin toggled successfully", {
+        toastId: "success-pinned-note-toast",
+      });
       dispatch(getNotes());
-
-      console.log("pinned in useeffect", isPinned);
-      if (!isPinned) {
-        toast.success("Pinned", {
-          toastId: "success-pinned-note-toast",
-        });
-        return;
-      } else {
-        toast.success("Unpinned", {
-          toastId: "success-unpinned-note-toast",
-        });
-        return;
-      }
     }
 
     return () => {
       dispatch(resetEditNotesState());
     };
-  }, [editNoteSuccess, isPinned]);
+  }, [editNoteSuccess]);
 
   return (
     <>

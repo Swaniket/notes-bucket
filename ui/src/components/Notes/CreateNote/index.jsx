@@ -28,6 +28,8 @@ function CreateNote({ closeModal }) {
 
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
   const [selectedTag, setSelectedTag] = useState("-1");
+  const [isPinnedState, setIsPinnedState] = useState(false);
+  const [isArchivedState, setIsArchivedState] = useState(false);
 
   const initialValues = {
     title: "",
@@ -49,6 +51,8 @@ function CreateNote({ closeModal }) {
       heading: values?.title,
       body: values?.body,
       tagId: selectedTag,
+      isPinned: isPinnedState ? "true" : "false",
+      isArchived: isArchivedState ? "true" : "false",
     };
 
     dispatch(createNote(noteObj));
@@ -109,6 +113,14 @@ function CreateNote({ closeModal }) {
     setOpenPreviewModal(true);
   };
 
+  const transformPinnedValue = (e) => {
+    setIsPinnedState(e.target.checked);
+  };
+
+  const transformArchivedValue = (e) => {
+    setIsArchivedState(e.target.checked);
+  };
+
   return (
     <>
       <Form onSubmit={handleSubmit} className="create-note-form">
@@ -121,6 +133,8 @@ function CreateNote({ closeModal }) {
           onFullScreenClicked={onFullScreenClicked}
           onSelectChange={onSelectChange}
           tags={tags}
+          setIsPinned={transformPinnedValue}
+          setIsArchived={transformArchivedValue}
         />
         <CreateNoteButtons />
       </Form>
