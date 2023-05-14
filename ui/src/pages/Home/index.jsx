@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
-import { NoteList, DynamicContentModal, CreateNote } from "../../components";
+import {
+  NoteList,
+  DynamicContentModal,
+  CreateNote,
+  TagList,
+} from "../../components";
 import "./index.css";
 
 function Home() {
@@ -17,7 +22,11 @@ function Home() {
 
   return (
     <div className="home-body">
+      <TagList />
+
+      {/* The List of the Notes */}
       <NoteList />
+      {/* Create New Note Button */}
       <span className="floating-button">
         <Button className="btn btn-dark create" onClick={createNewNote}>
           <FaPlus size={35} />

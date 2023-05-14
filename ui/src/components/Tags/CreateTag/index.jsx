@@ -4,7 +4,12 @@ import { createTagSchema } from "./Schema";
 import { Form, Button } from "react-bootstrap";
 import { NewTagForm } from "../../index";
 import { useDispatch, useSelector } from "react-redux";
-import { createTag, getTagsState } from "../../../redux/slice/tagsSlice";
+import {
+  createTag,
+  getTagsState,
+  getTags,
+  resetCreateTag,
+} from "../../../redux/slice/tagsSlice";
 import { toast } from "react-toastify";
 
 function CreateTag({ closeModal }) {
@@ -22,7 +27,6 @@ function CreateTag({ closeModal }) {
   };
 
   const onSubmit = (values) => {
-    console.log(values);
     dispatch(createTag(values.tagName));
   };
 
@@ -43,7 +47,12 @@ function CreateTag({ closeModal }) {
       toast.success(createTagMessage, {
         toastId: "success-create-tag-toast",
       });
+      dispatch(getTags());
     }
+
+    return () => {
+      dispatch(resetCreateTag());
+    };
   }, [createTagError, createTagMessage]);
 
   const AddTagButton = () => {

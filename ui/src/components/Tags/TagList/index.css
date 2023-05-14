@@ -1,0 +1,16 @@
+.tag-bar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tag-pill {
+    margin: 5px;
+    cursor: pointer;
+}
+
+.clear-button {
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center;
+}

@@ -84,7 +84,8 @@ function EditNote({
     });
 
   useEffect(() => {
-    dispatch(getTags());
+    // May not need this
+    // dispatch(getTags());
 
     return () => {
       dispatch(resetEditNotesState());

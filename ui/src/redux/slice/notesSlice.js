@@ -4,6 +4,7 @@ import notesService from "../services/notesService";
 const initialState = {
   notes: [],
   filteredNotes: [],
+  filteredNotesByTag: {},
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -126,13 +127,33 @@ export const notesSlice = createSlice({
     },
     filterNotes: (state, action) => {
       state.filteredNotes = current(state.notes).filter((note) => {
-        return note.heading
+        return note?.heading
           .toLowerCase()
           .includes(action.payload.toLowerCase());
       });
     },
     resetFilter: (state) => {
       state.filteredNotes = state.notes;
+    },
+    filterNotesByTag: (state, action) => {
+      const tagId = action.payload;
+
+      let setObj = {};
+
+      setObj["shouldConsider"] = true;
+      setObj["notes"] = current(state.notes).filter((note) => {
+        return note?.tagId === tagId;
+      });
+
+      state.filteredNotesByTag = setObj;
+    },
+    resetFilterByTag: (state) => {
+      const resetObj = {
+        shouldConsider: false,
+        notes: [],
+      };
+
+      state.filteredNotesByTag = resetObj;
     },
   },
   extraReducers: (builder) => {
@@ -222,6 +243,8 @@ export const {
   resetCreateNotesState,
   filterNotes,
   resetFilter,
+  filterNotesByTag,
+  resetFilterByTag,
 } = notesSlice.actions;
 
 export default notesSlice.reducer;

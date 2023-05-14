@@ -55,6 +55,14 @@ export const createTag = createAsyncThunk(
 export const tagsSlice = createSlice({
   name: "tags",
   initialState,
+  reducers: {
+    resetCreateTag: (state) => {
+      state.createTagSuccess = false;
+      state.createTagError = false;
+      state.createTagLoading = false;
+      state.createTagMessage = "";
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getTags.pending, (state) => {
@@ -96,5 +104,7 @@ export const tagsSlice = createSlice({
 });
 
 export const getTagsState = (state) => state.tags;
+
+export const { resetCreateTag } = tagsSlice.actions;
 
 export default tagsSlice.reducer;

@@ -6,14 +6,30 @@ function SearchNotes(OriginalComponent) {
   return function WrappedComponent() {
     const dispatch = useDispatch();
 
-    const { filteredNotes, isError, isSuccess, isLoading, message } =
-      useSelector(getNotesState);
+    const {
+      filteredNotes,
+      isError,
+      isSuccess,
+      isLoading,
+      message,
+      filteredNotesByTag,
+    } = useSelector(getNotesState);
 
     useEffect(() => {
       dispatch(getNotes());
     }, []);
 
-    return <OriginalComponent notes={filteredNotes} />;
+    let notesToShow = [];
+    if (
+      Object.keys(filteredNotesByTag).length > 0 &&
+      filteredNotesByTag?.shouldConsider
+    ) {
+      notesToShow = filteredNotesByTag?.notes;
+    } else {
+      notesToShow = filteredNotes;
+    }
+
+    return <OriginalComponent notes={notesToShow} />;
   };
 }
 

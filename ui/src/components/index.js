@@ -12,3 +12,4 @@ export { default as DynamicModal } from "./Modals/DynamicModal";
 export { default as DynamicContentModal } from "./Modals/DynamicContentModal";
 
 export { default as CreateTag } from "./Tags/CreateTag";
+export { default as TagList } from "./Tags/TagList";
