@@ -7,9 +7,10 @@ import {
   Button,
   Offcanvas,
 } from "react-bootstrap";
-import { FaSignOutAlt, FaTags, FaMapPin, FaArchive } from "react-icons/fa";
+import { FaSignOutAlt, FaTags } from "react-icons/fa";
+import { BiArchiveIn } from "react-icons/bi";
 import { GrAdd } from "react-icons/gr";
-import { TbSettings2 } from "react-icons/tb";
+import { TbSettings2, TbPinnedFilled } from "react-icons/tb";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
@@ -119,13 +120,13 @@ function Header() {
               onClick={onArchiveClicked}
               className="offcanvas-items"
             >
-              <FaArchive /> Archived Notes{" "}
+              <BiArchiveIn /> Archived Notes{" "}
             </Dropdown.Item>
             <Dropdown.Item
               onClick={onPinnedClicked}
               className="offcanvas-items"
             >
-              <FaMapPin /> Pinned Notes{" "}
+              <TbPinnedFilled /> Pinned Notes{" "}
             </Dropdown.Item>
             <hr />
             <Dropdown.Header className="offcanvas-items">Tags</Dropdown.Header>

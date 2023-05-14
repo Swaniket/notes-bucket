@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Card, Badge } from "react-bootstrap";
 import { FaEye, FaPenAlt, FaTrashAlt } from "react-icons/fa";
 import { TbPinned, TbPinnedFilled } from "react-icons/tb";
+import { BiArchiveIn } from "react-icons/bi";
 import { formattedDate } from "../../../utils/formatDate";
 import DynamicModal from "../../Modals/DynamicModal";
 import { DynamicContentModal } from "../..";
-import "./index.css";
-import { useDispatch, useSelector } from "react-redux";
 import {
   deleteNote,
   editNote,
@@ -16,7 +16,7 @@ import {
 } from "../../../redux/slice/notesSlice";
 import { toast } from "react-toastify";
 import EditNote from "../EditNote";
-import { BiArchiveIn } from "react-icons/bi";
+import "./index.css";
 
 function Note({
   noteId,
