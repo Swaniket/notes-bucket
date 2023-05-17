@@ -54,7 +54,8 @@ function Header() {
   };
 
   const onArchiveClicked = () => {
-    console.log("Archive is clicked");
+    handleMenuClose();
+    navigate("/archive");
   };
 
   const onPinnedClicked = () => {

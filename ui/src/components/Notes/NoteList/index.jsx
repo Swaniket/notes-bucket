@@ -4,13 +4,18 @@ import SearchNotes from "../SearchNotes";
 import Note from "../Note";
 import "./index.css";
 
-function NoteList({ notes }) {
-  const pinnedNotes = notes.filter((note) => note?.isPinned === "true");
-  const otherNotes = notes.filter((note) => note?.isPinned !== "true");
+function NoteList({ notes, renderArchive = false }) {
+  const pinnedNotes = notes.filter(
+    (note) => note?.isPinned === "true" && note?.isArchived !== "true"
+  );
+  const otherNotes = notes.filter(
+    (note) => note?.isPinned !== "true" && note?.isArchived !== "true"
+  );
+  const archiveNotes = notes.filter((note) => note?.isArchived === "true");
 
   return (
     <>
-      {pinnedNotes && pinnedNotes?.length > 0 && (
+      {pinnedNotes && !renderArchive && pinnedNotes?.length > 0 && (
         <>
           <h6 className="note-section">PINNED NOTES</h6>
           <Container className="note-container">
@@ -32,7 +37,7 @@ function NoteList({ notes }) {
         </>
       )}
 
-      {otherNotes && otherNotes?.length > 0 && (
+      {otherNotes && !renderArchive && otherNotes?.length > 0 && (
         <>
           <h6 className="note-section">OTHERS</h6>
           <Container className="note-container">
@@ -53,6 +58,28 @@ function NoteList({ notes }) {
           </Container>
         </>
       )}
+
+      {renderArchive ? (
+        <>
+          <h6 className="note-section">ARCHIVE NOTES</h6>
+          <Container className="note-container">
+            {archiveNotes.map((note) => (
+              <Note
+                key={note?.noteId}
+                noteId={note?.noteId}
+                title={note?.heading}
+                body={note?.body}
+                createdAt={note?.createdAt}
+                updatedAt={note?.updatedAt}
+                tagName={note?.tagName}
+                tagId={note?.tagId}
+                isPinned={note?.isArchived === "true" ? true : false}
+                isArchived={note?.isArchived === "true" ? true : false}
+              />
+            ))}
+          </Container>
+        </>
+      ) : null}
     </>
   );
 }

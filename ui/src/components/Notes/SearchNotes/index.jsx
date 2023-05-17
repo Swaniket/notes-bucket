@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getNotes, getNotesState } from "../../../redux/slice/notesSlice";
 
 function SearchNotes(OriginalComponent) {
-  return function WrappedComponent() {
+  return function WrappedComponent(props) {
     const dispatch = useDispatch();
 
     const {
@@ -29,7 +29,7 @@ function SearchNotes(OriginalComponent) {
       notesToShow = filteredNotes;
     }
 
-    return <OriginalComponent notes={notesToShow} />;
+    return <OriginalComponent {...props} notes={notesToShow} />;
   };
 }
 

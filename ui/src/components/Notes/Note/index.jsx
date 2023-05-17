@@ -66,10 +66,19 @@ function Note({
   };
 
   const onArchiveClick = () => {
-    const editedNote = {
-      noteId: noteId,
-      isArchived: "true",
-    };
+    let editedNote = {};
+
+    if (isArchived === true) {
+      editedNote = {
+        noteId: noteId,
+        isArchived: "false",
+      };
+    } else {
+      editedNote = {
+        noteId: noteId,
+        isArchived: "true",
+      };
+    }
 
     dispatch(editNote(editedNote));
   };
@@ -92,7 +101,7 @@ function Note({
 
   useEffect(() => {
     if (editNoteSuccess && editNoteMessage) {
-      toast.success("Pin toggled successfully", {
+      toast.success(editNoteMessage, {
         toastId: "success-pinned-note-toast",
       });
       dispatch(getNotes());
