@@ -8,9 +8,9 @@ import {
   Offcanvas,
 } from "react-bootstrap";
 import { FaSignOutAlt, FaTags } from "react-icons/fa";
-import { BiArchiveIn } from "react-icons/bi";
+import { BiArchive } from "react-icons/bi";
 import { GrAdd } from "react-icons/gr";
-import { TbSettings2, TbPinnedFilled } from "react-icons/tb";
+import { TbSettings2, TbPinnedFilled, TbNotes } from "react-icons/tb";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
@@ -56,6 +56,11 @@ function Header() {
   const onArchiveClicked = () => {
     handleMenuClose();
     navigate("/archive");
+  };
+
+  const onAllNotesClicked = () => {
+    handleMenuClose();
+    navigate("/home");
   };
 
   const onPinnedClicked = () => {
@@ -118,16 +123,22 @@ function Header() {
             <hr />
             <Dropdown.Header className="offcanvas-items">Notes</Dropdown.Header>
             <Dropdown.Item
-              onClick={onArchiveClicked}
+              onClick={onAllNotesClicked}
               className="offcanvas-items"
             >
-              <BiArchiveIn /> Archived Notes{" "}
+              <TbNotes /> All Notes{" "}
             </Dropdown.Item>
             <Dropdown.Item
               onClick={onPinnedClicked}
               className="offcanvas-items"
             >
               <TbPinnedFilled /> Pinned Notes{" "}
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={onArchiveClicked}
+              className="offcanvas-items"
+            >
+              <BiArchive /> Archived Notes{" "}
             </Dropdown.Item>
             <hr />
             <Dropdown.Header className="offcanvas-items">Tags</Dropdown.Header>

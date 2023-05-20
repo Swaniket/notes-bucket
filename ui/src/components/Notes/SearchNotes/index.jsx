@@ -26,8 +26,11 @@ function SearchNotes(OriginalComponent) {
     ) {
       notesToShow = filteredNotesByTag?.notes;
     } else {
+      // Most probably this is an object, make it into an array
       notesToShow = filteredNotes;
     }
+
+    // console.log("notesToShow", notesToShow)
 
     return <OriginalComponent {...props} notes={notesToShow} />;
   };

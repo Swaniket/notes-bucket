@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Card, Badge } from "react-bootstrap";
 import { FaEye, FaPenAlt, FaTrashAlt } from "react-icons/fa";
 import { TbPinned, TbPinnedFilled } from "react-icons/tb";
-import { BiArchiveIn } from "react-icons/bi";
+import { BiArchiveIn, BiArchiveOut } from "react-icons/bi";
 import { formattedDate } from "../../../utils/formatDate";
 import DynamicModal from "../../Modals/DynamicModal";
 import { DynamicContentModal } from "../..";
@@ -171,7 +171,7 @@ function Note({
 
           {/* Archive Note */}
           <Badge bg="light" className="badge-button" onClick={onArchiveClick}>
-            <BiArchiveIn />
+            {isArchived ? <BiArchiveOut /> : <BiArchiveIn />}
           </Badge>
 
           {/* Delete Note */}
