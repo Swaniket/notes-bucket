@@ -8,7 +8,7 @@ import {
   Offcanvas,
 } from "react-bootstrap";
 import { FaSignOutAlt, FaTags } from "react-icons/fa";
-import { BiArchive } from "react-icons/bi";
+import { BiArchive, BiTrash } from "react-icons/bi";
 import { GrAdd } from "react-icons/gr";
 import { TbSettings2, TbPinnedFilled, TbNotes } from "react-icons/tb";
 import { useSelector, useDispatch } from "react-redux";
@@ -51,6 +51,11 @@ function Header() {
   const onLogoutClicked = () => {
     setShowMenu(false);
     setOpenConfirmModal(true);
+  };
+
+  const onTrashClicked = () => {
+    setShowMenu(false);
+    // setOpenConfirmModal(true);
   };
 
   const onArchiveClicked = () => {
@@ -153,6 +158,12 @@ function Header() {
             </Dropdown.Item>
             <div className="footer">
               <hr />
+              <Dropdown.Item
+                onClick={onTrashClicked}
+                className="offcanvas-items"
+              >
+                <BiTrash /> Trash
+              </Dropdown.Item>
               <Dropdown.Item
                 onClick={onLogoutClicked}
                 className="offcanvas-items"

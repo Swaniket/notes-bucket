@@ -1,0 +1,15 @@
+.svg-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.svg-styles {
+    height: 35%;
+    width: 35%;
+}
+
+.no-notes-text {
+    text-align: center;
+    margin: 3rem;
+    color: rgba(48, 45, 45, 0.781);
+}
