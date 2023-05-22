@@ -141,9 +141,15 @@ export const notesSlice = createSlice({
       let setObj = {};
 
       setObj["shouldConsider"] = true;
-      setObj["notes"] = current(state.notes).filter((note) => {
-        return note?.tagId === tagId;
-      });
+
+      if (
+        current(state.notes) instanceof Array &&
+        current(state.notes).length > 0
+      ) {
+        setObj["notes"] = current(state.notes)?.filter((note) => {
+          return note?.tagId === tagId;
+        });
+      }
 
       state.filteredNotesByTag = setObj;
     },

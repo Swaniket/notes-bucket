@@ -14,9 +14,18 @@ function NoteList({ notes, renderArchive = false }) {
   let otherNotes = [];
   let archiveNotes = [];
 
+  console.log("notes", notes);
+
+  // When notes is Array
   if (notes instanceof Array && notes?.length === 0) {
     noNoteIndicator = true;
-  } else {
+  }
+  // When notes is undefined or null
+  else if (!notes) {
+    noNoteIndicator = true;
+  }
+  // When its an object
+  else {
     if (notes instanceof Object && Object.keys(notes).length === 0) {
       noNoteIndicator = true;
     } else {
@@ -36,28 +45,12 @@ function NoteList({ notes, renderArchive = false }) {
 
   if (!renderArchive && noNoteIndicator) {
     return (
-      // <>
-      //   <div style={{ padding: "40px" }}>
-      //     <span className="svg-wrapper">
-      //       <img src={noNotes} className="svg-styles" />
-      //     </span>
-      //     <h5 className="no-notes-text">Notes you add appear here</h5>
-      //   </div>
-      // </>
       <NoNotes svgImage={noNotes} helperText="Notes you add appear here" />
     );
   }
 
   if (renderArchive && noArchiveNoteIndicator) {
     return (
-      // <>
-      //   <div style={{ padding: "40px" }}>
-      //     <span className="svg-wrapper">
-      //       <img src={noArchiveNotes} className="svg-styles" />
-      //     </span>
-      //     <h5 className="no-notes-text">Your archived notes appear here</h5>
-      //   </div>
-      // </>
       <NoNotes
         svgImage={noArchiveNotes}
         helperText="Your archived notes appear here"
