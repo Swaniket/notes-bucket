@@ -14,8 +14,6 @@ function NoteList({ notes, renderArchive = false }) {
   let otherNotes = [];
   let archiveNotes = [];
 
-  console.log("notes", notes);
-
   // When notes is Array
   if (notes instanceof Array && notes?.length === 0) {
     noNoteIndicator = true;

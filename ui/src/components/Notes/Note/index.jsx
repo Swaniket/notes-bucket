@@ -13,6 +13,7 @@ import {
   getNotes,
   getNotesState,
   resetEditNotesState,
+  resetDeleteNoteState,
 } from "../../../redux/slice/notesSlice";
 import { toast } from "react-toastify";
 import EditNote from "../EditNote";
@@ -97,6 +98,10 @@ function Note({
         toastId: "success-delete-note-toast",
       });
     }
+
+    return () => {
+      dispatch(resetDeleteNoteState());
+    };
   }, [deleteNoteError, deleteNoteSuccess]);
 
   useEffect(() => {
@@ -114,7 +119,7 @@ function Note({
 
   return (
     <>
-      <Card className="note-card">
+      <Card className="custom-card">
         <Card.Body>
           {/* Heading and Tag */}
           <Card.Title className="custom-title mb-0">

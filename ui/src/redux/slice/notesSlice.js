@@ -125,6 +125,11 @@ export const notesSlice = createSlice({
       state.editNoteLoading = false;
       state.editNoteMessage = "";
     },
+    resetDeleteNoteState: (state) => {
+      state.deleteNoteError = false;
+      state.deleteNoteSuccess = false;
+      state.deleteNoteLoading = false;
+    },
     filterNotes: (state, action) => {
       state.filteredNotes = current(state.notes).filter((note) => {
         return note?.heading
@@ -247,6 +252,7 @@ export const {
   resetGetNotesState,
   resetEditNotesState,
   resetCreateNotesState,
+  resetDeleteNoteState,
   filterNotes,
   resetFilter,
   filterNotesByTag,
