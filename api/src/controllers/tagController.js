@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import {
   getTagsByUserFromDB,
   createNewTagInDB,
+  editTagInDB,
 } from "../db/functions/tagFunctions.js";
 import { generateRequestBody } from "../helpers/utils.js";
 import { v4 as uuidv4 } from "uuid";
@@ -73,4 +74,71 @@ const createNewTag = asyncHandler(async (req, res) => {
   }
 });
 
-export { getTags, createNewTag };
+/*
+    @DESC   - Edit an existing Tag
+    @ROUTE  - POST: /api/tags/edit
+    @ACCESS - Protected 
+*/
+const editTag = asyncHandler(async (req, res) => {
+  const userIdFromToken = req.user.userId;
+  const { tagId, tagName } = req.body;
+
+  if (!tagId || !tagName) {
+    res.status(400);
+    throw new Error("Invalid Form Submission");
+  }
+
+  try {
+    // Get the list of tags for the given user
+    const tags = await getTagsByUserFromDB(userIdFromToken);
+
+    if (tags?.length > 0) {
+      let tagExists = false;
+
+      tags?.forEach((tag) => {
+        if (tag?.tagId === tagId) tagExists = true;
+      });
+
+      if (!tagExists) {
+        res
+          .status(404)
+          .json(
+            generateRequestBody("error", 404, "No Tag found with the ID", [])
+          );
+        return;
+      }
+
+      // Edit the tag in the DB if it exists
+      const result = await editTagInDB({ tagId, tagName });
+
+      if (result?.affectedRows === 1) {
+        res
+          .status(201)
+          .json(
+            generateRequestBody("success", 201, "Tag Edited Successfully", {})
+          );
+      } else {
+        res.status(500);
+        throw new Error("Tag can't be edited");
+      }
+    } else {
+      res
+        .status(404)
+        .json(
+          generateRequestBody("error", 404, "No Tag found with the ID", [])
+        );
+    }
+  } catch (err) {
+    res.status(500);
+    throw new Error(err);
+  }
+});
+
+/*
+    @DESC   - Delete a Tag
+    @ROUTE  - POST: /api/tags/delete
+    @ACCESS - Protected 
+*/
+const deleteTag = asyncHandler(async (req, res) => {});
+
+export { getTags, createNewTag, editTag, deleteTag };

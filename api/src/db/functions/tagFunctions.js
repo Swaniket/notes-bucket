@@ -23,3 +23,11 @@ export const getTagByIdFromDB = async (tagId) => {
 
   return result;
 };
+
+// Edit Tag in DB
+export const editTagInDB = async ({ tagId, tagName }) => {
+  const queryString = `UPDATE Tags SET tagName="${tagName}" WHERE tagId="${tagId}"`;
+  const result = await executeQuery(queryString);
+
+  return result;
+};
