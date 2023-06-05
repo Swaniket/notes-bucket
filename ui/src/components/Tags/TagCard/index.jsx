@@ -31,6 +31,10 @@ function TagCard({ id, name }) {
               </Badge>
             </h6>
           </Card.Title>
+
+          <Card.Subtitle className="mb-2 text-muted">
+            <span className="custom-date"> ID: {id}</span>
+          </Card.Subtitle>
         </Card.Body>
       </Card>
     </>

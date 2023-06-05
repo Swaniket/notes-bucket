@@ -15,13 +15,22 @@ function Tags() {
   }, []);
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
-      {tags?.map(({ tagId, tagName }) => (
-        <TagCard key={tagId} id={tagId} name={tagName} />
-      ))}
-    </div>
+    <>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h2 className="note-section" style={{ margin: "10px" }}>
+          TAGS
+        </h2>
+        {tags?.map(({ tagId, tagName }) => (
+          <TagCard key={tagId} id={tagId} name={tagName} />
+        ))}
+      </div>
+    </>
   );
 }
 
