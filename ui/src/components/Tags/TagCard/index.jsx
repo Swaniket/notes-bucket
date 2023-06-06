@@ -9,7 +9,10 @@ function TagCard({ id, name }) {
       <Card className="custom-card tags-card">
         <Card.Body>
           {/* Heading and Tag */}
-          <Card.Title className="custom-title mb-0">
+          <Card.Title
+            className="custom-title mb-0"
+            style={{ alignItems: "center" }}
+          >
             <h6>
               <span className="limited-text">{name}</span>
             </h6>
@@ -31,10 +34,6 @@ function TagCard({ id, name }) {
               </Badge>
             </h6>
           </Card.Title>
-
-          <Card.Subtitle className="mb-2 text-muted">
-            <span className="custom-date"> ID: {id}</span>
-          </Card.Subtitle>
         </Card.Body>
       </Card>
     </>
