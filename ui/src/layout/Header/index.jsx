@@ -1,16 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import {
-  Navbar,
-  Container,
-  Dropdown,
-  Button,
-  Offcanvas,
-} from "react-bootstrap";
-import { FaSignOutAlt, FaTags } from "react-icons/fa";
-import { BiArchive, BiTrash } from "react-icons/bi";
-import { GrAdd } from "react-icons/gr";
-import { TbSettings2, TbPinnedFilled, TbNotes } from "react-icons/tb";
+import { Navbar, Container } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
@@ -20,6 +10,7 @@ import {
   SearchBar,
   CreateTag,
 } from "../../components";
+import AuthorizedMenu from "./AuthorizedMenu";
 import "./index.css";
 
 function Header() {
@@ -51,11 +42,6 @@ function Header() {
   const onLogoutClicked = () => {
     setShowMenu(false);
     setOpenConfirmModal(true);
-  };
-
-  const onTrashClicked = () => {
-    setShowMenu(false);
-    // setOpenConfirmModal(true);
   };
 
   const onArchiveClicked = () => {
@@ -93,90 +79,6 @@ function Header() {
     );
   };
 
-  const AuthorizedMenu = () => {
-    return (
-      <>
-        <div onClick={handleMenuShow}>
-          <TbSettings2
-            size={30}
-            style={{ color: "black", cursor: "pointer" }}
-          />
-        </div>
-
-        <Offcanvas
-          show={showMenu}
-          onHide={handleMenuClose}
-          placement="end"
-          style={{ width: "15%" }}
-        >
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Settings</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <h6>
-              Welcome, <strong>{user?.firstName}</strong>
-            </h6>{" "}
-            <span>
-              <small>
-                <strong>{user?.email}</strong>
-              </small>
-            </span>
-            <hr />
-            <Button size="sm" className="btn btn-dark w-100">
-              View Profile
-            </Button>
-            <hr />
-            <Dropdown.Header className="offcanvas-items">Notes</Dropdown.Header>
-            <Dropdown.Item
-              onClick={onAllNotesClicked}
-              className="offcanvas-items"
-            >
-              <TbNotes /> All Notes{" "}
-            </Dropdown.Item>
-            <Dropdown.Item
-              onClick={onPinnedClicked}
-              className="offcanvas-items"
-            >
-              <TbPinnedFilled /> Pinned Notes{" "}
-            </Dropdown.Item>
-            <Dropdown.Item
-              onClick={onArchiveClicked}
-              className="offcanvas-items"
-            >
-              <BiArchive /> Archived Notes{" "}
-            </Dropdown.Item>
-            <hr />
-            <Dropdown.Header className="offcanvas-items">Tags</Dropdown.Header>
-            <Dropdown.Item onClick={onAddClicked} className="offcanvas-items">
-              <GrAdd /> Add Tag
-            </Dropdown.Item>
-            <Dropdown.Item
-              onClick={onManageClicked}
-              className="offcanvas-items"
-            >
-              <FaTags /> Manage Tags
-            </Dropdown.Item>
-            <div className="footer">
-              <hr />
-              <Dropdown.Item
-                onClick={onTrashClicked}
-                className="offcanvas-items"
-              >
-                <BiTrash /> Trash
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={onLogoutClicked}
-                className="offcanvas-items"
-              >
-                <FaSignOutAlt /> Logout
-              </Dropdown.Item>
-            </div>
-          </Offcanvas.Body>
-        </Offcanvas>
-      </>
-    );
-  };
-
   return (
     <div>
       <Navbar>
@@ -188,7 +90,20 @@ function Header() {
           {location.pathname === "/home" && <SearchBar />}
 
           <Navbar.Collapse className="justify-content-end">
-            {user && <AuthorizedMenu />}
+            {user && (
+              <AuthorizedMenu
+                showMenu={showMenu}
+                handleMenuShow={handleMenuShow}
+                handleMenuClose={handleMenuClose}
+                user={user}
+                onAllNotesClicked={onAllNotesClicked}
+                onPinnedClicked={onPinnedClicked}
+                onArchiveClicked={onArchiveClicked}
+                onAddClicked={onAddClicked}
+                onManageClicked={onManageClicked}
+                onLogoutClicked={onLogoutClicked}
+              />
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

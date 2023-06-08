@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Badge } from "react-bootstrap";
 import { FaPenAlt, FaTrashAlt } from "react-icons/fa";
+import { DynamicContentModal, EditTag } from "../..";
 import "./index.css";
 
 function TagCard({ id, name }) {
+  const [openEditModal, setOpenEditModal] = useState(false);
+
   return (
     <>
       <Card className="custom-card tags-card">
@@ -21,7 +24,7 @@ function TagCard({ id, name }) {
               <Badge
                 bg="dark"
                 className="badge-button"
-                // onClick={() => setOpenEditModal(true)}
+                onClick={() => setOpenEditModal(true)}
               >
                 <FaPenAlt />
               </Badge>
@@ -36,6 +39,18 @@ function TagCard({ id, name }) {
           </Card.Title>
         </Card.Body>
       </Card>
+      <DynamicContentModal
+        show={openEditModal}
+        handleClose={() => setOpenEditModal(false)}
+        title="Edit Tag"
+        children={
+          <EditTag
+            closeModal={() => setOpenEditModal(false)}
+            id={id}
+            name={name}
+          />
+        }
+      />
     </>
   );
 }

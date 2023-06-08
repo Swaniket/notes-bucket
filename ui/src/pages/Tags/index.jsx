@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTags, getTagsState } from "../../redux/slice/tagsSlice";
 import { Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
-import { TagCard } from "../../components";
+import { TagCard, CreateTag, DynamicContentModal } from "../../components";
 
 function Tags() {
   const dispatch = useDispatch();
+
+  const [openAddTagModal, setOpenAddTagModal] = useState(false);
 
   const { isLoading } = useSelector(getTagsState);
   const { tags } = useSelector(getTagsState);
@@ -33,11 +35,20 @@ function Tags() {
         ))}
         {/* Create New Note Button */}
         <span className="floating-button">
-          <Button className="btn btn-dark create">
+          <Button
+            className="btn btn-dark create"
+            onClick={() => setOpenAddTagModal(true)}
+          >
             <FaPlus size={35} />
           </Button>
         </span>
       </div>
+      <DynamicContentModal
+        show={openAddTagModal}
+        handleClose={() => setOpenAddTagModal(false)}
+        title="Add a new Tag"
+        children={<CreateTag closeModal={() => setOpenAddTagModal(false)} />}
+      />
     </>
   );
 }
