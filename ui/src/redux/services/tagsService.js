@@ -24,6 +24,18 @@ const createNewTag = async (token, reqBody) => {
   return response.data;
 };
 
-const tagsService = { getTags, createNewTag };
+// API to Edit an existing tag
+const editExisitingTag = async (token, reqBody) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await apiNotesBucket.post("tags/edit", reqBody, config);
+  return response.data;
+};
+
+const tagsService = { getTags, createNewTag, editExisitingTag };
 
 export default tagsService;

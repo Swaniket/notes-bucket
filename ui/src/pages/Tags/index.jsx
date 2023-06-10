@@ -12,7 +12,6 @@ function Tags() {
 
   const { isLoading } = useSelector(getTagsState);
   const { tags } = useSelector(getTagsState);
-  console.log("tags", tags);
 
   useEffect(() => {
     dispatch(getTags());

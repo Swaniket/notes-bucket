@@ -11,6 +11,10 @@ const initialState = {
   createTagSuccess: false,
   createTagLoading: false,
   createTagMessage: "",
+  editTagError: false,
+  editTagSuccess: false,
+  editTagLoading: false,
+  editTagMessage: "",
 };
 
 // Get All Tags
@@ -52,6 +56,26 @@ export const createTag = createAsyncThunk(
   }
 );
 
+// Edit tag
+export const editTag = createAsyncThunk(
+  "tags/edit",
+  async (editedTag, thunkAPI) => {
+    try {
+      const userToken = thunkAPI.getState()?.user?.user?.token;
+      return await tagsService.editExisitingTag(userToken, editedTag);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const tagsSlice = createSlice({
   name: "tags",
   initialState,
@@ -60,6 +84,12 @@ export const tagsSlice = createSlice({
       state.createTagSuccess = false;
       state.createTagError = false;
       state.createTagLoading = false;
+      state.createTagMessage = "";
+    },
+    resetEditTag: (state) => {
+      state.editTagSuccess = false;
+      state.editTagLoading = false;
+      state.editTagError = false;
       state.createTagMessage = "";
     },
   },
@@ -99,12 +129,30 @@ export const tagsSlice = createSlice({
         state.createTagSuccess = false;
         state.createTagError = true;
         state.createTagMessage = action.payload.message;
+      })
+      .addCase(editTag.pending, (state) => {
+        state.editTagLoading = true;
+        state.editTagSuccess = false;
+        state.editTagError = false;
+        state.editTagMessage = "";
+      })
+      .addCase(editTag.fulfilled, (state, action) => {
+        state.editTagLoading = false;
+        state.editTagSuccess = true;
+        state.editTagError = false;
+        state.editTagMessage = action.payload.message;
+      })
+      .addCase(editTag.rejected, (state, action) => {
+        state.editTagLoading = false;
+        state.editTagSuccess = false;
+        state.editTagError = true;
+        state.editTagMessage = action.payload.message;
       });
   },
 });
 
 export const getTagsState = (state) => state.tags;
 
-export const { resetCreateTag } = tagsSlice.actions;
+export const { resetCreateTag, resetEditTag } = tagsSlice.actions;
 
 export default tagsSlice.reducer;
