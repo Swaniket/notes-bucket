@@ -30,8 +30,6 @@ function SearchNotes(OriginalComponent) {
       notesToShow = filteredNotes;
     }
 
-    // console.log("notesToShow", notesToShow)
-
     return <OriginalComponent {...props} notes={notesToShow} />;
   };
 }

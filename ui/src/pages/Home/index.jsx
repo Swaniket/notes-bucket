@@ -5,7 +5,7 @@ import {
   NoteList,
   DynamicContentModal,
   CreateNote,
-  TagList,
+  TagBar,
 } from "../../components";
 import "./index.css";
 
@@ -22,7 +22,7 @@ function Home() {
 
   return (
     <div className="home-body">
-      <TagList />
+      <TagBar />
 
       {/* The List of the Notes */}
       <NoteList />

@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { InputGroup, Button, Form } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
-import { filterNotes, resetFilter } from "../../../../redux/slice/notesSlice";
+import { filterNotes, resetFilter } from "../../redux/slice/notesSlice";
 import "./index.css";
 
-function SearchBar() {
+function DynamicSearchBar() {
   const dispatch = useDispatch();
   const [searchKey, setSearchKey] = useState("");
 
@@ -38,4 +38,4 @@ function SearchBar() {
   );
 }
 
-export default SearchBar;
+export default DynamicSearchBar;

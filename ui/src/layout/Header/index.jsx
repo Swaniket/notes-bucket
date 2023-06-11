@@ -7,7 +7,7 @@ import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
 import {
   DynamicModal,
   DynamicContentModal,
-  SearchBar,
+  DynamicSearchBar,
   CreateTag,
 } from "../../components";
 import AuthorizedMenu from "./AuthorizedMenu";
@@ -87,7 +87,7 @@ function Header() {
             <HeaderLogo />
           </Navbar.Brand>
           <Navbar.Toggle />
-          {location.pathname === "/home" && <SearchBar />}
+          {location.pathname === "/home" && <DynamicSearchBar />}
 
           <Navbar.Collapse className="justify-content-end">
             {user && (
