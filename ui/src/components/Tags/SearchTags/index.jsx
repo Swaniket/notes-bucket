@@ -6,13 +6,13 @@ function SearchTags(OriginalComponent) {
   return function WrappedComponent(props) {
     const dispatch = useDispatch();
 
-    const { tags } = useSelector(getTagsState);
+    const { filteredTags } = useSelector(getTagsState);
 
     useEffect(() => {
       dispatch(getTags());
     }, []);
 
-    return <OriginalComponent {...props} tags={tags} />;
+    return <OriginalComponent {...props} tags={filteredTags} />;
   };
 }
 

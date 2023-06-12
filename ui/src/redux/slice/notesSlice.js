@@ -137,7 +137,7 @@ export const notesSlice = createSlice({
           .includes(action.payload.toLowerCase());
       });
     },
-    resetFilter: (state) => {
+    resetNotesFilter: (state) => {
       state.filteredNotes = state.notes;
     },
     filterNotesByTag: (state, action) => {
@@ -254,7 +254,7 @@ export const {
   resetCreateNotesState,
   resetDeleteNoteState,
   filterNotes,
-  resetFilter,
+  resetNotesFilter,
   filterNotesByTag,
   resetFilterByTag,
 } = notesSlice.actions;

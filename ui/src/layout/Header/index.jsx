@@ -87,7 +87,8 @@ function Header() {
             <HeaderLogo />
           </Navbar.Brand>
           <Navbar.Toggle />
-          {location.pathname === "/home" && <DynamicSearchBar />}
+          {location.pathname === "/home" && <DynamicSearchBar type="notes" />}
+          {location.pathname === "/tags" && <DynamicSearchBar type="tags" />}
 
           <Navbar.Collapse className="justify-content-end">
             {user && (

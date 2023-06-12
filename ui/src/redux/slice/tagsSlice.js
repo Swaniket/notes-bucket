@@ -1,8 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import tagsService from "../services/tagsService";
 
 const initialState = {
   tags: [],
+  filteredTags: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -92,6 +93,16 @@ export const tagsSlice = createSlice({
       state.editTagError = false;
       state.createTagMessage = "";
     },
+    filterTags: (state, action) => {
+      state.filteredTags = current(state.tags).filter((tag) => {
+        return tag?.tagName
+          ?.toLowerCase()
+          .includes(action.payload.toLowerCase());
+      });
+    },
+    resetTagsFilter: (state) => {
+      state.filteredTags = state.tags;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -105,6 +116,7 @@ export const tagsSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.tags = action.payload.data;
+        state.filteredTags = action.payload.data;
       })
       .addCase(getTags.rejected, (state, action) => {
         state.isLoading = false;
@@ -153,6 +165,7 @@ export const tagsSlice = createSlice({
 
 export const getTagsState = (state) => state.tags;
 
-export const { resetCreateTag, resetEditTag } = tagsSlice.actions;
+export const { resetCreateTag, resetEditTag, filterTags, resetTagsFilter } =
+  tagsSlice.actions;
 
 export default tagsSlice.reducer;
