@@ -16,6 +16,9 @@ const initialState = {
   editTagSuccess: false,
   editTagLoading: false,
   editTagMessage: "",
+  deleteTagError: false,
+  deleteTagSuccess: false,
+  deleteTagLoading: false,
 };
 
 // Get All Tags
@@ -77,6 +80,26 @@ export const editTag = createAsyncThunk(
   }
 );
 
+export const deleteTag = createAsyncThunk(
+  "tags/delete",
+  async (tagId, thunkAPI) => {
+    try {
+      const userToken = thunkAPI.getState()?.user?.user?.token;
+      return await tagsService.deleteExistingTag(userToken, tagId);
+      // Make the api call
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const tagsSlice = createSlice({
   name: "tags",
   initialState,
@@ -93,6 +116,11 @@ export const tagsSlice = createSlice({
       state.editTagError = false;
       state.createTagMessage = "";
     },
+    resetDeleteTag: (state) => {
+      state.deleteTagError = false;
+      state.deleteTagLoading = false;
+      state.deleteTagSuccess = false;
+    },
     filterTags: (state, action) => {
       state.filteredTags = current(state.tags).filter((tag) => {
         return tag?.tagName
@@ -106,6 +134,7 @@ export const tagsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Get Tags
       .addCase(getTags.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
@@ -124,6 +153,8 @@ export const tagsSlice = createSlice({
         state.isSuccess = false;
         state.message = action.payload.message;
       })
+
+      // Create Tag
       .addCase(createTag.pending, (state) => {
         state.createTagLoading = true;
         state.createTagSuccess = false;
@@ -142,6 +173,8 @@ export const tagsSlice = createSlice({
         state.createTagError = true;
         state.createTagMessage = action.payload.message;
       })
+
+      // Edit Tag
       .addCase(editTag.pending, (state) => {
         state.editTagLoading = true;
         state.editTagSuccess = false;
@@ -159,13 +192,35 @@ export const tagsSlice = createSlice({
         state.editTagSuccess = false;
         state.editTagError = true;
         state.editTagMessage = action.payload.message;
+      })
+
+      // Delete Tag
+      .addCase(deleteTag.pending, (state) => {
+        state.deleteTagError = false;
+        state.deleteTagSuccess = false;
+        state.deleteTagLoading = true;
+      })
+      .addCase(deleteTag.fulfilled, (state) => {
+        state.deleteTagError = false;
+        state.deleteTagSuccess = true;
+        state.deleteTagLoading = false;
+      })
+      .addCase(deleteTag.rejected, (state) => {
+        state.deleteTagError = true;
+        state.deleteTagSuccess = false;
+        state.deleteTagLoading = false;
       });
   },
 });
 
 export const getTagsState = (state) => state.tags;
 
-export const { resetCreateTag, resetEditTag, filterTags, resetTagsFilter } =
-  tagsSlice.actions;
+export const {
+  resetCreateTag,
+  resetEditTag,
+  resetDeleteTag,
+  filterTags,
+  resetTagsFilter,
+} = tagsSlice.actions;
 
 export default tagsSlice.reducer;

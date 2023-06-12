@@ -1,11 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Badge } from "react-bootstrap";
 import { FaPenAlt, FaTrashAlt } from "react-icons/fa";
-import { DynamicContentModal, EditTag } from "../..";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { DynamicContentModal, DynamicModal, EditTag } from "../..";
+import {
+  getTags,
+  deleteTag,
+  getTagsState,
+  resetDeleteTag,
+} from "../../../redux/slice/tagsSlice";
 import "./index.css";
 
 function TagCard({ id, name }) {
+  const dispatch = useDispatch();
+  const { deleteTagError, deleteTagSuccess } = useSelector(getTagsState);
+
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
+    useState(false);
+
+  const onDeleteTag = () => {
+    dispatch(deleteTag(id));
+  };
+
+  useEffect(() => {
+    if (deleteTagError) {
+      toast.error("Tag could not be deleted", {
+        toastId: "failed-delete-tag-toast",
+      });
+    }
+
+    if (deleteTagSuccess) {
+      setOpenDeleteConfirmationModal(false);
+      dispatch(getTags());
+      toast.success("Tag deleted successfully", {
+        toastId: "success-delete-tag-toast",
+      });
+    }
+
+    return () => {
+      dispatch(resetDeleteTag());
+    };
+  }, [deleteTagError, deleteTagSuccess]);
 
   return (
     <>
@@ -31,7 +68,7 @@ function TagCard({ id, name }) {
               <Badge
                 bg="light"
                 className="badge-button"
-                // onClick={() => setOpenDeleteConfirmationModal(true)}
+                onClick={() => setOpenDeleteConfirmationModal(true)}
               >
                 <FaTrashAlt color="brown" />
               </Badge>
@@ -50,6 +87,16 @@ function TagCard({ id, name }) {
             name={name}
           />
         }
+      />
+      <DynamicModal
+        show={openDeleteConfirmationModal}
+        handleClose={() => setOpenDeleteConfirmationModal(false)}
+        primaryButtonAction={onDeleteTag}
+        primaryButtonText="Delete"
+        title="Caution!"
+        bodyMessage="Are you sure you want to delete this tag? **All the notes under this tag will also be deleted.** This action is irreversible."
+        secondaryButtonText="Cancel"
+        isRenderedMarkdown={true}
       />
     </>
   );

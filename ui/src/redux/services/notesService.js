@@ -52,8 +52,6 @@ const deleteExistingNote = async (token, noteId) => {
     noteId: noteId,
   };
 
-  console.log("reqBody", reqBody);
-
   const response = await apiNotesBucket.post("/notes/delete", reqBody, config);
   return response.data;
 };

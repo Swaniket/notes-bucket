@@ -36,6 +36,27 @@ const editExisitingTag = async (token, reqBody) => {
   return response.data;
 };
 
-const tagsService = { getTags, createNewTag, editExisitingTag };
+// API call to delete an existing tag
+const deleteExistingTag = async (token, tagId) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const reqBody = {
+    tagId: tagId,
+  };
+
+  const response = await apiNotesBucket.post("tags/delete", reqBody, config);
+  return response.data;
+};
+
+const tagsService = {
+  getTags,
+  createNewTag,
+  editExisitingTag,
+  deleteExistingTag,
+};
 
 export default tagsService;
