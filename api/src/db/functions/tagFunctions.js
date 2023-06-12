@@ -4,7 +4,6 @@ import { executeQuery } from "../../helpers/dbHelper.js";
 export const getTagsByUserFromDB = async (userId) => {
   const queryString = `SELECT tagId, tagName FROM Tags WHERE userId = '${userId}'`;
   const result = await executeQuery(queryString);
-
   return result;
 };
 
@@ -12,7 +11,6 @@ export const getTagsByUserFromDB = async (userId) => {
 export const createNewTagInDB = async ({ userId, tagId, tagName }) => {
   const queryString = `INSERT INTO Tags (tagId, tagName, userId) VALUES ('${tagId}', '${tagName}', '${userId}')`;
   const result = await executeQuery(queryString);
-
   return result;
 };
 
@@ -20,7 +18,6 @@ export const createNewTagInDB = async ({ userId, tagId, tagName }) => {
 export const getTagByIdFromDB = async (tagId) => {
   const queryString = `SELECT tagId FROM Tags WHERE tagId = '${tagId}'`;
   const result = await executeQuery(queryString);
-
   return result;
 };
 
@@ -28,6 +25,12 @@ export const getTagByIdFromDB = async (tagId) => {
 export const editTagInDB = async ({ tagId, tagName }) => {
   const queryString = `UPDATE Tags SET tagName="${tagName}" WHERE tagId="${tagId}"`;
   const result = await executeQuery(queryString);
+  return result;
+};
 
+// Delete Tag from DB
+export const deleteTagInDB = async (tagId) => {
+  const queryString = `DELETE FROM Tags WHERE tagId="${tagId}"`;
+  const result = await executeQuery(queryString);
   return result;
 };

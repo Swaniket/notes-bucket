@@ -61,3 +61,9 @@ export const deleteNoteFromDB = async (noteId) => {
   const result = await executeQuery(queryString);
   return result;
 };
+
+export const getNotesByTagIdFromDB = async (userId, tagId) => {
+  const queryString = `SELECT * FROM Notes WHERE createdBy='${userId}' AND tagId = '${tagId}'`;
+  const result = await executeQuery(queryString);
+  return result;
+};

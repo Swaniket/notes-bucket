@@ -3,7 +3,12 @@ import {
   getTagsByUserFromDB,
   createNewTagInDB,
   editTagInDB,
+  deleteTagInDB,
 } from "../db/functions/tagFunctions.js";
+import {
+  getNotesByTagIdFromDB,
+  deleteNoteFromDB,
+} from "../db/functions/noteFunctions.js";
 import { generateRequestBody } from "../helpers/utils.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -139,6 +144,70 @@ const editTag = asyncHandler(async (req, res) => {
     @ROUTE  - POST: /api/tags/delete
     @ACCESS - Protected 
 */
-const deleteTag = asyncHandler(async (req, res) => {});
+const deleteTag = asyncHandler(async (req, res) => {
+  const userIdFromToken = req.user.userId;
+  const { tagId } = req.body;
+
+  if (!tagId) {
+    res.status(400);
+    throw new Error("Invalid Form Submission");
+  }
+
+  try {
+    // Get the list of tags for the given user
+    const tags = await getTagsByUserFromDB(userIdFromToken);
+
+    if (tags?.length > 0) {
+      let tagExists = false;
+
+      tags?.forEach((tag) => {
+        if (tag?.tagId === tagId) tagExists = true;
+      });
+
+      if (!tagExists) {
+        res
+          .status(404)
+          .json(
+            generateRequestBody("error", 404, "No Tag found with the ID", [])
+          );
+        return;
+      }
+
+      // Delete the tag in the DB and all the notes under that tag if any exists
+      // Step 1 - Get all the notes with that perticular tagId & userId
+      const notes = await getNotesByTagIdFromDB(userIdFromToken, tagId);
+
+      if (notes && notes?.length > 0) {
+        // Step 2 - Delete the notes for the tagId
+        notes.forEach(async (note) => {
+          await deleteNoteFromDB(note?.noteId);
+        });
+      }
+
+      // Step 3 - Delete the tag
+      const result = await deleteTagInDB(tagId);
+
+      if (result?.affectedRows === 1) {
+        res
+          .status(202)
+          .json(
+            generateRequestBody("accepted", 202, "Tag Deleted Successfully", {})
+          );
+      } else {
+        res.status(500);
+        throw new Error("Tag can't be deleted");
+      }
+    } else {
+      res
+        .status(404)
+        .json(
+          generateRequestBody("error", 404, "No Tag found with the ID", [])
+        );
+    }
+  } catch (err) {
+    res.status(500);
+    throw new Error(err);
+  }
+});
 
 export { getTags, createNewTag, editTag, deleteTag };
