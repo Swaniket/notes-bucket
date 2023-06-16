@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { InputGroup, Button, Form } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
-import { filterNotes, resetNotesFilter } from "../../redux/slice/notesSlice";
-import { filterTags, resetTagsFilter } from "../../redux/slice/tagsSlice";
+import { filterNotes, resetNotesFilter } from "../../../redux/slice/notesSlice";
+import { filterTags, resetTagsFilter } from "../../../redux/slice/tagsSlice";
 import "./index.css";
 
 function DynamicSearchBar({ type = null }) {

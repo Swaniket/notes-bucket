@@ -1,7 +1,7 @@
 import React from "react";
 import TagCard from "../TagCard";
 import SearchTags from "../SearchTags";
-import NoNotes from "../../Notes/NoNotes";
+import NoData from "../../common/NoData";
 import noTags from "../../../assets/no_tags.svg";
 
 function TagList({ tags }) {
@@ -11,7 +11,7 @@ function TagList({ tags }) {
 
   if (noTagIndicator) {
     return (
-      <NoNotes svgImage={noTags} helperText="Tags that you add appear here" />
+      <NoData svgImage={noTags} helperText="Tags that you add appear here" />
     );
   }
 

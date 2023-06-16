@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.css";
 
-function NoNotes({ svgImage, helperText }) {
+function NoData({ svgImage, helperText }) {
   return (
     <>
       <div style={{ padding: "40px" }}>
@@ -14,4 +14,4 @@ function NoNotes({ svgImage, helperText }) {
   );
 }
 
-export default NoNotes;
+export default NoData;

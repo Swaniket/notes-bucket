@@ -2,9 +2,10 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import SearchNotes from "../SearchNotes";
 import Note from "../Note";
+import NoData from "../../common/NoData";
 import noNotes from "../../../assets/no_notes.svg";
 import noArchiveNotes from "../../../assets/no_archive_notes.svg";
-import NoNotes from "../NoNotes";
+
 import "./index.css";
 
 function NoteList({ notes, renderArchive = false }) {
@@ -42,14 +43,12 @@ function NoteList({ notes, renderArchive = false }) {
   }
 
   if (!renderArchive && noNoteIndicator) {
-    return (
-      <NoNotes svgImage={noNotes} helperText="Notes you add appear here" />
-    );
+    return <NoData svgImage={noNotes} helperText="Notes you add appear here" />;
   }
 
   if (renderArchive && noArchiveNoteIndicator) {
     return (
-      <NoNotes
+      <NoData
         svgImage={noArchiveNotes}
         helperText="Your archived notes appear here"
       />
