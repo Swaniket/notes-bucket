@@ -1,9 +1,9 @@
 import React from "react";
 import { Dropdown, Button, Offcanvas } from "react-bootstrap";
 import { FaSignOutAlt, FaTags } from "react-icons/fa";
-import { BiArchive, BiTrash } from "react-icons/bi";
+import { BiArchive } from "react-icons/bi";
 import { GrAdd } from "react-icons/gr";
-import { TbSettings2, TbPinnedFilled, TbNotes } from "react-icons/tb";
+import { TbSettings2, TbNotes } from "react-icons/tb";
 
 function AuthorizedMenu({
   showMenu,
@@ -11,7 +11,6 @@ function AuthorizedMenu({
   handleMenuClose,
   user,
   onAllNotesClicked,
-  onPinnedClicked,
   onArchiveClicked,
   onAddClicked,
   onManageClicked,
@@ -52,9 +51,6 @@ function AuthorizedMenu({
             className="offcanvas-items"
           >
             <TbNotes /> All Notes{" "}
-          </Dropdown.Item>
-          <Dropdown.Item onClick={onPinnedClicked} className="offcanvas-items">
-            <TbPinnedFilled /> Pinned Notes{" "}
           </Dropdown.Item>
           <Dropdown.Item onClick={onArchiveClicked} className="offcanvas-items">
             <BiArchive /> Archived Notes{" "}

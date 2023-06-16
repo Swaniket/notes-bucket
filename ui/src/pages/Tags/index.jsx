@@ -2,19 +2,14 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import { CreateTag, DynamicContentModal, TagList } from "../../components";
+import "./index.css";
 
 function Tags() {
   const [openAddTagModal, setOpenAddTagModal] = useState(false);
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      <div className="tags-page-container">
         <h2 className="note-section" style={{ margin: "10px" }}>
           TAGS
         </h2>

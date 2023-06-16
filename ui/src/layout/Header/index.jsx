@@ -54,10 +54,6 @@ function Header() {
     navigate("/home");
   };
 
-  const onPinnedClicked = () => {
-    console.log("Pinned is clicked");
-  };
-
   const onManageClicked = () => {
     handleMenuClose();
     navigate("/tags");
@@ -98,7 +94,6 @@ function Header() {
                 handleMenuClose={handleMenuClose}
                 user={user}
                 onAllNotesClicked={onAllNotesClicked}
-                onPinnedClicked={onPinnedClicked}
                 onArchiveClicked={onArchiveClicked}
                 onAddClicked={onAddClicked}
                 onManageClicked={onManageClicked}
