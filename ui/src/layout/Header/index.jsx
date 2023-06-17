@@ -64,6 +64,11 @@ function Header() {
     setOpenAddTagModal(true);
   };
 
+  const onAboutClicked = () => {
+    setShowMenu(false);
+    navigate("/about");
+  };
+
   const HeaderLogo = () => {
     return (
       <Link to="/home" className="header-logo">
@@ -98,6 +103,7 @@ function Header() {
                 onAddClicked={onAddClicked}
                 onManageClicked={onManageClicked}
                 onLogoutClicked={onLogoutClicked}
+                onAboutClicked={onAboutClicked}
               />
             )}
           </Navbar.Collapse>

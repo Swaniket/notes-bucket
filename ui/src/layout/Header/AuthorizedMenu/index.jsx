@@ -1,9 +1,10 @@
 import React from "react";
 import { Dropdown, Button, Offcanvas } from "react-bootstrap";
-import { FaSignOutAlt, FaTags } from "react-icons/fa";
+import { FaSignOutAlt, FaTags, FaInfoCircle } from "react-icons/fa";
 import { BiArchive } from "react-icons/bi";
 import { GrAdd } from "react-icons/gr";
 import { TbSettings2, TbNotes } from "react-icons/tb";
+import { HiOutlineMenuAlt1 } from "react-icons/hi";
 
 function AuthorizedMenu({
   showMenu,
@@ -15,11 +16,15 @@ function AuthorizedMenu({
   onAddClicked,
   onManageClicked,
   onLogoutClicked,
+  onAboutClicked,
 }) {
   return (
     <>
       <div onClick={handleMenuShow}>
-        <TbSettings2 size={30} style={{ color: "black", cursor: "pointer" }} />
+        <HiOutlineMenuAlt1
+          size={30}
+          style={{ color: "black", cursor: "pointer" }}
+        />
       </div>
 
       <Offcanvas
@@ -37,7 +42,7 @@ function AuthorizedMenu({
           </h6>{" "}
           <span>
             <small>
-              <strong>{user?.email}</strong>
+              <strong>E:</strong> {user?.email}
             </small>
           </span>
           <hr />
@@ -70,6 +75,10 @@ function AuthorizedMenu({
               className="offcanvas-items"
             >
               <FaSignOutAlt /> Logout
+            </Dropdown.Item>
+            <hr />
+            <Dropdown.Item onClick={onAboutClicked} className="offcanvas-items">
+              <FaInfoCircle /> About
             </Dropdown.Item>
           </div>
         </Offcanvas.Body>

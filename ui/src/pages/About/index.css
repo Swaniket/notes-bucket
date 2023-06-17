@@ -1,0 +1,10 @@
+.about-wrapper {
+    margin: 50px;
+}
+
+.about-item-card {
+    padding: 30px;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+}
