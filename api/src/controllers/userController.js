@@ -8,6 +8,7 @@ import { generateJWTToken } from "../helpers/jwtHelper.js";
 import {
   findUserFromDB,
   createUserInDB,
+  getNotesStatsDB,
 } from "../db/functions/userFunctions.js";
 import { generateRequestBody } from "../helpers/utils.js";
 
@@ -110,16 +111,36 @@ const registerUser = asyncHandler(async (req, res) => {
 // @ACCESS-  Protected
 const getUserProfile = asyncHandler(async (req, res) => {
   if (req.user) {
-    res.status(200).json(
-      generateRequestBody("success", 200, "Request Successful", {
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        email: req.user.email,
-      })
-    );
-  }
+    // Get the notes stats
+    const userIdFromToken = req.user.userId;
 
-  res.send(req.user);
+    try {
+      const [totalNotes, pinnedNotes, archivedNotes] = await getNotesStatsDB(
+        userIdFromToken
+      );
+
+      res.status(200).json(
+        generateRequestBody("success", 200, "Request Successful", {
+          firstName: req.user.firstName,
+          lastName: req.user.lastName,
+          email: req.user.email,
+          stats: {
+            totalNotes: totalNotes.totalNotes,
+            pinnedNotes: pinnedNotes.pinnedNotes,
+            archivedNotes: archivedNotes.archivedNotes,
+          },
+        })
+      );
+    } catch (err) {
+      res.status(500);
+      throw new Error(err);
+    }
+  }
 });
 
-export { loginUser, registerUser, getUserProfile };
+// @DESC-    Modify User Profile
+// @ROUTE-   POST: /api/users/me/edit
+// @ACCESS-  Protected
+const editUserProfile = asyncHandler(async (req, res) => {});
+
+export { loginUser, registerUser, getUserProfile, editUserProfile };

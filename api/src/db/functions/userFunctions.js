@@ -27,3 +27,23 @@ export const createUserInDB = async ({
   const createdUser = findUserFromDB(email);
   return createdUser;
 };
+
+// Returns State from DB
+export const getNotesStatsDB = async (userId) => {
+  const result = [];
+
+  const queryStringTotalNotes = `SELECT count(*) as totalNotes FROM Notes WHERE createdBy = '${userId}'`;
+  const totalNotes = await executeQuery(queryStringTotalNotes);
+  result.push(totalNotes[0]);
+
+  const queryStringPinnedNotes = `SELECT count(*) as pinnedNotes FROM Notes WHERE createdBy = '${userId}' AND isPinned = 'true'`;
+  const pinnedNotes = await executeQuery(queryStringPinnedNotes);
+  result.push(pinnedNotes[0]);
+
+  const queryStringArchivedNotes = `SELECT count(*) as archivedNotes FROM Notes WHERE createdBy = '${userId}' AND isArchived = 'true'`;
+  const archivedNotes = await executeQuery(queryStringArchivedNotes);
+  result.push(archivedNotes[0]);
+
+  console.log("result", result);
+  return result;
+};

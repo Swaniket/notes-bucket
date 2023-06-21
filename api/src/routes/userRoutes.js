@@ -3,6 +3,7 @@ import {
   loginUser,
   registerUser,
   getUserProfile,
+  editUserProfile,
 } from "../controllers/userController.js";
 import { authenicated } from "../middleware/authMiddleware.js";
 
@@ -19,8 +20,13 @@ router.post("/login", loginUser);
 router.post("/register", registerUser);
 
 // @DESC-    Get User Profile
-// @ROUTE-   POST: /api/users/me
+// @ROUTE-   GET: /api/users/me
 // @ACCESS-  Protected
 router.get("/me", authenicated, getUserProfile);
+
+// @DESC-    Modify User Profile
+// @ROUTE-   POST: /api/users/me/edit
+// @ACCESS-  Protected
+router.get("/me/edit", authenicated, editUserProfile);
 
 export { router as userRouter };
