@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import { Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { NewNoteForm, DynamicContentModal } from "../..";
-import { getTags } from "../../../redux/slice/tagsSlice";
 import {
   editNote,
   getNotesState,
@@ -84,9 +83,6 @@ function EditNote({
     });
 
   useEffect(() => {
-    // May not need this
-    // dispatch(getTags());
-
     return () => {
       dispatch(resetEditNotesState());
     };
@@ -106,7 +102,7 @@ function EditNote({
     }
   }, [editNoteError, editNoteSuccess, editNoteMessage]);
 
-  const EditNoteButtons = () => {
+  const EditNoteButton = () => {
     return (
       <>
         <div>
@@ -146,7 +142,7 @@ function EditNote({
           isArchived={isArchivedState}
           setIsArchived={transformArchivedValue}
         />
-        <EditNoteButtons />
+        <EditNoteButton />
       </Form>
       <DynamicContentModal
         show={openPreviewModal}

@@ -11,6 +11,7 @@ function AuthorizedMenu({
   handleMenuShow,
   handleMenuClose,
   user,
+  onViewProfileClicked,
   onAllNotesClicked,
   onArchiveClicked,
   onAddClicked,
@@ -46,7 +47,11 @@ function AuthorizedMenu({
             </small>
           </span>
           <hr />
-          <Button size="sm" className="btn btn-dark w-100">
+          <Button
+            size="sm"
+            className="btn btn-dark w-100"
+            onClick={onViewProfileClicked}
+          >
             View Profile
           </Button>
           <hr />

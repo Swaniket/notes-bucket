@@ -28,7 +28,7 @@ export const createUserInDB = async ({
   return createdUser;
 };
 
-// Returns State from DB
+// Returns Stats from DB
 export const getNotesStatsDB = async (userId) => {
   const result = [];
 

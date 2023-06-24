@@ -17,3 +17,6 @@ export { default as TagCard } from "./Tags/TagCard";
 export { default as TagList } from "./Tags/TagList";
 
 export { default as DynamicSearchBar } from "./common/DynamicSearchBar";
+
+export { default as ProfileStats } from "./Profile/ProfileStats";
+export { default as EditProfile } from "./Profile/EditProfile";

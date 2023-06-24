@@ -39,6 +39,11 @@ function Header() {
     setOpenConfirmModal(false);
   };
 
+  const onViewProfileClicked = () => {
+    setShowMenu(false);
+    navigate("/me");
+  };
+
   const onLogoutClicked = () => {
     setShowMenu(false);
     setOpenConfirmModal(true);
@@ -98,6 +103,7 @@ function Header() {
                 handleMenuShow={handleMenuShow}
                 handleMenuClose={handleMenuClose}
                 user={user}
+                onViewProfileClicked={onViewProfileClicked}
                 onAllNotesClicked={onAllNotesClicked}
                 onArchiveClicked={onArchiveClicked}
                 onAddClicked={onAddClicked}
