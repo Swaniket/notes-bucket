@@ -8,9 +8,9 @@ import { FaSignInAlt, FaInfoCircle } from "react-icons/fa";
 import {
   loginUser,
   setRememberMeState,
-  getAuthState,
+  getUserState,
   resetStateMessages,
-} from "../../redux/slice/authSlice";
+} from "../../redux/slice/userSlice";
 import { loginSchema } from "./Schema";
 import { LoginForm } from "../../components";
 import "./index.css";
@@ -20,7 +20,7 @@ function Login() {
   const navigate = useNavigate();
 
   const { user, isLoading, isError, isSuccess, message } =
-    useSelector(getAuthState);
+    useSelector(getUserState);
 
   const initialValues = {
     email: "",

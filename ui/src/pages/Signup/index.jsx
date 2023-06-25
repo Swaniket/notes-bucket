@@ -10,15 +10,15 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import {
   registerUser,
-  getAuthState,
+  getUserState,
   resetStateMessages,
-} from "../../redux/slice/authSlice";
+} from "../../redux/slice/userSlice";
 
 function Signup() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLoading, isError, isSuccess, message } = useSelector(getAuthState);
+  const { isLoading, isError, isSuccess, message } = useSelector(getUserState);
 
   const initialValues = {
     firstName: "",

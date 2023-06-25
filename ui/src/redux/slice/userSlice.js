@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "../services/authService";
+import userService from "../services/userService";
 import { checkIfValidUser } from "../../utils/checkIfValidUser";
 
 const user =
@@ -8,11 +8,16 @@ const user =
 
 const initialState = {
   user: checkIfValidUser(user) ? user : null,
+  userStats: [],
   rememberMe: false,
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
+  userDataError: false,
+  userDataSuccess: false,
+  userDataLoading: false,
+  userDataMessage: "",
 };
 
 // User Login
@@ -21,7 +26,7 @@ export const loginUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const rememberMe = thunkAPI.getState()?.user?.rememberMe;
-      return await authService.login(user, rememberMe);
+      return await userService.login(user, rememberMe);
     } catch (error) {
       const message =
         (error.response &&
@@ -40,7 +45,7 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData, thunkAPI) => {
     try {
-      return await authService.register(userData);
+      return await userService.register(userData);
     } catch (error) {
       const message =
         (error.response &&
@@ -56,10 +61,30 @@ export const registerUser = createAsyncThunk(
 
 // User Logout
 export const logout = createAsyncThunk("auth/logout", async () => {
-  await authService.logout();
+  await userService.logout();
 });
 
-export const authSlice = createSlice({
+// Get User Profile
+export const getUserProfile = createAsyncThunk(
+  "user/getProfile",
+  async (_, thunkAPI) => {
+    try {
+      const userToken = thunkAPI.getState()?.user?.user?.token;
+      return await userService.getProfile(userToken);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const userSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
@@ -113,14 +138,32 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(getUserProfile.pending, (state) => {
+        state.userDataLoading = true;
+        state.userDataError = false;
+        state.userDataSuccess = false;
+        state.userDataMessage = "";
+      })
+      .addCase(getUserProfile.fulfilled, (state, action) => {
+        state.userDataLoading = false;
+        state.userDataError = false;
+        state.userDataSuccess = true;
+        state.userStats = action.payload.data?.stats;
+      })
+      .addCase(getUserProfile.rejected, (state, action) => {
+        state.userDataLoading = false;
+        state.userDataError = true;
+        state.userDataSuccess = false;
+        state.userDataMessage = action.payload;
       });
   },
 });
 
-export const getAuthState = (state) => state.user;
+export const getUserState = (state) => state.user;
 export const getRememberMeState = (state) => state.user.rememberMe;
 
 export const { reset, resetStateMessages, setRememberMeState } =
-  authSlice.actions;
+  userSlice.actions;
 
-export default authSlice.reducer;
+export default userSlice.reducer;

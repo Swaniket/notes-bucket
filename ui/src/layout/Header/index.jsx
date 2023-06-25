@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Navbar, Container } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { getAuthState, logout, reset } from "../../redux/slice/authSlice";
+import { getUserState, logout, reset } from "../../redux/slice/userSlice";
 import {
   DynamicModal,
   DynamicContentModal,
@@ -22,7 +22,7 @@ function Header() {
   const [openAddTagModal, setOpenAddTagModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
-  const { user } = useSelector(getAuthState);
+  const { user } = useSelector(getUserState);
 
   const handleMenuClose = () => setShowMenu(false);
   const handleMenuShow = () => setShowMenu(true);

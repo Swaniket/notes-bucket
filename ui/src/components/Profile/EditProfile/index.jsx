@@ -4,14 +4,11 @@ import { useSelector } from "react-redux";
 import { editProfileSchema } from "./Schema";
 import { Form, Button } from "react-bootstrap";
 import EditProfileForm from "../../Forms/EditProfileForm";
-import { getAuthState } from "../../../redux/slice/authSlice";
 
-function EditProfile() {
-  const { user } = useSelector(getAuthState);
-
+function EditProfile({ firstName, lastName }) {
   const initialValues = {
-    firstName: user?.firstName,
-    lastName: user?.lastName,
+    firstName: firstName,
+    lastName: lastName,
   };
 
   const onSubmit = (values) => {
@@ -47,7 +44,7 @@ function EditProfile() {
   return (
     <>
       <div style={{ margin: "40px" }}>
-        <h2 style={{ margin: "10px" }}>Update Profile Information</h2>
+        <h2 style={{ marginBottom: "35px" }}>Update Profile Information</h2>
         <Form onSubmit={handleSubmit}>
           <EditProfileForm
             values={values}

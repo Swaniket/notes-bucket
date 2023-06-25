@@ -30,10 +30,23 @@ const logout = () => {
   localStorage.removeItem("user");
 };
 
-const authService = {
+// API call for getting the user profile
+const getProfile = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await apiNotesBucket.get("/users/me", config);
+  return response.data;
+};
+
+const userService = {
   login,
   register,
   logout,
+  getProfile,
 };
 
-export default authService;
+export default userService;

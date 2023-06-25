@@ -1,10 +1,10 @@
-import { getAuthState } from "../redux/slice/authSlice";
+import { getUserState } from "../redux/slice/userSlice";
 import { Navigate, Outlet } from "react-router";
 import { useSelector } from "react-redux";
 import { checkIfValidUser } from "../utils/checkIfValidUser";
 
 const useAuth = () => {
-  const userState = useSelector(getAuthState);
+  const userState = useSelector(getUserState);
   // @TODO: Implement a more solid auth
   if (checkIfValidUser(userState.user)) {
     return true;

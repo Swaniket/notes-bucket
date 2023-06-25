@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProfile, getUserState } from "../../../redux/slice/userSlice";
+import "./index.css";
 
 function ProfileStats() {
+  const dispatch = useDispatch();
+  const { userStats } = useSelector(getUserState);
+
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, []);
+
   return (
     <>
-      <Card style={{ margin: "40px" }}>
-        <Card.Body style={{ textAlign: "center", paddingBottom: 0 }}>
-          3
-          <p>
-            <strong>Total Notes</strong>
-          </p>
+      <Card className="profile-stats-card">
+        <Card.Body className="profile-stats-card-body">
+          <h3>{userStats?.totalNotes}</h3>
+          <p>Total Notes</p>
         </Card.Body>
         <Card.Footer style={{ backgroundColor: "white" }}>
           <Button size="sm" className="btn btn-dark w-100">
@@ -17,12 +25,10 @@ function ProfileStats() {
           </Button>
         </Card.Footer>
       </Card>
-      <Card style={{ margin: "40px" }}>
-        <Card.Body style={{ textAlign: "center", paddingBottom: 0 }}>
-          2
-          <p>
-            <strong>Archived Notes</strong>
-          </p>
+      <Card className="profile-stats-card">
+        <Card.Body className="profile-stats-card-body">
+          <h3>{userStats?.archivedNotes}</h3>
+          <p>Archived Notes</p>
         </Card.Body>
         <Card.Footer style={{ backgroundColor: "white" }}>
           <Button size="sm" className="btn btn-dark w-100">

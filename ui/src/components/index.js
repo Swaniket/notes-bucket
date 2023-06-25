@@ -20,3 +20,4 @@ export { default as DynamicSearchBar } from "./common/DynamicSearchBar";
 
 export { default as ProfileStats } from "./Profile/ProfileStats";
 export { default as EditProfile } from "./Profile/EditProfile";
+export { default as ProfileGeneralInformation } from "./Profile/ProfileGeneralInformation";

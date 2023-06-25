@@ -1,21 +1,25 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Row, Col, Card, Button } from "react-bootstrap";
-import { ProfileStats, EditProfile } from "../../components";
+import {
+  ProfileStats,
+  EditProfile,
+  ProfileGeneralInformation,
+} from "../../components";
+import { getUserState } from "../../redux/slice/userSlice";
 
 function Profile() {
-  // @TODO: Make this dynamic
+  const { user } = useSelector(getUserState);
+
   return (
     <div style={{ margin: "40px" }}>
       <Row>
         <Col xs lg="5">
-          <div>
-            <h2 style={{ margin: "10px" }}>Welcome, Swaniket</h2>
-            <h6 style={{ margin: "10px" }}>Email: swaniket@email.com</h6>
-          </div>
+          <ProfileGeneralInformation user={user} />
           <ProfileStats />
         </Col>
         <Col>
-          <EditProfile />
+          <EditProfile firstName={user?.firstName} lastName={user?.lastName} />
         </Col>
       </Row>
     </div>
