@@ -44,6 +44,12 @@ export const getNotesStatsDB = async (userId) => {
   const archivedNotes = await executeQuery(queryStringArchivedNotes);
   result.push(archivedNotes[0]);
 
-  console.log("result", result);
+  return result;
+};
+
+// Edit a User Profile in DB
+export const editProfileInDB = async ({ userId, firstName, lastName }) => {
+  const queryString = `UPDATE users SET firstName='${firstName}', lastName='${lastName}' WHERE userId='${userId}'`;
+  const result = await executeQuery(queryString);
   return result;
 };

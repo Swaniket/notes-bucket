@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfile, getUserState } from "../../../redux/slice/userSlice";
@@ -6,6 +7,8 @@ import "./index.css";
 
 function ProfileStats() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { userStats } = useSelector(getUserState);
 
   useEffect(() => {
@@ -20,7 +23,13 @@ function ProfileStats() {
           <p>Total Notes</p>
         </Card.Body>
         <Card.Footer style={{ backgroundColor: "white" }}>
-          <Button size="sm" className="btn btn-dark w-100">
+          <Button
+            size="sm"
+            className="btn btn-dark w-100"
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
             View Notes
           </Button>
         </Card.Footer>
@@ -31,7 +40,13 @@ function ProfileStats() {
           <p>Archived Notes</p>
         </Card.Body>
         <Card.Footer style={{ backgroundColor: "white" }}>
-          <Button size="sm" className="btn btn-dark w-100">
+          <Button
+            size="sm"
+            className="btn btn-dark w-100"
+            onClick={() => {
+              navigate("/archive");
+            }}
+          >
             View Archived Notes
           </Button>
         </Card.Footer>

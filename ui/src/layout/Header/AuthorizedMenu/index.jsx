@@ -3,8 +3,9 @@ import { Dropdown, Button, Offcanvas } from "react-bootstrap";
 import { FaSignOutAlt, FaTags, FaInfoCircle } from "react-icons/fa";
 import { BiArchive } from "react-icons/bi";
 import { GrAdd } from "react-icons/gr";
-import { TbSettings2, TbNotes } from "react-icons/tb";
+import { TbNotes } from "react-icons/tb";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
+import { BsFillPersonFill } from "react-icons/bs";
 
 function AuthorizedMenu({
   showMenu,
@@ -52,6 +53,9 @@ function AuthorizedMenu({
             className="btn btn-dark w-100"
             onClick={onViewProfileClicked}
           >
+            <BsFillPersonFill
+              style={{ marginBottom: "2px", marginRight: "1px" }}
+            />
             View Profile
           </Button>
           <hr />

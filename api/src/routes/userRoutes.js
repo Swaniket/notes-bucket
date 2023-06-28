@@ -27,6 +27,6 @@ router.get("/me", authenicated, getUserProfile);
 // @DESC-    Modify User Profile
 // @ROUTE-   POST: /api/users/me/edit
 // @ACCESS-  Protected
-router.get("/me/edit", authenicated, editUserProfile);
+router.post("/me/edit", authenicated, editUserProfile);
 
 export { router as userRouter };

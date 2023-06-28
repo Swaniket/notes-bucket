@@ -7,8 +7,10 @@ import {
 import { generateJWTToken } from "../helpers/jwtHelper.js";
 import {
   findUserFromDB,
+  findUserByIDFromDB,
   createUserInDB,
   getNotesStatsDB,
+  editProfileInDB,
 } from "../db/functions/userFunctions.js";
 import { generateRequestBody } from "../helpers/utils.js";
 
@@ -141,6 +143,46 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @DESC-    Modify User Profile
 // @ROUTE-   POST: /api/users/me/edit
 // @ACCESS-  Protected
-const editUserProfile = asyncHandler(async (req, res) => {});
+const editUserProfile = asyncHandler(async (req, res) => {
+  const userIdFromToken = req.user.userId;
+  const { firstName, lastName } = req.body;
+
+  if (!firstName || !lastName) {
+    res.status(400);
+    throw new Error("Invalid Form Submission");
+  }
+
+  try {
+    // Validate if a profile exists with the ID
+    const user = await findUserByIDFromDB(userIdFromToken);
+
+    if (!user) {
+      res
+        .status(404)
+        .json(generateRequestBody("error", 404, "User does not exists", {}));
+      return;
+    }
+
+    const result = await editProfileInDB({
+      userId: userIdFromToken,
+      firstName,
+      lastName,
+    });
+
+    if (result?.affectedRows === 1) {
+      res
+        .status(201)
+        .json(
+          generateRequestBody("success", 201, "Profile Edited Successfully", {})
+        );
+    } else {
+      res.status(500);
+      throw new Error("Profile can't be edited");
+    }
+  } catch (err) {
+    res.status(500);
+    throw new Error(err);
+  }
+});
 
 export { loginUser, registerUser, getUserProfile, editUserProfile };
