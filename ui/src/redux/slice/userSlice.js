@@ -8,7 +8,7 @@ const user =
 
 const initialState = {
   user: checkIfValidUser(user) ? user : null,
-  userStats: [],
+  userProfile: {},
   rememberMe: false,
   isError: false,
   isSuccess: false,
@@ -18,6 +18,10 @@ const initialState = {
   userDataSuccess: false,
   userDataLoading: false,
   userDataMessage: "",
+  updateUserError: false,
+  updateUserSuccess: false,
+  updateUserLoading: false,
+  updateUserMessage: "",
 };
 
 // User Login
@@ -84,6 +88,26 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
+// Update User Profile
+export const updateUserProfile = createAsyncThunk(
+  "user/updateProfile",
+  async (userProfile, thunkAPI) => {
+    try {
+      const userToken = thunkAPI.getState()?.user?.user?.token;
+      return await userService.updateProfile(userToken, userProfile);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "auth",
   initialState,
@@ -94,6 +118,7 @@ export const userSlice = createSlice({
       state.isSuccess = false;
       state.message = "";
       state.user = null;
+      state.userProfile = {};
       state.rememberMe = false;
     },
     resetStateMessages: (state) => {
@@ -102,12 +127,19 @@ export const userSlice = createSlice({
       state.isSuccess = false;
       state.message = "";
     },
+    resetUpdateUser: (state) => {
+      state.updateUserError = false;
+      state.updateUserLoading = false;
+      state.updateUserSuccess = false;
+      state.updateUserMessage = "";
+    },
     setRememberMeState: (state, action) => {
       state.rememberMe = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
+      // User Login
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
@@ -124,6 +156,8 @@ export const userSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+
+      // User Registration
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
@@ -139,6 +173,8 @@ export const userSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+
+      // Fetch User Profile
       .addCase(getUserProfile.pending, (state) => {
         state.userDataLoading = true;
         state.userDataError = false;
@@ -149,13 +185,33 @@ export const userSlice = createSlice({
         state.userDataLoading = false;
         state.userDataError = false;
         state.userDataSuccess = true;
-        state.userStats = action.payload.data?.stats;
+        state.userProfile = action.payload.data;
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         state.userDataLoading = false;
         state.userDataError = true;
         state.userDataSuccess = false;
         state.userDataMessage = action.payload;
+      })
+
+      // Update User Profile
+      .addCase(updateUserProfile.pending, (state) => {
+        state.updateUserError = false;
+        state.updateUserLoading = true;
+        state.updateUserSuccess = false;
+        state.updateUserMessage = "";
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.updateUserError = false;
+        state.updateUserLoading = false;
+        state.updateUserSuccess = true;
+        state.updateUserMessage = action.payload.message;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.updateUserError = true;
+        state.updateUserLoading = false;
+        state.updateUserSuccess = false;
+        state.updateUserMessage = action.payload.message;
       });
   },
 });
@@ -163,7 +219,11 @@ export const userSlice = createSlice({
 export const getUserState = (state) => state.user;
 export const getRememberMeState = (state) => state.user.rememberMe;
 
-export const { reset, resetStateMessages, setRememberMeState } =
-  userSlice.actions;
+export const {
+  reset,
+  resetStateMessages,
+  setRememberMeState,
+  resetUpdateUser,
+} = userSlice.actions;
 
 export default userSlice.reducer;

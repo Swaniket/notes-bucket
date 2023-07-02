@@ -42,11 +42,28 @@ const getProfile = async (token) => {
   return response.data;
 };
 
+// API Call for Edit User Profile
+const updateProfile = async (token, updatedProfile) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await apiNotesBucket.post(
+    "users/me/edit",
+    updatedProfile,
+    config
+  );
+  return response.data;
+};
+
 const userService = {
   login,
   register,
   logout,
   getProfile,
+  updateProfile,
 };
 
 export default userService;

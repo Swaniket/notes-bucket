@@ -1,19 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile, getUserState } from "../../../redux/slice/userSlice";
 import "./index.css";
 
-function ProfileStats() {
-  const dispatch = useDispatch();
+function ProfileStats({ userStats }) {
   const navigate = useNavigate();
-
-  const { userStats } = useSelector(getUserState);
-
-  useEffect(() => {
-    dispatch(getUserProfile());
-  }, []);
 
   return (
     <>

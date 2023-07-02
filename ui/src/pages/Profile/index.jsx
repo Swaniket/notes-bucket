@@ -1,25 +1,39 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Row, Col, Card, Button } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Row, Col } from "react-bootstrap";
 import {
   ProfileStats,
   EditProfile,
   ProfileGeneralInformation,
 } from "../../components";
-import { getUserState } from "../../redux/slice/userSlice";
+import { getUserState, getUserProfile } from "../../redux/slice/userSlice";
 
 function Profile() {
-  const { user } = useSelector(getUserState);
+  const dispatch = useDispatch();
+
+  const { userProfile } = useSelector(getUserState);
+
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, []);
 
   return (
     <div style={{ margin: "40px" }}>
       <Row>
         <Col xs lg="5">
-          <ProfileGeneralInformation user={user} />
-          <ProfileStats />
+          <ProfileGeneralInformation
+            firstName={userProfile?.firstName}
+            email={userProfile?.email}
+          />
+          <ProfileStats userStats={userProfile?.stats} />
         </Col>
         <Col>
-          <EditProfile firstName={user?.firstName} lastName={user?.lastName} />
+          {userProfile?.firstName && userProfile?.lastName && (
+            <EditProfile
+              firstName={userProfile?.firstName}
+              lastName={userProfile?.lastName}
+            />
+          )}
         </Col>
       </Row>
     </div>

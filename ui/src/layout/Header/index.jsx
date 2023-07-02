@@ -22,7 +22,7 @@ function Header() {
   const [openAddTagModal, setOpenAddTagModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
-  const { user } = useSelector(getUserState);
+  const { user, userProfile } = useSelector(getUserState);
 
   const handleMenuClose = () => setShowMenu(false);
   const handleMenuShow = () => setShowMenu(true);
@@ -102,7 +102,11 @@ function Header() {
                 showMenu={showMenu}
                 handleMenuShow={handleMenuShow}
                 handleMenuClose={handleMenuClose}
-                user={user}
+                user={
+                  userProfile?.firstName && userProfile?.email
+                    ? userProfile
+                    : user
+                }
                 onViewProfileClicked={onViewProfileClicked}
                 onAllNotesClicked={onAllNotesClicked}
                 onArchiveClicked={onArchiveClicked}

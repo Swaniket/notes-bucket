@@ -1,18 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { editProfileSchema } from "./Schema";
 import { Form, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 import EditProfileForm from "../../Forms/EditProfileForm";
+import {
+  getUserState,
+  getUserProfile,
+  updateUserProfile,
+  resetUpdateUser,
+} from "../../../redux/slice/userSlice";
 
 function EditProfile({ firstName, lastName }) {
+  const dispatch = useDispatch();
+  const {
+    updateUserSuccess,
+    updateUserError,
+    updateUserLoading,
+    updateUserMessage,
+  } = useSelector(getUserState);
+
   const initialValues = {
     firstName: firstName,
     lastName: lastName,
   };
 
+  useEffect(() => {
+    if (updateUserError) {
+      toast.error(updateUserMessage, { toastId: "failed-edit-user-toast" });
+    }
+
+    if (updateUserSuccess) {
+      toast.success(updateUserMessage, { toastId: "success-edit-user-toast" });
+      dispatch(getUserProfile());
+    }
+
+    return () => {
+      dispatch(resetUpdateUser());
+    };
+  }, [updateUserError, updateUserMessage, updateUserSuccess]);
+
   const onSubmit = (values) => {
-    console.log("value", values);
+    dispatch(updateUserProfile(values));
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -30,10 +60,9 @@ function EditProfile({ firstName, lastName }) {
             <Button
               className="btn btn-dark"
               type="submit"
-              //   disabled={editNoteLoading}
+              disabled={updateUserLoading}
             >
-              {/* {editNoteLoading ? "Loading…" : "Edit Note"} */}
-              Update Profile
+              {updateUserLoading ? "Loading…" : "Update Profile"}
             </Button>
           </section>
         </div>
