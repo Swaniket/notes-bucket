@@ -86,7 +86,7 @@ Notes bucket is a feature rich notes application, where user can create, edit, v
 - Node + ExpressJS
 - MySQL
 
-### How to run on local machine
+### How to run on the local machine
 
 You need to have the following installed in your system to run the project
 
@@ -103,8 +103,8 @@ After installing these -
 
 ### Roadmap
 
-- Add notes encryption in database.
-- Add forgot password module.
+- ~~Add notes encryption in the database~~.
+- Add the forgot password module.
 - Edit Password module.
 - First Login Instructions - Add a tag to get started.
 - Animations.
