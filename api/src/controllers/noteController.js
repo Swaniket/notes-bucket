@@ -9,6 +9,7 @@ import {
 } from "../db/functions/noteFunctions.js";
 import { convertDateTime, generateRequestBody } from "../helpers/utils.js";
 import { getTagByIdFromDB } from "../db/functions/tagFunctions.js";
+import { encryptText, decryptText } from "../helpers/cryptoHelper.js";
 
 /*
   @DESC   - Get Notes for a user
@@ -22,9 +23,14 @@ const getNotes = asyncHandler(async (req, res) => {
     const notes = await getNotesByUserFromDB(userIdFromToken);
 
     if (notes.length > 0 && notes[0].noteId !== null) {
+      // Decrypt the notes which are encrypted
+      const decryptedNotes = notes.map((note) => {
+        return { ...note, body: decryptText(note.body) };
+      });
+
       res
         .status(200)
-        .json(generateRequestBody("success", 200, "Success", notes));
+        .json(generateRequestBody("success", 200, "Success", decryptedNotes));
     } else {
       res
         .status(200)
@@ -75,7 +81,7 @@ const createNote = asyncHandler(async (req, res) => {
         createdAt: createdAt ? createdAt : convertDateTime(d + "UTC"),
         updatedAt: convertDateTime(d + "UTC"),
         heading: heading,
-        body: body,
+        body: encryptText(body),
         isPinned: isPinned ? isPinned : false,
         isArchived: isArchived ? isArchived : false,
         tagId: tagId,
@@ -133,7 +139,7 @@ const editNote = asyncHandler(async (req, res) => {
         noteId: noteId,
         updatedAt: convertDateTime(d + "UTC"),
         heading: heading ? heading : existingNote?.heading,
-        body: body ? body : existingNote?.body,
+        body: body ? encryptText(body) : existingNote?.body,
         isPinned: isPinned ? isPinned : existingNote?.isPinned,
         isArchived: isArchived ? isArchived : existingNote?.isArchived,
         tagId: tagId ? tagId : existingNote?.tagId,
