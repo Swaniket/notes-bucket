@@ -11,8 +11,12 @@ import {
   createUserInDB,
   getNotesStatsDB,
   editProfileInDB,
+  insertTokenInDB,
 } from "../db/functions/userFunctions.js";
-import { generateRequestBody } from "../helpers/utils.js";
+import {
+  generateRequestBody,
+  generateResetPasswordLink,
+} from "../helpers/utils.js";
 
 // @DESC-    User Login
 // @ROUTE-   POST: /api/users/login
@@ -37,7 +41,7 @@ const loginUser = asyncHandler(async (req, res) => {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          token: generateJWTToken(user.userId),
+          token: generateJWTToken({ id: user.userId }),
         })
       );
     } else {
@@ -95,7 +99,7 @@ const registerUser = asyncHandler(async (req, res) => {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          token: generateJWTToken(user.userId),
+          token: generateJWTToken({ id: user.userId }),
         })
       );
     } else {
@@ -185,4 +189,41 @@ const editUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { loginUser, registerUser, getUserProfile, editUserProfile };
+// @DESC-    Send the reset password link in the email
+// @ROUTE-   POST: /api/users/reset-password-email
+// @ACCESS-  Protected
+const sendResetPasswordEmail = asyncHandler(async (req, res) => {
+  const { email, userId } = req.user;
+  try {
+    const resetPasswordToken = generateJWTToken({ email }, "10m");
+    const result = await insertTokenInDB({ userId, token: resetPasswordToken });
+
+    if (result?.affectedRows !== 1) {
+      res.status(500);
+      throw new Error("Something went wrong");
+    }
+
+    // Generate the link
+    const resetPasswordLink = generateResetPasswordLink(resetPasswordToken);
+
+    // Send an email with the link
+    res.status(200).send(resetPasswordLink);
+  } catch (e) {
+    res.status(500);
+    throw new Error(e);
+  }
+});
+
+// @DESC-    Resets password in the DB
+// @ROUTE-   POST: /api/users/reset-password/:token
+// @ACCESS-  Public
+const resetPassword = asyncHandler(async (req, res) => {});
+
+export {
+  loginUser,
+  registerUser,
+  getUserProfile,
+  editUserProfile,
+  sendResetPasswordEmail,
+  resetPassword,
+};
