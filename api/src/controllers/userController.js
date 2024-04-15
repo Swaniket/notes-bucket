@@ -4,7 +4,7 @@ import {
   comparePasswords,
   getHashedPassword,
 } from "../helpers/bcryptHelper.js";
-import { generateJWTToken } from "../helpers/jwtHelper.js";
+import { generateJWTToken, verifyJWTToken } from "../helpers/jwtHelper.js";
 import {
   findUserFromDB,
   findUserByIDFromDB,
@@ -12,6 +12,7 @@ import {
   getNotesStatsDB,
   editProfileInDB,
   insertTokenInDB,
+  editProfilePasswordInDB,
 } from "../db/functions/userFunctions.js";
 import {
   generateRequestBody,
@@ -224,9 +225,6 @@ const sendResetPasswordEmail = asyncHandler(async (req, res) => {
         res.status(200).json(generateRequestBody("success", 200, "Email Send"));
       }
     });
-
-    // Send an email with the link
-    // res.status(200).send(resetPasswordLink);
   } catch (e) {
     res.status(500);
     throw new Error(e);
@@ -236,7 +234,54 @@ const sendResetPasswordEmail = asyncHandler(async (req, res) => {
 // @DESC-    Resets password in the DB
 // @ROUTE-   POST: /api/users/reset-password/:token
 // @ACCESS-  Public
-const resetPassword = asyncHandler(async (req, res) => {});
+const resetPassword = asyncHandler(async (req, res) => {
+  const { token } = req.query;
+  const { password } = req.body;
+
+  try {
+    // Validation
+    if (!token || !password) {
+      res.status(400);
+      throw new Error(
+        "Invalid Form Submission, expected a token in query string parameters, and new password in request body."
+      );
+    }
+
+    // Verify the token and get the email
+    const decodedToken = verifyJWTToken(token);
+
+    if (!decodedToken.email) {
+      res.status(401);
+      throw new Error(decodedToken.message);
+    }
+
+    const hashedPassword = await getHashedPassword(password);
+
+    const result = await editProfilePasswordInDB({
+      userEmail: decodedToken.email,
+      newPassword: hashedPassword,
+    });
+
+    if (result?.affectedRows === 1) {
+      res
+        .status(201)
+        .json(
+          generateRequestBody(
+            "success",
+            201,
+            "Password Updated Successfully",
+            {}
+          )
+        );
+    } else {
+      res.status(500);
+      throw new Error("Password can't be edited");
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
 
 export {
   loginUser,

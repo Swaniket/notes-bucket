@@ -39,6 +39,6 @@ router.post("/reset-password-email", authenicated, sendResetPasswordEmail);
 // @DESC-    Resets password in the DB
 // @ROUTE-   POST: /api/users/reset-password/:token
 // @ACCESS-  Public
-router.post("/reset-password/:token", resetPassword);
+router.post("/reset-password", resetPassword);
 
 export { router as userRouter };
