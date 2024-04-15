@@ -17,6 +17,7 @@ import {
   generateRequestBody,
   generateResetPasswordLink,
 } from "../helpers/utils.js";
+import { generateMailOptions, sendEmail } from "../helpers/emailHelper.js";
 
 // @DESC-    User Login
 // @ROUTE-   POST: /api/users/login
@@ -193,7 +194,7 @@ const editUserProfile = asyncHandler(async (req, res) => {
 // @ROUTE-   POST: /api/users/reset-password-email
 // @ACCESS-  Protected
 const sendResetPasswordEmail = asyncHandler(async (req, res) => {
-  const { email, userId } = req.user;
+  const { email, userId, firstName } = req.user;
   try {
     const resetPasswordToken = generateJWTToken({ email }, "10m");
     const result = await insertTokenInDB({ userId, token: resetPasswordToken });
@@ -206,8 +207,26 @@ const sendResetPasswordEmail = asyncHandler(async (req, res) => {
     // Generate the link
     const resetPasswordLink = generateResetPasswordLink(resetPasswordToken);
 
+    // Generate Email Options
+    const mailOptions = generateMailOptions(
+      email,
+      "Test Subject",
+      `Hi ${firstName}, \nYou have requested a password reset, please follow this link to reset password ${resetPasswordLink} \nThis link will expire within 10mins.`
+    );
+
+    // Send the email
+    await sendEmail(mailOptions, (error, info) => {
+      if (error) {
+        res
+          .status(500)
+          .json(generateRequestBody("error", 500, "Cant send email", error));
+      } else {
+        res.status(200).json(generateRequestBody("success", 200, "Email Send"));
+      }
+    });
+
     // Send an email with the link
-    res.status(200).send(resetPasswordLink);
+    // res.status(200).send(resetPasswordLink);
   } catch (e) {
     res.status(500);
     throw new Error(e);
