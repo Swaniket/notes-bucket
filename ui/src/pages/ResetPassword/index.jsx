@@ -1,14 +1,39 @@
 import React, { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { resetPasswordSchema } from "./schema";
 import { Form, Button } from "react-bootstrap";
-import { ResetPasswordForm } from "../../components";
 import { FaSignInAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { ResetPasswordForm } from "../../components";
+import { resetPassword, getUserState } from "../../redux/slice/userSlice";
+import { resetPasswordSchema } from "./schema";
 
 function ResetPassword() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+
+  const {
+    passwordSetError,
+    passwordSetSuccess,
+    passwordSetLoading,
+    passwordSetMessage,
+  } = useSelector(getUserState);
+
+  useEffect(() => {
+    if (passwordSetError) {
+      toast.error(passwordSetMessage, {
+        toastId: "failed-set-password-toast",
+      });
+    } else if (passwordSetSuccess) {
+      toast.success(passwordSetMessage, {
+        toastId: "success-set-email-toast",
+      });
+    }
+  }, [dispatch, passwordSetError, passwordSetSuccess, passwordSetMessage]);
 
   const initialValues = {
     resetPassword: "",
@@ -16,7 +41,7 @@ function ResetPassword() {
   };
 
   const onSubmit = (values) => {
-    console.log("values", values);
+    dispatch(resetPassword({ token, password: values.resetPassword }));
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -47,9 +72,12 @@ function ResetPassword() {
             </Button>
           </section>
           <section className="login-button-group">
-            <Button className="btn btn-dark" type="submit">
-              Set Password
-              {/* {passwordResetLoading ? "Loading…" : "Send Email"} */}
+            <Button
+              className="btn btn-dark"
+              type="submit"
+              disabled={passwordSetLoading}
+            >
+              {passwordSetLoading ? "Loading…" : "Set Password"}
             </Button>
           </section>
         </div>
@@ -59,10 +87,10 @@ function ResetPassword() {
 
   return (
     <>
-      {token ? (
-        <div className="custom-container">
-          <ResetPasswordHeader />
+      <div className="custom-container">
+        <ResetPasswordHeader />
 
+        {token ? (
           <Form onSubmit={handleSubmit}>
             <ResetPasswordForm
               values={values}
@@ -74,10 +102,12 @@ function ResetPassword() {
 
             <ResetPasswordButtons />
           </Form>
-        </div>
-      ) : (
-        <h1>No Token Found</h1>
-      )}
+        ) : (
+          <h4 style={{ display: "flex", justifyContent: "center" }}>
+            No Token Found
+          </h4>
+        )}
+      </div>
     </>
   );
 }

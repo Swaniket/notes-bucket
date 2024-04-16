@@ -66,6 +66,15 @@ const sendPasswordResetEmail = async (userEmail) => {
   return response.data;
 };
 
+// API call for reseting password
+const resetPassword = async (token, password) => {
+  const response = await apiNotesBucket.post(
+    `/users/reset-password?token=${token}`,
+    { password }
+  );
+  return response.data;
+};
+
 const userService = {
   login,
   register,
@@ -73,6 +82,7 @@ const userService = {
   getProfile,
   updateProfile,
   sendPasswordResetEmail,
+  resetPassword,
 };
 
 export default userService;
