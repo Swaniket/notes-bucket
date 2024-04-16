@@ -58,12 +58,21 @@ const updateProfile = async (token, updatedProfile) => {
   return response.data;
 };
 
+// API call for sending the reset email
+const sendPasswordResetEmail = async (userEmail) => {
+  const response = await apiNotesBucket.post("/users/reset-password-email", {
+    email: userEmail,
+  });
+  return response.data;
+};
+
 const userService = {
   login,
   register,
   logout,
   getProfile,
   updateProfile,
+  sendPasswordResetEmail,
 };
 
 export default userService;

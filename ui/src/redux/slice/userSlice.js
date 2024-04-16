@@ -22,6 +22,10 @@ const initialState = {
   updateUserSuccess: false,
   updateUserLoading: false,
   updateUserMessage: "",
+  passwordResetError: false,
+  passwordResetSuccess: false,
+  passwordResetLoading: false,
+  passwordResetMessage: "",
 };
 
 // User Login
@@ -95,6 +99,25 @@ export const updateUserProfile = createAsyncThunk(
     try {
       const userToken = thunkAPI.getState()?.user?.user?.token;
       return await userService.updateProfile(userToken, userProfile);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Send Reset Password Email
+export const sendResetPasswordEmail = createAsyncThunk(
+  "user/passwordResetEmail",
+  async (email, thunkAPI) => {
+    try {
+      return await userService.sendPasswordResetEmail(email);
     } catch (error) {
       const message =
         (error.response &&
@@ -212,6 +235,26 @@ export const userSlice = createSlice({
         state.updateUserLoading = false;
         state.updateUserSuccess = false;
         state.updateUserMessage = action.payload.message;
+      })
+
+      // Password Reset Email
+      .addCase(sendResetPasswordEmail.pending, (state) => {
+        state.passwordResetError = false;
+        state.passwordResetLoading = true;
+        state.passwordResetSuccess = false;
+        state.passwordResetMessage = "";
+      })
+      .addCase(sendResetPasswordEmail.fulfilled, (state, action) => {
+        state.passwordResetError = false;
+        state.passwordResetLoading = false;
+        state.passwordResetSuccess = true;
+        state.passwordResetMessage = action.payload.message;
+      })
+      .addCase(sendResetPasswordEmail.rejected, (state, action) => {
+        state.passwordResetError = true;
+        state.passwordResetLoading = false;
+        state.passwordResetSuccess = false;
+        state.passwordResetMessage = action.payload.message;
       });
   },
 });

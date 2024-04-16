@@ -1,20 +1,53 @@
-import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
-import { forgotPasswordSchema } from "./schema";
-import ForgotPasswordForm from "../../components/Forms/ForgotPasswordForm";
 import { useNavigate } from "react-router-dom";
 import { FaSignInAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
+
+import { forgotPasswordSchema } from "./schema";
+import ForgotPasswordForm from "../../components/Forms/ForgotPasswordForm";
+import {
+  getUserState,
+  sendResetPasswordEmail,
+} from "../../redux/slice/userSlice";
+import { useEffect } from "react";
 
 function ForgotPassword() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const {
+    passwordResetError,
+    passwordResetSuccess,
+    passwordResetLoading,
+    passwordResetMessage,
+  } = useSelector(getUserState);
+
+  useEffect(() => {
+    if (passwordResetError) {
+      toast.error(passwordResetMessage, {
+        toastId: "failed-reset-email-toast",
+      });
+    } else if (passwordResetSuccess) {
+      toast.success(passwordResetMessage, {
+        toastId: "success-reset-email-toast",
+      });
+    }
+  }, [
+    dispatch,
+    passwordResetMessage,
+    passwordResetSuccess,
+    passwordResetError,
+  ]);
 
   const initialValues = {
     forgotPasswordEmail: "",
   };
 
   const onSubmit = (values) => {
-    console.log("values", values);
+    dispatch(sendResetPasswordEmail(values.forgotPasswordEmail));
+    // console.log("values", values.forgotPasswordEmail);
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -47,9 +80,12 @@ function ForgotPassword() {
             </Button>
           </section>
           <section className="login-button-group">
-            <Button className="btn btn-dark" type="submit">
-              {/* {isLoading ? "Loading…" : "Login"} */}
-              Send Email
+            <Button
+              className="btn btn-dark"
+              type="submit"
+              disabled={passwordResetLoading}
+            >
+              {passwordResetLoading ? "Loading…" : "Send Email"}
             </Button>
           </section>
         </div>
