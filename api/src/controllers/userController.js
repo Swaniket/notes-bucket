@@ -195,36 +195,68 @@ const editUserProfile = asyncHandler(async (req, res) => {
 // @ROUTE-   POST: /api/users/reset-password-email
 // @ACCESS-  Protected
 const sendResetPasswordEmail = asyncHandler(async (req, res) => {
-  const { email, userId, firstName } = req.user;
+  const { email } = req.body;
+
+  if (!email) {
+    res.status(400);
+    throw new Error("Email is required");
+  }
+
   try {
-    const resetPasswordToken = generateJWTToken({ email }, "10m");
-    const result = await insertTokenInDB({ userId, token: resetPasswordToken });
+    // Find User in DB
+    const user = await findUserFromDB(email);
 
-    if (result?.affectedRows !== 1) {
-      res.status(500);
-      throw new Error("Something went wrong");
-    }
+    if (user) {
+      const resetPasswordToken = generateJWTToken({ email }, "10m");
+      const result = await insertTokenInDB({
+        email,
+        token: resetPasswordToken,
+      });
 
-    // Generate the link
-    const resetPasswordLink = generateResetPasswordLink(resetPasswordToken);
-
-    // Generate Email Options
-    const mailOptions = generateMailOptions(
-      email,
-      "Test Subject",
-      `Hi ${firstName}, \nYou have requested a password reset, please follow this link to reset password ${resetPasswordLink} \nThis link will expire within 10mins.`
-    );
-
-    // Send the email
-    await sendEmail(mailOptions, (error, info) => {
-      if (error) {
-        res
-          .status(500)
-          .json(generateRequestBody("error", 500, "Cant send email", error));
-      } else {
-        res.status(200).json(generateRequestBody("success", 200, "Email Send"));
+      if (result?.affectedRows !== 1) {
+        res.status(500);
+        throw new Error("Something went wrong");
       }
-    });
+
+      // Generate the link
+      const resetPasswordLink = generateResetPasswordLink(resetPasswordToken);
+
+      // Generate Email Options
+      const mailOptions = generateMailOptions(
+        email,
+        "Password Reset",
+        `Hi ${user.firstName}, \n\nYou have requested a password reset, please follow this link to reset password ${resetPasswordLink} \n\nNote: This link will expire within 10mins.`
+      );
+
+      // Send the email
+      await sendEmail(mailOptions, (error, info) => {
+        if (error) {
+          res
+            .status(500)
+            .json(generateRequestBody("error", 500, "Cant send email", error));
+        } else {
+          res
+            .status(200)
+            .json(
+              generateRequestBody(
+                "success",
+                200,
+                "If the user exists, an email with the reset password link will get sent."
+              )
+            );
+        }
+      });
+    } else {
+      res
+        .status(200)
+        .json(
+          generateRequestBody(
+            "success",
+            200,
+            "If the user exists, an email with the reset password link will get sent."
+          )
+        );
+    }
   } catch (e) {
     res.status(500);
     throw new Error(e);

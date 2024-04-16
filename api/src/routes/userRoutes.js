@@ -33,8 +33,8 @@ router.post("/me/edit", authenicated, editUserProfile);
 
 // @DESC-    Send the reset password link in the email
 // @ROUTE-   POST: /api/users/reset-password-email
-// @ACCESS-  Protected
-router.post("/reset-password-email", authenicated, sendResetPasswordEmail);
+// @ACCESS-  Public
+router.post("/reset-password-email", sendResetPasswordEmail);
 
 // @DESC-    Resets password in the DB
 // @ROUTE-   POST: /api/users/reset-password/:token

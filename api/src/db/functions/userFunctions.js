@@ -62,8 +62,8 @@ export const editProfilePasswordInDB = async ({ userEmail, newPassword }) => {
 };
 
 // Insert token in DB
-export const insertTokenInDB = async ({ userId, token }) => {
-  const queryString = `UPDATE users SET passwordResetToken='${token}' WHERE userId='${userId}'`;
+export const insertTokenInDB = async ({ email, token }) => {
+  const queryString = `UPDATE users SET passwordResetToken='${token}' WHERE email='${email}'`;
   const result = await executeQuery(queryString);
   return result;
 };
