@@ -19,29 +19,12 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, isLoading, isError, isSuccess, message } =
-    useSelector(getUserState);
-
-  const initialValues = {
-    email: "",
-    password: "",
-  };
-
-  const onSubmit = (values) => {
-    dispatch(setRememberMeState(rememberMe));
-    dispatch(loginUser(values));
-  };
-
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues: initialValues,
-      validationSchema: loginSchema,
-      onSubmit: onSubmit,
-    });
-
   const [rememberMe, setRememberMe] = useState(false);
   const [failedLoginAttemptCount, setFailedLoginAttempCount] = useState(0);
   const [timeRemain, setTimeRemain] = useState(10);
+
+  const { user, isLoading, isError, isSuccess, message } =
+    useSelector(getUserState);
 
   useEffect(() => {
     if (isError) {
@@ -71,16 +54,29 @@ function Login() {
     };
   }, [isError, isSuccess, user, dispatch, message, navigate]);
 
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const onSubmit = (values) => {
+    dispatch(setRememberMeState(rememberMe));
+    dispatch(loginUser(values));
+  };
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: loginSchema,
+      onSubmit: onSubmit,
+    });
+
   const runCountDown = () => {
     var myIntervalID = setInterval(() => {
       console.log("Called Interval");
       setTimeRemain((timeRemain) => timeRemain - 1);
     }, 1000);
     return myIntervalID;
-  };
-
-  const navigateToSignup = () => {
-    navigate("/sign-up");
   };
 
   const LoginHeader = () => {
@@ -117,7 +113,10 @@ function Login() {
       <>
         <div className="button-group-login-signup">
           <section>
-            <Button className="btn btn-light" onClick={navigateToSignup}>
+            <Button
+              className="btn btn-light"
+              onClick={() => navigate("/sign-up")}
+            >
               Create an account
             </Button>
           </section>

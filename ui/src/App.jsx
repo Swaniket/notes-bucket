@@ -1,7 +1,16 @@
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import PrivateRoute from "./authorization/PrivateRoute";
-import { Login, Home, Signup, Tags, Archive, Profile, About } from "./pages";
+import {
+  Login,
+  Home,
+  Signup,
+  Tags,
+  Archive,
+  Profile,
+  About,
+  ForgotPassword,
+} from "./pages";
 import { Header, Footer } from "./layout";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -14,6 +23,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/about" element={<About />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/home" element={<Home />} />

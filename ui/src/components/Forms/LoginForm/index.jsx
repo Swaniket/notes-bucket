@@ -1,5 +1,6 @@
 import React from "react";
 import { Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function LoginForm({
   values,
@@ -55,19 +56,27 @@ function LoginForm({
         </Form.Control.Feedback>
       </Form.Group>
       {/* Remember Me */}
-      <Form.Group className="mb-3">
-        <Form.Check
-          type="checkbox"
-          label="Remember Me"
-          id="rememberMe"
-          value={rememberMe}
-          name="rememberMe"
-          className="remember-me"
-          onChange={() => {
-            setRememberMe(!rememberMe);
-          }}
-        />
-      </Form.Group>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Form.Group className="mb-3">
+          <Form.Check
+            type="checkbox"
+            label="Remember Me"
+            id="rememberMe"
+            value={rememberMe}
+            name="rememberMe"
+            className="remember-me"
+            onChange={() => {
+              setRememberMe(!rememberMe);
+            }}
+          />
+        </Form.Group>
+        <Link
+          to="forgot-password"
+          style={{ textDecoration: "none", color: "gray" }}
+        >
+          Forgot Password?
+        </Link>
+      </div>
     </>
   );
 }
