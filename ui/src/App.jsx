@@ -10,6 +10,7 @@ import {
   Profile,
   About,
   ForgotPassword,
+  ResetPassword,
 } from "./pages";
 import { Header, Footer } from "./layout";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,6 +25,7 @@ function App() {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/about" element={<About />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/home" element={<Home />} />

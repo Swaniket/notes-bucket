@@ -17,7 +17,7 @@ export const generateResetPasswordLink = (token) => {
   const env = process.env.NODE_ENV;
 
   if (env === "development") {
-    const port = process.env.PORT;
+    const port = process.env.CLIENT_PORT;
     url = `http://localhost:${port}/reset-password?token=${token}`;
   } else {
     url = `${process.env.CLIENT_URL}/reset-password?token=${token}`;

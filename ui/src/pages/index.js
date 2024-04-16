@@ -6,3 +6,4 @@ export { default as Tags } from "./Tags/index";
 export { default as Profile } from "./Profile/index";
 export { default as About } from "./About/index";
 export { default as ForgotPassword } from "./ForgotPassword/index";
+export { default as ResetPassword } from "./ResetPassword/index";

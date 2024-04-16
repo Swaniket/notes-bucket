@@ -6,7 +6,7 @@ import { FaSignInAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 import { forgotPasswordSchema } from "./schema";
-import ForgotPasswordForm from "../../components/Forms/ForgotPasswordForm";
+import { ForgotPasswordForm } from "../../components";
 import {
   getUserState,
   sendResetPasswordEmail,
@@ -47,7 +47,6 @@ function ForgotPassword() {
 
   const onSubmit = (values) => {
     dispatch(sendResetPasswordEmail(values.forgotPasswordEmail));
-    // console.log("values", values.forgotPasswordEmail);
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
