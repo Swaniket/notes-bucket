@@ -104,7 +104,7 @@ After installing these -
 ### Roadmap
 
 - ~~Add notes encryption in the database~~.
-- Add the forgot password module.
+- ~~Add the forgot password module.~~
 - Edit Password module.
 - First Login Instructions - Add a tag to get started.
 - Animations.
