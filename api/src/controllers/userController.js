@@ -4,15 +4,21 @@ import {
   comparePasswords,
   getHashedPassword,
 } from "../helpers/bcryptHelper.js";
-import { generateJWTToken } from "../helpers/jwtHelper.js";
+import { generateJWTToken, verifyJWTToken } from "../helpers/jwtHelper.js";
 import {
   findUserFromDB,
   findUserByIDFromDB,
   createUserInDB,
   getNotesStatsDB,
   editProfileInDB,
+  insertTokenInDB,
+  editProfilePasswordInDB,
 } from "../db/functions/userFunctions.js";
-import { generateRequestBody } from "../helpers/utils.js";
+import {
+  generateRequestBody,
+  generateResetPasswordLink,
+} from "../helpers/utils.js";
+import { generateMailOptions, sendEmail } from "../helpers/emailHelper.js";
 
 // @DESC-    User Login
 // @ROUTE-   POST: /api/users/login
@@ -37,7 +43,7 @@ const loginUser = asyncHandler(async (req, res) => {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          token: generateJWTToken(user.userId),
+          token: generateJWTToken({ id: user.userId }),
         })
       );
     } else {
@@ -95,7 +101,7 @@ const registerUser = asyncHandler(async (req, res) => {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          token: generateJWTToken(user.userId),
+          token: generateJWTToken({ id: user.userId }),
         })
       );
     } else {
@@ -185,4 +191,135 @@ const editUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { loginUser, registerUser, getUserProfile, editUserProfile };
+// @DESC-    Send the reset password link in the email
+// @ROUTE-   POST: /api/users/reset-password-email
+// @ACCESS-  Protected
+const sendResetPasswordEmail = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    res.status(400);
+    throw new Error("Email is required");
+  }
+
+  try {
+    // Find User in DB
+    const user = await findUserFromDB(email);
+
+    if (user) {
+      const resetPasswordToken = generateJWTToken({ email }, "10m");
+      const result = await insertTokenInDB({
+        email,
+        token: resetPasswordToken,
+      });
+
+      if (result?.affectedRows !== 1) {
+        res.status(500);
+        throw new Error("Something went wrong");
+      }
+
+      // Generate the link
+      const resetPasswordLink = generateResetPasswordLink(resetPasswordToken);
+
+      // Generate Email Options
+      const mailOptions = generateMailOptions(
+        email,
+        "Password Reset",
+        `Hi ${user.firstName}, \n\nYou have requested a password reset, please follow this link to reset password ${resetPasswordLink} \n\nNote: This link will expire within 10mins.`
+      );
+
+      // Send the email
+      await sendEmail(mailOptions, (error, info) => {
+        if (error) {
+          res
+            .status(500)
+            .json(generateRequestBody("error", 500, "Cant send email", error));
+        } else {
+          res
+            .status(200)
+            .json(
+              generateRequestBody(
+                "success",
+                200,
+                "If the user exists, an email with the reset password link will get sent."
+              )
+            );
+        }
+      });
+    } else {
+      res
+        .status(200)
+        .json(
+          generateRequestBody(
+            "success",
+            200,
+            "If the user exists, an email with the reset password link will get sent."
+          )
+        );
+    }
+  } catch (e) {
+    res.status(500);
+    throw new Error(e);
+  }
+});
+
+// @DESC-    Resets password in the DB
+// @ROUTE-   POST: /api/users/reset-password/:token
+// @ACCESS-  Public
+const resetPassword = asyncHandler(async (req, res) => {
+  const { token } = req.query;
+  const { password } = req.body;
+
+  try {
+    // Validation
+    if (!token || !password) {
+      res.status(400);
+      throw new Error(
+        "Invalid Form Submission, expected a token in query string parameters, and new password in request body."
+      );
+    }
+
+    // Verify the token and get the email
+    const decodedToken = verifyJWTToken(token);
+
+    if (!decodedToken.email) {
+      res.status(401);
+      throw new Error(decodedToken.message);
+    }
+
+    const hashedPassword = await getHashedPassword(password);
+
+    const result = await editProfilePasswordInDB({
+      userEmail: decodedToken.email,
+      newPassword: hashedPassword,
+    });
+
+    if (result?.affectedRows === 1) {
+      res
+        .status(201)
+        .json(
+          generateRequestBody(
+            "success",
+            201,
+            "Password Updated Successfully",
+            {}
+          )
+        );
+    } else {
+      res.status(500);
+      throw new Error("Password can't be edited");
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+export {
+  loginUser,
+  registerUser,
+  getUserProfile,
+  editUserProfile,
+  sendResetPasswordEmail,
+  resetPassword,
+};

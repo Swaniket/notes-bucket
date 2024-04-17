@@ -4,6 +4,8 @@ import {
   registerUser,
   getUserProfile,
   editUserProfile,
+  sendResetPasswordEmail,
+  resetPassword,
 } from "../controllers/userController.js";
 import { authenicated } from "../middleware/authMiddleware.js";
 
@@ -28,5 +30,15 @@ router.get("/me", authenicated, getUserProfile);
 // @ROUTE-   POST: /api/users/me/edit
 // @ACCESS-  Protected
 router.post("/me/edit", authenicated, editUserProfile);
+
+// @DESC-    Send the reset password link in the email
+// @ROUTE-   POST: /api/users/reset-password-email
+// @ACCESS-  Public
+router.post("/reset-password-email", sendResetPasswordEmail);
+
+// @DESC-    Resets password in the DB
+// @ROUTE-   POST: /api/users/reset-password/:token
+// @ACCESS-  Public
+router.post("/reset-password", resetPassword);
 
 export { router as userRouter };

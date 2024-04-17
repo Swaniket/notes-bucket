@@ -2,6 +2,8 @@ export { default as SignupForm } from "./Forms/SignupForm";
 export { default as LoginForm } from "./Forms/LoginForm";
 export { default as NewNoteForm } from "./Forms/NewNoteForm";
 export { default as NewTagForm } from "./Forms/NewTagForm";
+export { default as ForgotPasswordForm } from "./Forms/ForgotPasswordForm";
+export { default as ResetPasswordForm } from "./Forms/ResetPasswordForm";
 
 export { default as Note } from "./Notes/Note";
 export { default as NoteList } from "./Notes/NoteList";
