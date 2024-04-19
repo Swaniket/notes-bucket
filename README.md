@@ -1,11 +1,11 @@
 # Notes Bucket
 
-Notes bucket is a feature rich notes application, where user can create, edit, view and delete notes.
+Notes bucket is a feature-rich notes application, where users can create, edit, view, and delete notes.
 
 ### Features
 
 - Full authentication system (login and signup).
-- Emogi and Markdown support for notes.
+- Emoji and Markdown support for notes.
 - Organization of notes by tags.
 - Ability to pin and archive notes.
 - Search Notes & Filter notes by tags
@@ -88,7 +88,7 @@ Notes bucket is a feature rich notes application, where user can create, edit, v
 
 ### How to run on the local machine
 
-You need to have the following installed in your system to run the project
+It would be best if you had the following installed in your system to run the project
 
 1. NodeJS
 2. MySQL
@@ -107,4 +107,4 @@ After installing these -
 - ~~Add the forgot password module.~~
 - Edit Password module.
 - First Login Instructions - Add a tag to get started.
-- Animations.
+- Build a more modern UI.
