@@ -8,7 +8,7 @@ Notes bucket is a feature-rich notes application, where users can create, edit, 
 - Emoji and Markdown support for notes.
 - Organization of notes by tags.
 - Ability to pin and archive notes.
-- Search Notes & Filter notes by tags.
+- Search Notes & Filter notes by tags
 - Encryption of notes in the DB.
 - User Profile page for some quick KPI and ability to update user profile.
 
